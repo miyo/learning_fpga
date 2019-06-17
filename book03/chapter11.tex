@@ -1,0 +1,106 @@
+% -*- coding: utf-8 -*-
+
+\documentclass[a4paper]{jsarticle}
+\usepackage{ascmac,alltt,txfonts,url}
+
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{here}
+
+\renewcommand{\ttdefault}{cmtt}
+\renewcommand{\figurename}{Fig.} 
+\renewcommand{\tablename}{Tbl.} 
+\DeclareMathAlphabet{\mathtt}{OT1}{cmtt}{m}{n}
+\SetMathAlphabet{\mathtt}{bold}{OT1}{cmtt}{m}{n}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+
+\makeatletter
+
+\newdimen\@mojihaba
+\settowidth{\@mojihaba}{あ}
+
+\def\tokushu#1{%
+\def\tokushutitle{#1}%
+\gdef\articleHeader{\hbox to\textwidth{\rule{3\@mojihaba}{1mm}%
+\hbox{\small\bf\hskip1mm \tokushutitle}\leaderfill}}
+}
+
+\newdimen \JQ	\JQ .259817mm	%%%	\JQ/\Q = 10pt/9.62216pt
+\newdimen \Q	\Q  .25mm	%%%	Quarter of 1mm
+
+\def\JarticleHeader{\rule{\textwidth}{1mm}}%
+\def\JarticleTitle{{\huge\bf\@title}}
+\def\JarticleAuthor{\large\begin{tabular}[t]{@{}l}\@author\end{tabular}}
+\newbox\@temptitlebox
+
+\def\verse{\let\\=\@centercr 
+ \list{}{\itemsep\z@ \itemindent -1.5em\listparindent \itemindent 
+ \rightmargin\leftmargin\advance\leftmargin 1.5em}\item[]}
+\let\endverse\endlist
+\def\quotation{\list{}{\listparindent 1.5em
+ \itemindent\listparindent
+ \rightmargin\leftmargin \parsep 0pt plus 1pt}\item[]}
+\let\endquotation=\endlist
+\def\quote{\list{}{\rightmargin\leftmargin}\item[]}
+\let\endquote=\endlist
+\def\abstquotation{\list{}{\listparindent 1.5em
+ \itemindent\listparindent
+ \leftmargin 5mm
+ \rightmargin\leftmargin \parsep 0pt plus 1pt}\item[]}
+\let\endabstquotation=\endlist
+\def\quote{\list{}{\rightmargin\leftmargin}\item[]}
+\let\endquote=\endlist
+
+\global\def\@maketitle{\newpage \null
+\hbox{\vbox to193.5\Q{\baselineskip=10mm % 193.5\Q = 9*\baselineskip
+\begin{flushleft}
+\JarticleHeader
+% following extra vskip together with baselineskip(10mm) will produce
+% appropriate 10mm/6mm gap between the rule and title
+% This assumes that title is typeset with 28Q(7mm) font, and baseline
+% is set 1mm above the bottom of the font.
+\setbox\@temptitlebox\hbox{JarticleTitle}\ifdim\wd\@temptitlebox>\textwidth\vskip2mm\else\vskip6mm\fi
+\leftskip=5mm
+\JarticleTitle
+\vskip6mm % to leave 10mm gap between title and author
+\JarticleAuthor
+\end{flushleft}\vfil}}
+%\JEabstInsert
+  \begin{small}
+    \begin{abstquotation}
+      \Jabstcontent
+    \end{abstquotation}
+  \end{small}
+}
+
+\long\def\Jabstract#1{\global\long\def\Jabstcontent{\noindent\ignorespaces #1}}
+\def\Jabstcontent{\relax}
+
+\makeatother
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Overview}
+\rhead{}
+\rhead{\thepage{}}
+\cfoot{}
+\renewcommand{\headrulewidth}{0.5pt}
+\pagestyle{fancy}
+
+\Jabstract{%
+\\
+VivadoHLSをつかった応用実験
+}
+
+\begin{document}
+
+\title{ARM搭載FPGA}
+\author{}
+\date{2018年 3月 6日~~第1.0版}
+\maketitle
+
+\section{ARM搭載FPGAとは}
+
+\section{FPGAとCPUの使い分け}
+
+\end{document}
