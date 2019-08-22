@@ -114,7 +114,7 @@
 
 \subsection{構造の基本 --- エンティティ/モジュール}
 
-どの言語にも基本的な構造があります．たとえば，Cでは関数，Javaではクラスなどです．HDLでは，与えられた入力に対して出力を生成するブロックが基本的な単位です(図\ref{fig:design_unit})．このブロックをVHDLではエンティティ(\verb|entityt|)，Verilog HDLではモジュール(\verb|module|)と呼びます．ただし，この章では，特にVHDLやVerilog HDLの別のない説明では，モジュールと呼ぶことにします．
+どの言語にも基本的な構造があります．たとえば，Cでは関数，Javaではクラスなどです．HDLでは，与えられた入力に対して出力を生成するブロックが基本的な単位です(図\ref{fig:design_unit})．このブロックをVHDLではエンティティ(\verb|entityt|)，Verilog HDLではモジュール(\verb|module|)と呼びます．ただし，この章では，特にVHDLやVerilog HDLに違いがない説明では，モジュールと呼ぶことにします．
 
  \begin{figure}[H]
   \begin{center}
@@ -213,7 +213,7 @@ VHDLでは，ソース・コードの中に定数の値を記述できます(表
 
 
 \subsection{型}
-VHDLの変数はすべて型を持ちます．たくさんの型が定義されており，また，独自の型も定義できます．よく使用される5つの型を表\ref{tbl:vhdl_typles}に示します．基本的には，\verb|std_logic|，\verb|std_logic_vector|はハードウェアの信号に相当する型，\verb|signed|や\verb|unsigned|は加減算などの算術演算ができる値を表現するために用いる型，一般的な数値を表現できる\verb|integer|です．
+VHDLの変数はすべて型を持ちます．たくさんの型が定義されており，また，独自の型も定義できます．よく使用される5つの型を表\ref{tbl:vhdl_types}に示します．基本的には，\verb|std_logic|，\verb|std_logic_vector|はハードウェアの信号に相当する型，\verb|signed|や\verb|unsigned|は加減算などの算術演算ができる値を表現するために用いる型，一般的な数値を表現できる\verb|integer|です．
 
 \begin{table}[H]
 \begin{center}
@@ -255,7 +255,7 @@ end entity;
 \end{figure}
 
 \subsubsection{ポートを定義する}
-ポートは，ハードウェア・モジュールの入出力です．\verb|entity|の中の\verb|port( 〜 );|の中に信号を方向と型を指定して定義します．信号の方向には\verb|in|(入力)と\verb|out|(出力)，verb|inout|(入出力)の3種類があります．各ポートは「名前 : 方向 型」で定義されます．たとえば，
+ポートは，ハードウェア・モジュールの入出力です．\verb|entity|の中の\verb|port( 〜 );|の中に信号を方向と型を指定して定義します．信号の方向には\verb|in|(入力)と\verb|out|(出力)，\verb|inout|(入出力)の3種類があります．各ポートは「名前 : 方向 型」で定義されます．たとえば，
 \begin{figure}[H]
 \begin{quote}
 \begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
@@ -547,7 +547,7 @@ end process;
 ここでは，tmp0とtmp1がvariable変数です．ブロッキング代入における演算の結果がそれぞれ代入されています．ブロッキング代入のため，合成ツールがこの構文に出会ったところで，tmp0の値は(a and b)に，tmp1の値は(a or b)にすぐさま置き換わります．つまり，これは，\verb|c <= (a and b) xor (a or b)|という回路として合成されます．
 
 \subsection{制御構文}
-VHDLのでは，まるでソフトウェアを記述するように，条件分岐やCの\verb|switch|文のような制御構文が使えます．多くの制御構文は，\verb|process|文の中でのみ使用ができます．代表的なものを紹介します．
+VHDLでは，まるでソフトウェアを記述するように，条件分岐やCの\verb|switch|文のような制御構文が使えます．多くの制御構文は，\verb|process|文の中でのみ使用ができます．代表的なものを紹介します．
 
 \subsubsection{when 〜 else}
 同時処理文中で記述可能な制御構文です．条件に従って出力する値を選択できます．下記は，\verb|a|と\verb|b|の値が等しい場合は\verb|X|を，等しくない場合には\verb|Y|を\verb|c|に代入する例です．
@@ -961,7 +961,7 @@ n-bitの配列変数\verb|wire[n-1:0]|あるいは\verb|reg[n-1:0]|の場合に�
                  & \verb|a[b:c]|    & aのb番目からc番目の信号線の束を取り出す \\\hline
  \end{tabular}
 \end{center}
-\caption{VHDLで用いられる演算の例\label{tbl:vhdl_operator}}
+\caption{Verilog HDLで用いられる演算の例\label{tbl:verilog_operator}}
 \end{table}
 
 \subsubsection{演算結果の代入}
@@ -1255,7 +1255,7 @@ endfunction
 \end{Verbatim}
 \end{quote}
 \end{figure}
-ここで定義したfunctioは，Cの関数とは違い，関数の計算が終了するまで呼び出し側の処理が待たされるような制御を伴うことはなく，
+ここで定義した\verb|function|は，Cの関数とは違い，関数の計算が終了するまで呼び出し側の処理が待たされるような制御を伴うことはなく，
 複雑な組み合わせ回路を見通し良く記述するための書き方です．
 
 \section{まとめ}

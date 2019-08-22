@@ -263,13 +263,13 @@ end RTL;
   \caption{シリアル通信の結線\label{fig:serial_comm}}
  \end{figure}
 
-RS-232-Cでは，図\ref{serial_comm_format}のように，8ビットのデータにスタート・ビット（'0'）とストップ・ビット（'1'）を付加してデータを通信します．接続した機器同士であらかじめ決めた速度(たとえば19200bpsなど)で信号を送受信することで，共通したクロックを持つことなくデータの送受信ができます．
+RS-232-Cでは，図\ref{fig:serial_comm_format}のように，8ビットのデータにスタート・ビット（'0'）とストップ・ビット（'1'）を付加してデータを通信します．接続した機器同士であらかじめ決めた速度(たとえば19200bpsなど)で信号を送受信することで，共通したクロックを持つことなくデータの送受信ができます．
 
  \begin{figure}[H]
   \begin{center}
    \includegraphics[width=.6\textwidth]{chapter06_figures/serial_comm_format.eps}
   \end{center}  
-  \caption{シリアル通信の結線\label{fig:serial_comm_format}}
+  \caption{シリアル通信の信号の伝送方式\label{fig:serial_comm_format}}
  \end{figure}
 
 \subsection{送信モジュール}
