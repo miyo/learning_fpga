@@ -97,7 +97,7 @@ FPGAを簡単に活用する手法として高位合成と呼ばれる開発手�
 
 \title{今どきのFPGA開発手法 - 高位合成の利用}
 \author{}
-\date{2018年 3月19日~~第1.0版}
+\date{2019年 8月22日~~第1.1版}
 \maketitle
 
 \section{高位合成とは？}\label{sec:overview}
@@ -128,7 +128,15 @@ FPGAの性能を効率良く活用するためには，一般に，VHDLやVerilo
 自由にC/C++の記述能力を利用することはできないものの，C/C++のループや条件分岐などの制御構文や，処理を関数にまとめてそれを呼び出す処理分割といったメリットを享受することができます．信号処理をソフトウェアで実装した場合にありがちな多重のループ文に対してもパイプライン化やアンロールでハードウェアの特徴を活用できるようになったこと，ターゲット周波数によって実装方式の探索をさせられることなどから，場合によっては手でがんばってハードウェアを設計するよりも，よい回路を生成できることもあるようです．
 
 \section{C/C++ベースのFPGA開発のながれ}
-C/C++ベースのFPGAの開発，特にXilinxのVivado HLSを利用したの流れを図\ref{fig:hls_dev_flow}に示します．要は，C/C++で記述したソースコードをVivado HLSによってVHDLまたはVerilog HDLに変換し，その変換後のコードをVivadoでFPGA用のビットストリームにする，というのが開発の流れです．
+C/C++ベースのFPGAの開発，特にXilinxのVivado HLSを利用する流れを図\ref{fig:hls_dev_flow}に示します．要は，C/C++で記述したソースコードをVivado HLSによってVHDLまたはVerilog HDLに変換し，その変換後のコードをVivadoでFPGA用のビットストリームにする，というのが開発のおおまかな流れです．
+
+ \begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.55\textwidth]{chapter07_figures/hls_dev_flow.eps}
+  \end{center}
+  \caption{Vivado HLSを使った開発フロー \label{fig:hls_dev_flow}}
+ \end{figure}
+
 
 C/C++ベースで作ったモジュールを設計に組み込むためには，ツールへの慣れは必要になりますが，特段難しいものではありません．次章以降，簡単なサンプルでステップを踏んでみていきましょう．
 
