@@ -392,7 +392,7 @@ architecture Behavioral of top_sim is
            reset : in std_logic;
            led   : out std_logic
            );
-  end top;
+  end component top;
   -- シミュレーション対象のモジュールの信号用の変数を宣言
   signal clk_i   : std_logic := '0';
   signal reset_i : std_logic := '0';
