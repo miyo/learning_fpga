@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Example Site on My New Hugo Site</title>
+    <title>Example Site on Learning FPGA</title>
     <link>https://miyo.github.io/learning_fpga/docs/example/</link>
-    <description>Recent content in Example Site on My New Hugo Site</description>
+    <description>Recent content in Example Site on Learning FPGA</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     

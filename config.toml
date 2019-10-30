@@ -1,4 +1,4 @@
 baseURL = "https://miyo.github.io/learning_fpga/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = "Learning FPGA"
 publishDir = "docs"
