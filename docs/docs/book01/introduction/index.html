@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta property="og:title" content="Introduction" />
+<meta property="og:description" content="イントロダクション ○○を制御したいけどソフトウェアじゃ難しい 実験などのために，何かの入力を観測しながら，それに応じて何かの処理をする，という機会がありませんか？そのような場合，パソコンやマイコンで実装してみようとしても
+ モータやセンサをたくさんつなぎたいから100個くらい自由に使える入出力があればいいのに システムを乾電池1本で動作しないかなあ 決められた時間内できちんと処理を終わらせたい/繰り返したい 処理専用の特別な命令を実行できたら高速化できるのにな いくつもの処理を並行して実行できたらいいのにな 361ビットの値の演算が一発でできたらすっきり書けるのに など，ソフトウェアではあと一息痒いところに手が届かず，歯痒い思いをしたことはないでしょうか．  プロセッサがプログラムを実行する パソコンはもちろんのこと，今やテレビや携帯電話，自動車などのあらゆる製品の中でソフトウェアが動作しています．それらのソフトウェアは，実現したいアプリケーションや動作させる環境に応じて，さまざまなプログラミング言語で記述されています．たとえば，JavaScriptはWebアプリケーションを便利に華やかにしてくれますし，Cで記述されたプログラムはシステムを細やかに制御し，高速に動作させることができます．
+近年のソフトウェアが動作する環境は，プログラミング言語やオペレーティング・システム，ライブラリなどにより上手に隠蔽されていますので，抽象化された世界の上でプログラムを書けるソフトウェア・エンジニアは，ハードウェアを意識することが少ないかもしれませんが，どのような言語を使ったプログラムでも，ハードウェアであるプロセッサで処理が実行されます．
+たとえば，パソコン上で動作するソフトウェアはIntelのCore i7などのプロセッサの上で動作し，スマートフォンの上のソフトはARMプロセッサの上で動作しています．また，組み込み機器でも各種マイコンの上で処理が実行されています．一般に，マイコンは，演算装置に加え様々なデバイスを制御するためのI/Oコントローラを備えているためセンサの入力を読み取ったり，モーターを回したりといった処理をソフトウェアで操作できます． 「プロセッサ」や「マイコン」はデバイスそのものがアプリケーションに応じて変化するわけではなく，図\ref{fig:software_on_processor})のように，ソフトウェアによって処理させる内容をその時々で決めることができるため，幅広い用途に活用されています．
+\begin{figure}[H] \begin{center} \includegraphics[width=.95\textwidth]{chapter01_figures/software_on_processor.png} \end{center} \caption{ソフトウェアプログラムはプロセッサの上で処理される．どんなプログラムを実行する場合でもプロセッサの構造は変わらない \label{fig:software_on_processor}} \end{figure}
+一方で，自由に設計できるようにみえるソフトウェアも，実際に動作するときには，常にプロセッサの制約を受けます．たとえば，プロセッサの処理能力の限界を越えるような速さでの計算や，プロセッサがもっていないI/Oを操作するといったことはできません． しかし，デバイスそのものをアプリケーションに応じて変化させて，冒頭に挙げたような「もし○○なプログラムが書けたなら」の希望を現実にできる手段があれば，今まで手を出しにくかったアプリケーションが実現できるのではないでしょうか．
+ハードウェア・デバイスを作るための便利な仕組み そんなときには，オリジナルのハードウェアを作るという解決策があります．ハードウェアを作るといっても，げじげじの足が付いたデバイスを一つずつはんだ付けしたり，半導体工場に製作を依頼する必要はありません．ハードウェア記述言語（HDL；Hardware Description Language）を用いて作成したハードウェア・イメージを専用のデバイス（FPGA）に書き込むだけでオリジナルのハードウェア・デバイスを作る便利な仕組みがあります． FPGAは，図\ref{fig:fpga_simple_image}のように，論理回路になる素や，論理回路同士を接続する素がパッケージされたLSIです．
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter01_figures/fpga_simple_image.png} \end{center} \caption{FPGAは，論理回路の素や配線回路の素がパッケージされたLSI \label{fig:fpga_simple_image}} \end{figure}
+用途によって，とにかく短い時間で処理をしたい，低消費電力で処理をさせたい，同時にたくさんのI/Oにアクセスしたいといったことが求められることもあるでしょう．FPGAは，そんな要求に応えることができる，やりたい処理をさせるための専用ハードウェアを自在に作れる柔らかいプログラム可能なハードウェア・デバイスです(図\ref{fig:fpga_processing_image})．
+\begin{figure}[H] \begin{center} \includegraphics[width=.95\textwidth]{chapter01_figures/fpga_processing_image.png} \end{center} \caption{FPGAは，実現したい処理向けの専用ロジックを自分で作ることができる \label{fig:fpga_processing_image}} \end{figure}
+FPGAには小さなメモリ(LUT)がたくさん入っている FPGAの中身はどのようになっているのか，もう少し詳しくのぞいてみましょう．図\ref{fig:inside_fpga_example}は，代表的なFPGAメーカーであるXilinxとIntelのFPGAの内部構造です．多少違いはありますが，基本的な構成要素は，LUT(Look-up Table)と記憶素子(D-FF)で構成されるロジック・セルです．
+\begin{figure}[H] \begin{center} \includegraphics[width=.95\textwidth]{chapter01_figures/inside_fpga_example.png} \end{center} \caption{FPGAの内部構造 \label{fig:inside_fpga_example}} \end{figure}
+好きな論理演算を実現する鍵はLUTで，これは小規模なメモリのようなものです．入力されたデータに対して出力する信号を決定するためのテーブルの役割を持ちます．
+たとえば，図\ref{fig:inside_fpga_example}のように，アドレス0に0，それ以外のアドレス1〜63には，1と書いてあるLUTの場合には，6入力1出力のOR回路に相当します．同様に，アドレス0〜62に0をアドレス63に1と書いておけば，6入力1出力のAND回路を作ることができます．また，1が奇数個のアドレス，たとえば，アドレス1，2，4，7など，のみに1と書いておけば，6入力1出力のXOR回路になります．
+入力ビット幅の範囲で好きな論理演算を決められるLUTと，複数のLUTを好きに接続できる接続テーブルによって，大規模な論理演算を好きに構成することができますね．
+ハードウェアと記述言語 LUTと接続テーブルを設定して，ハードウェアを自由に設計できるといっても，ソフトウェアでは簡単に書ける足し算や引き算といった基本的な演算を，一つ一つ論理回路で構成するのは骨が折れる作業です．そこで利用するのがハードウェア記述言語(HDL; Hardware Description Language)です．
+HDLは，Cプログラミングなどと同じように変数への加減算や条件分岐などを用いてハードウェアを設計できるプログラミング言語です．ユーザは，まるでプログラムをロードするように，ハードウェア・データをFPGAに書き込むことで所望のデバイスを作ることができます．
+ハードウェア・プログラミングを理解する三つのポイント オリジナルのハードウェアを作成するための手段が，ハードウェア・プログラミングです．ソフトウェア・プログラミングでは，プロセッサ(というハードウェア)を動作させるための命令列を設計するのに対し，ハードウェア・プログラミングは，ハードウェアそのものを設計します．ハードウェア・プログラミングにチャレンジするにあたり，ハードウェアの基本概念となる「演算の決め方」と「データの単位」，「処理の動作方式」についてソフトウェア・プログラミングと比較しながら説明します．
+演算の決め方 ソフトウェア・プログラミングでは，演算はプロセッサのもつ命令として決められています．一方でハードウェア・プログラミングでは，論理演算を組み合わせて自分で演算を決めることができます．" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://miyo.github.io/learning_fpga/docs/book01/introduction/" />
+<meta property="article:published_time" content="2019-10-30T19:15:46+09:00" />
+<meta property="article:modified_time" content="2019-10-30T19:15:46+09:00" />
+<title>Introduction | Learning FPGA</title>
+<link rel="icon" href="/learning_fpga/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
+
+
+<script defer src="/learning_fpga/search.min.43d9d2ae3637f2da15b22839ce6954e5bfa1eb4b2ead543724fcff30026c6103.js" integrity="sha256-Q9nSrjY38toVsig5zmlU5b&#43;h60surVQ3JPz/MAJsYQM="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav>
+<h2 class="book-brand">
+  <a href="https://miyo.github.io/learning_fpga/"><span>Learning FPGA</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" placeholder="Search" id="book-search-input" maxlength="64" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+    
+
+  
+  
+
+
+
+
+
+ 
+  
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        
+
+  <li  class="book-section-flat" >
+    
+      
+
+  <a href="/learning_fpga/docs/example/" >
+      Example Site
+  </a>
+
+
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        
+
+  <li >
+    
+      
+
+  <a href="/learning_fpga/docs/example/table-of-contents/" >
+      Table of Contents
+  </a>
+
+
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/example/table-of-contents/with-toc/" >
+      With ToC
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/example/table-of-contents/without-toc/" >
+      Without ToC
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      
+
+  <a href="/learning_fpga/docs/example/2nd/" >
+      2nd
+  </a>
+
+
+    
+
+    
+
+
+
+
+
+
+  </li>
+
+
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/introduction/"  class="active">
+      Introduction
+  </a>
+
+</li>
+      
+    
+      
+        
+
+  <li  class="book-section-flat" >
+    
+      <span>Shortcodes</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/buttons/" >
+      Buttons
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/columns/" >
+      Columns
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/expand/" >
+      Expand
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/hints/" >
+      Hints
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/katex/" >
+      Katex
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/mermaid/" >
+      Mermaid
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/tabs/" >
+      Tabs
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+  </ul>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+    </aside>
+
+    <div class="book-page">
+      <header class="flex align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="/learning_fpga/svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>Introduction</strong>
+</header>
+
+      
+<article class="markdown">
+
+<h1 id="イントロダクション">イントロダクション</h1>
+
+<h2 id="を制御したいけどソフトウェアじゃ難しい">○○を制御したいけどソフトウェアじゃ難しい</h2>
+
+<p>実験などのために，何かの入力を観測しながら，それに応じて何かの処理をする，という機会がありませんか？そのような場合，パソコンやマイコンで実装してみようとしても</p>
+
+<ul>
+<li>モータやセンサをたくさんつなぎたいから100個くらい自由に使える入出力があればいいのに</li>
+<li>システムを乾電池1本で動作しないかなあ</li>
+<li>決められた時間内できちんと処理を終わらせたい/繰り返したい</li>
+<li>処理専用の特別な命令を実行できたら高速化できるのにな</li>
+<li>いくつもの処理を並行して実行できたらいいのにな</li>
+<li>361ビットの値の演算が一発でできたらすっきり書けるのに
+など，ソフトウェアではあと一息痒いところに手が届かず，歯痒い思いをしたことはないでしょうか．</li>
+</ul>
+
+<h2 id="プロセッサがプログラムを実行する">プロセッサがプログラムを実行する</h2>
+
+<p>パソコンはもちろんのこと，今やテレビや携帯電話，自動車などのあらゆる製品の中でソフトウェアが動作しています．それらのソフトウェアは，実現したいアプリケーションや動作させる環境に応じて，さまざまなプログラミング言語で記述されています．たとえば，JavaScriptはWebアプリケーションを便利に華やかにしてくれますし，Cで記述されたプログラムはシステムを細やかに制御し，高速に動作させることができます．</p>
+
+<p>近年のソフトウェアが動作する環境は，プログラミング言語やオペレーティング・システム，ライブラリなどにより上手に隠蔽されていますので，抽象化された世界の上でプログラムを書けるソフトウェア・エンジニアは，ハードウェアを意識することが少ないかもしれませんが，どのような言語を使ったプログラムでも，ハードウェアであるプロセッサで処理が実行されます．</p>
+
+<p>たとえば，パソコン上で動作するソフトウェアはIntelのCore i7などのプロセッサの上で動作し，スマートフォンの上のソフトはARMプロセッサの上で動作しています．また，組み込み機器でも各種マイコンの上で処理が実行されています．一般に，マイコンは，演算装置に加え様々なデバイスを制御するためのI/Oコントローラを備えているためセンサの入力を読み取ったり，モーターを回したりといった処理をソフトウェアで操作できます．
+「プロセッサ」や「マイコン」はデバイスそのものがアプリケーションに応じて変化するわけではなく，図\ref{fig:software_on_processor})のように，ソフトウェアによって処理させる内容をその時々で決めることができるため，幅広い用途に活用されています．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.95\textwidth]{chapter01_figures/software_on_processor.png}
+  \end{center}
+  \caption{ソフトウェアプログラムはプロセッサの上で処理される．どんなプログラムを実行する場合でもプロセッサの構造は変わらない \label{fig:software_on_processor}}
+ \end{figure}</p>
+
+<p>一方で，自由に設計できるようにみえるソフトウェアも，実際に動作するときには，常にプロセッサの制約を受けます．たとえば，プロセッサの処理能力の限界を越えるような速さでの計算や，プロセッサがもっていないI/Oを操作するといったことはできません．
+しかし，デバイスそのものをアプリケーションに応じて変化させて，冒頭に挙げたような「もし○○なプログラムが書けたなら」の希望を現実にできる手段があれば，今まで手を出しにくかったアプリケーションが実現できるのではないでしょうか．</p>
+
+<h2 id="ハードウェア-デバイスを作るための便利な仕組み">ハードウェア・デバイスを作るための便利な仕組み</h2>
+
+<p>そんなときには，オリジナルのハードウェアを作るという解決策があります．ハードウェアを作るといっても，げじげじの足が付いたデバイスを一つずつはんだ付けしたり，半導体工場に製作を依頼する必要はありません．ハードウェア記述言語（HDL；Hardware Description Language）を用いて作成したハードウェア・イメージを専用のデバイス（FPGA）に書き込むだけでオリジナルのハードウェア・デバイスを作る便利な仕組みがあります．
+FPGAは，図\ref{fig:fpga_simple_image}のように，論理回路になる素や，論理回路同士を接続する素がパッケージされたLSIです．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter01_figures/fpga_simple_image.png}
+  \end{center}
+  \caption{FPGAは，論理回路の素や配線回路の素がパッケージされたLSI \label{fig:fpga_simple_image}}
+ \end{figure}</p>
+
+<p>用途によって，とにかく短い時間で処理をしたい，低消費電力で処理をさせたい，同時にたくさんのI/Oにアクセスしたいといったことが求められることもあるでしょう．FPGAは，そんな要求に応えることができる，やりたい処理をさせるための専用ハードウェアを自在に作れる柔らかいプログラム可能なハードウェア・デバイスです(図\ref{fig:fpga_processing_image})．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.95\textwidth]{chapter01_figures/fpga_processing_image.png}
+  \end{center}
+  \caption{FPGAは，実現したい処理向けの専用ロジックを自分で作ることができる \label{fig:fpga_processing_image}}
+ \end{figure}</p>
+
+<h2 id="fpgaには小さなメモリ-lut-がたくさん入っている">FPGAには小さなメモリ(LUT)がたくさん入っている</h2>
+
+<p>FPGAの中身はどのようになっているのか，もう少し詳しくのぞいてみましょう．図\ref{fig:inside_fpga_example}は，代表的なFPGAメーカーであるXilinxとIntelのFPGAの内部構造です．多少違いはありますが，基本的な構成要素は，LUT(Look-up Table)と記憶素子(D-FF)で構成されるロジック・セルです．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.95\textwidth]{chapter01_figures/inside_fpga_example.png}
+  \end{center}
+  \caption{FPGAの内部構造 \label{fig:inside_fpga_example}}
+ \end{figure}</p>
+
+<p>好きな論理演算を実現する鍵はLUTで，これは小規模なメモリのようなものです．入力されたデータに対して出力する信号を決定するためのテーブルの役割を持ちます．</p>
+
+<p>たとえば，図\ref{fig:inside_fpga_example}のように，アドレス0に0，それ以外のアドレス1〜63には，1と書いてあるLUTの場合には，6入力1出力のOR回路に相当します．同様に，アドレス0〜62に0をアドレス63に1と書いておけば，6入力1出力のAND回路を作ることができます．また，1が奇数個のアドレス，たとえば，アドレス1，2，4，7など，のみに1と書いておけば，6入力1出力のXOR回路になります．</p>
+
+<p>入力ビット幅の範囲で好きな論理演算を決められるLUTと，複数のLUTを好きに接続できる接続テーブルによって，大規模な論理演算を好きに構成することができますね．</p>
+
+<h2 id="ハードウェアと記述言語">ハードウェアと記述言語</h2>
+
+<p>LUTと接続テーブルを設定して，ハードウェアを自由に設計できるといっても，ソフトウェアでは簡単に書ける足し算や引き算といった基本的な演算を，一つ一つ論理回路で構成するのは骨が折れる作業です．そこで利用するのがハードウェア記述言語(HDL; Hardware Description Language)です．</p>
+
+<p>HDLは，Cプログラミングなどと同じように変数への加減算や条件分岐などを用いてハードウェアを設計できるプログラミング言語です．ユーザは，まるでプログラムをロードするように，ハードウェア・データをFPGAに書き込むことで所望のデバイスを作ることができます．</p>
+
+<h1 id="ハードウェア-プログラミングを理解する三つのポイント">ハードウェア・プログラミングを理解する三つのポイント</h1>
+
+<p>オリジナルのハードウェアを作成するための手段が，ハードウェア・プログラミングです．ソフトウェア・プログラミングでは，プロセッサ(というハードウェア)を動作させるための命令列を設計するのに対し，ハードウェア・プログラミングは，ハードウェアそのものを設計します．ハードウェア・プログラミングにチャレンジするにあたり，ハードウェアの基本概念となる「演算の決め方」と「データの単位」，「処理の動作方式」についてソフトウェア・プログラミングと比較しながら説明します．</p>
+
+<h2 id="演算の決め方">演算の決め方</h2>
+
+<p>ソフトウェア・プログラミングでは，演算はプロセッサのもつ命令として決められています．一方でハードウェア・プログラミングでは，論理演算を組み合わせて自分で演算を決めることができます．</p>
+
+<h3 id="ソフトウェア-プログラミング">ソフトウェア・プログラミング</h3>
+
+<p>ソフトウェア・プログラミングは，プロセッサの演算ユニットが持つ機能をどのように利用するかを指示します．プロセッサの演算ユニットでは，足し算や掛け算などの算術演算や，比較演算，分岐などの処理を制御する命令を実行できます．また，信号処理を高速に処理できるように「掛け算して足し算」するといった命令を備えているプロセッサもありあます．実際にプロセッサの演算ユニットをどのように使うか，を決定するのはコンパイラの仕事で，プログラマは，普段ほとんど意識する必要はありません．</p>
+
+<h3 id="ハードウェア-プログラミング">ハードウェア・プログラミング</h3>
+
+<p>ハードウェア・プログラミングは，ハードウェアそのものを作成するので，ベースとなる演算ユニットというものは存在しません．演算処理は，基本的には，NOT，AND，ORの論理演算とそれらの組み合わせで実現します．</p>
+
+<h2 id="データの単位">データの単位</h2>
+
+<p>ソフトウェア・プログラミングとハードウェア・プログラミングで取り扱い可能なデータの単位について比べてみます．</p>
+
+<h3 id="ソフトウェア-プログラミング-1">ソフトウェア・プログラミング</h3>
+
+<p>一般に，プロセッサの作業領域であるレジスタの幅は固定されていて，ソフトウェア・プログラミングではそのサイズでしかデータを取り扱えません．たとえば，レジスタ幅が32ビットのプロセッサでは，1という値も4294967295という大きな値も32ビット幅のデータとして処理されます．また，512ビットという大きな値を取り扱うためには，512÷32の16回分のデータ処理を必要とします．</p>
+
+<h3 id="ハードウェア-プログラミング-1">ハードウェア・プログラミング</h3>
+
+<p>ハードウェア・プログラミングでは，‘0’または‘1’の値である1ビット単位のデータを自由に組み合わせて利用できます．処理内容によって，好きなビット数のデータを定義できるので，大きいデータも小さいデータも自由に定義して処理できます．512ビットのデータも，ハードウェア・プログラミングなら1回のデータ処理で取り扱えます．</p>
+
+<h2 id="処理の動作方式">処理の動作方式</h2>
+
+<p>ソフトウェア・プログラムは，プロセッサが記述した処理を順序よく実行してくれます．しかし，ハードウェア・プログラムは，生成されたハードウェア回路そのものがデータを処理します．そのため，処理の順序を守るための仕組みが必要な場合には自分でそのしくみを作る必要があります(図 \ref{fig:software_vs_hardware})．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter01_figures/software_vs_hardware.png}
+  \end{center}
+  \caption{ソフトウェア・プログラミングではプロセッサが処理順序を決めてくれる．ハードウェア・プログラミングでは，ハードウェアを構成する回路同士の接続関係や，いつデータを転送するかを全部自分で決める必要がある．\label{fig:software_vs_hardware}}
+ \end{figure}</p>
+
+<h3 id="ソフトウェア-プログラミング-2">ソフトウェア・プログラミング</h3>
+
+<p>今日のプロセッサの基本的な構成方式は，図\ref{fig:processor_model_image}に示すノイマン型アーキテクチャと呼ばれる方式です．ノイマン型アーキテクチャがプログラムを実行する手順はおよそ次の通りです．
+\begin{enumerate}
+ \item 命令を読み込む
+ \item 読み込んだプログラムの命令を理解する
+ \item 演算ユニット上で命令を実行する
+ \item 必要に応じてメモリを読み書きする
+ \item 1.に戻る
+\end{enumerate}
+パソコンのプロセッサに見られる「クロック3GHz」といったスペックのプロセッサでは，プロセッサ内のユニットが3GHzのクロックに同期して，すなわち0.33n秒程度の時間で動作することで，このサイクルが繰り返されます．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter01_figures/processor_model_image.png}
+  \end{center}
+  \caption{今日のプロセッサの典型的な構成方式．処理性能向上のために，各ユニットは可能な限り並行に動作するように工夫されることが多い．\label{fig:processor_model_image}}
+ \end{figure}</p>
+
+<p>命令を実行する，演算ユニットでは，決められたビット幅の作業領域の値に足し算や掛け算などの演算を適用できます．高い処理性能を達成するために，複数の演算ユニットを持つプロセッサもあり，それらのプロセッサでは，演算ユニットの個数分だけ同時に命令を処理することができます．勿論，「演算Aの後に演算Bを計算しないと演算Aの結果が保存されない，とか，演算Bの入力が揃う前に計算をはじめてしまう」ということは普通はなく，プロセッサが演算の順番を守ってくれます．</p>
+
+<h3 id="ハードウェア-プログラミング-2">ハードウェア・プログラミング</h3>
+
+<p>ハードウェアの基本となる論理演算回路において，入力信号を与えてから出力信号が得られるまでの時間は，トランジスタの特性や論理演算の段数で決定されます．そのため，複雑にゲートが関係し合うような回路で，データが正しく到達することを考慮するのは大変困難です(図\ref{fig:async_logic_timing})．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter01_figures/async_logic_timing.png}
+  \end{center}
+  \caption{入力された信号に対して出力が確定するまでの時間は，論理演算回路を構成する論理演算の段数で決まる．\label{fig:async_logic_timing}}
+ \end{figure}</p>
+
+<p>ハードウェア・プログラミングでは，これを解決するために大抵の場合，「同期順序回路」という構成方法を利用します．同期順序回路では，独立に動作するハードウェア中のモジュールのデータの入力のタイミングを，共通の信号「クロック」に合わせて制御します．ある単位処理を受けもつハードウェア・モジュールは，クロックが立ち上がりや立ち下がりから一定期間の間で必ず信号を読み取ることにします(図\ref{fig:sync_logic_timing})．全てのモジュールが，(1)クロックに間にあうように信号を決定し，(2)一定の期間値を変更しない，というルールさえ守れば，全体の演算が正しく動作します．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter01_figures/sync_logic_timing.png}
+  \end{center}
+  \caption{入力された信号に対して出力が確定するまでの時間は，論理演算回路を構成する論理演算の段数で決まる．\label{fig:sync_logic_timing}}
+ \end{figure}</p>
+
+<p>回路全体がクロックに合わせて動作するため，クロックの周期が短いほど全体が高速に動作します．しかし，やみくもにクロックを短くできるというわけではありません．</p>
+
+<h1 id="ハードウェア-プログラミングの流れ-使用する言語と必要なツールは">ハードウェア・プログラミングの流れ - 使用する言語と必要なツールは？</h1>
+
+<p>ハードウェア・プログラングの詳細は，以降の章で実例と共に紹介しますが，まずは全体の流れのイメージをつかんでみましょう．</p>
+
+<p>FPGAを使ったハードウェア・プログラミングは，図\ref{fig:fpga_development_flow}のような流れで行ないます．流れ自体はソフトウェア・プログラミングとあまり変わりません．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter01_figures/fpga_development_flow.png}
+  \end{center}
+  \caption{FPGAを使ったハードウェア・プログラミングの流れ．\label{fig:fpga_development_flow}}
+ \end{figure}</p>
+
+<p>ハードウェア・プログラミングには，ハードウェア記述言語(HDL; Hardware Description Language)を使用します．一般的に使用されているのは，VHDLとVerilog HDLの2種類です．記述自体は好きなテキストエディタで行なって構いません．図\ref{fig:writing_vhdl_example}は，emacsを使ってVHDLを記述している例です．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter01_figures/writing_vhdl_example.png}
+  \end{center}
+  \caption{emacsを使ってVHDLを記述している例．\label{fig:writing_vhdl_example}}
+ \end{figure}</p>
+
+<p>HDLでハードウェアを設計したら，正しく動作を記述できているかRTLシミュレーションというフローで確認します．コマンドラインベースで使える簡単なシミュレーションツールや，回路の動作の流れを信号の変化をグラフィカルに表示するツールなどがあります．図\ref{fig:simulation_image}は，図\ref{fig:writing_vhdl_example}で記述したハードウェアをシミュレーションし信号の変化を描画した様子です．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter01_figures/simulation_example.pdf}
+  \end{center}
+  \caption{シミュレーション結果を確認している様子．\label{fig:simulation_image}}
+ \end{figure}</p>
+
+<p>動作の確認ができたら，開発ツールの助けを借りてハードウェアに書き込む構成情報を生成します．開発ツールで行う作業は，合成と配置配線，構成情報生成の3段階です．必要なツールは，FPGAベンダである米国のIntel社とXilinx社の両方から，それぞれ専用のものが提供されています．また，最適化処理などに特色を持つサード・パーティ製の開発ツールもあり，必要に応じて使い分けるとよいでしょう．図\ref{fig:fpga_devtool_image}は，開発ツールの例です．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter01_figures/fpga_devtool_image.png}
+  \end{center}
+  \caption{開発ツールを使って，合成・配置配線・構成情報の生成を行なう．\label{fig:fpga_devtool_image}}
+ \end{figure}</p>
+
+<p>開発ツールの行う，ハードウェア・プログラミング特有の作業内容は次の通りです．
+\begin{description}
+ \item[合成 - 論理回路に置き換える処理] 記述されたHDLを解釈し，論理回路に置き換えます．また，さまざまな最適化を適用し，小さく高速な回路を自動で生成します．
+ \item[配置配線 - ロジック・セルの割り当てと接続を決定] 合成して生成した論理回路をFPGA内にあるロジック・セルを組み合わせて実現するための割り当てと接続関係を決定します．ここで，ユーザが「特定の回路同士を近付ける」や，「特定の出力を好きなピンにアサインする」などの設定を与えられます．
+ \item[構成情報生成- 書き込み用ファイルを作る] 最後にFPGAに書き込み可能な構成情報を生成します．
+\end{description}
+ソフトウェア・プログラミングであれば，コンパイル，リンク，バイナル生成に相当するステップだと思えばよいでしょう．</p>
+
+<p>構成情報の生成が完了したら，そのデータを書き込みソフトウェアを使用してFPGAに書き込むことで設計したハードウェアを動かすことができます．</p>
+
+<h1 id="さいごに">さいごに</h1>
+
+<p>本章では，オリジナルのハードウェア・デバイスを設計する方法として，ハードウェア記述言語とFPGAを用いた開発のプロセスについて説明しました．特に，ソフトウェア・プログラミングとハードウェア・プログラミングを対比させながらその違いについて説明しました．ハードウェア設計は自由度が高い分，自分で面倒を見なければならない部分も多いのですが，プロセッサの制約に縛られずにアイデアを実現できる可能性を秘めています．
+FPGAとHDLによるハードウェア設計に興味を持って，はじめの一歩を踏み出してもらえると嬉しいです．</p>
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+
+  <aside class="book-toc levels-6 fixed">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#イントロダクション">イントロダクション</a>
+<ul>
+<li><a href="#を制御したいけどソフトウェアじゃ難しい">○○を制御したいけどソフトウェアじゃ難しい</a></li>
+<li><a href="#プロセッサがプログラムを実行する">プロセッサがプログラムを実行する</a></li>
+<li><a href="#ハードウェア-デバイスを作るための便利な仕組み">ハードウェア・デバイスを作るための便利な仕組み</a></li>
+<li><a href="#fpgaには小さなメモリ-lut-がたくさん入っている">FPGAには小さなメモリ(LUT)がたくさん入っている</a></li>
+<li><a href="#ハードウェアと記述言語">ハードウェアと記述言語</a></li>
+</ul></li>
+<li><a href="#ハードウェア-プログラミングを理解する三つのポイント">ハードウェア・プログラミングを理解する三つのポイント</a>
+<ul>
+<li><a href="#演算の決め方">演算の決め方</a>
+<ul>
+<li><a href="#ソフトウェア-プログラミング">ソフトウェア・プログラミング</a></li>
+<li><a href="#ハードウェア-プログラミング">ハードウェア・プログラミング</a></li>
+</ul></li>
+<li><a href="#データの単位">データの単位</a>
+<ul>
+<li><a href="#ソフトウェア-プログラミング-1">ソフトウェア・プログラミング</a></li>
+<li><a href="#ハードウェア-プログラミング-1">ハードウェア・プログラミング</a></li>
+</ul></li>
+<li><a href="#処理の動作方式">処理の動作方式</a>
+<ul>
+<li><a href="#ソフトウェア-プログラミング-2">ソフトウェア・プログラミング</a></li>
+<li><a href="#ハードウェア-プログラミング-2">ハードウェア・プログラミング</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#ハードウェア-プログラミングの流れ-使用する言語と必要なツールは">ハードウェア・プログラミングの流れ - 使用する言語と必要なツールは？</a></li>
+<li><a href="#さいごに">さいごに</a></li>
+</ul>
+</nav>
+  </aside>
+
+
+
+  </main>
+
+  
+</body>
+
+</html>

@@ -33,8 +33,18 @@
   </url>
   
   <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://miyo.github.io/learning_fpga/</loc>
-    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/introduction/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
   </url>
   
   <url>
@@ -153,10 +163,6 @@
   <url>
     <loc>https://miyo.github.io/learning_fpga/docs/shortcodes/tabs/</loc>
     <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/</loc>
   </url>
   
 </urlset>
