@@ -1,0 +1,4 @@
+baseURL = "https://miyo.github.io/docs/"
+languageCode = "en-us"
+title = "My New Hugo Site"
+publishDir = "docs"

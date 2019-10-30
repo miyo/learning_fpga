@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta property="og:title" content="" />
+<meta property="og:description" content=" Mermaid Chart Mermaid is library for generating svg charts and diagrams from text.
+Example {{&lt; mermaid [class=&quot;text-center&quot;]&gt;}} sequenceDiagram Alice-&gt;&gt;Bob: Hello Bob, how are you? alt is sick Bob-&gt;&gt;Alice: Not so good :( else is well Bob-&gt;&gt;Alice: Feeling fresh like a daisy end opt Extra response Bob-&gt;&gt;Alice: Thanks for asking end {{&lt; /mermaid &gt;}}    sequenceDiagram Alice-Bob: Hello Bob, how are you? alt is sick Bob-Alice: Not so good :( else is well Bob-Alice: Feeling fresh like a daisy end opt Extra response Bob-Alice: Thanks for asking end   " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://miyo.github.io/docs/docs/shortcodes/mermaid/" />
+
+<title>Mermaid | My New Hugo Site</title>
+<link rel="icon" href="/docs/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/docs/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
+
+
+<script defer src="/docs/search.min.56e045713173205f03c674209e435848f39a43ad7557d76ebc8c249b4e3749f3.js" integrity="sha256-VuBFcTFzIF8DxnQgnkNYSPOaQ611V9duvIwkm043SfM="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav>
+<h2 class="book-brand">
+  <a href="https://miyo.github.io/docs/"><span>My New Hugo Site</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" placeholder="Search" id="book-search-input" maxlength="64" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+    
+
+  
+  
+
+
+
+
+
+ 
+  
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        
+
+  <li  class="book-section-flat" >
+    
+      
+
+  <a href="/docs/docs/example/" >
+      Example Site
+  </a>
+
+
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        
+
+  <li >
+    
+      
+
+  <a href="/docs/docs/example/table-of-contents/" >
+      Table of Contents
+  </a>
+
+
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/docs/docs/example/table-of-contents/with-toc/" >
+      With ToC
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/example/table-of-contents/without-toc/" >
+      Without ToC
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      
+
+  <a href="/docs/docs/example/2nd/" >
+      2nd
+  </a>
+
+
+    
+
+    
+
+
+
+
+
+
+  </li>
+
+
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li  class="book-section-flat" >
+    
+      <span>Shortcodes</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/buttons/" >
+      Buttons
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/columns/" >
+      Columns
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/expand/" >
+      Expand
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/hints/" >
+      Hints
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/katex/" >
+      Katex
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/mermaid/"  class="active">
+      Mermaid
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/tabs/" >
+      Tabs
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+  </ul>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+    </aside>
+
+    <div class="book-page">
+      <header class="flex align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="/docs/svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>Mermaid</strong>
+</header>
+
+      
+<article class="markdown">
+
+<h1 id="mermaid-chart">Mermaid Chart</h1>
+
+<p><a href="https://mermaidjs.github.io/">Mermaid</a> is library for generating svg charts and diagrams from text.</p>
+
+<h2 id="example">Example</h2>
+
+<div class="book-columns flex flex-wrap">
+  
+  <div class="flex-even markdown-inner">
+    <pre><code class="language-tpl">{{&lt; mermaid [class=&quot;text-center&quot;]&gt;}}
+sequenceDiagram
+    Alice-&gt;&gt;Bob: Hello Bob, how are you?
+    alt is sick
+        Bob-&gt;&gt;Alice: Not so good :(
+    else is well
+        Bob-&gt;&gt;Alice: Feeling fresh like a daisy
+    end
+    opt Extra response
+        Bob-&gt;&gt;Alice: Thanks for asking
+    end
+{{&lt; /mermaid &gt;}}
+</code></pre>
+  </div>
+  
+  <div class="flex-even markdown-inner">
+    <script src="/docs/mermaid.min.js"></script>
+
+<p class="mermaid">
+  
+sequenceDiagram
+    Alice->>Bob: Hello Bob, how are you?
+    alt is sick
+        Bob->>Alice: Not so good :(
+    else is well
+        Bob->>Alice: Feeling fresh like a daisy
+    end
+    opt Extra response
+        Bob->>Alice: Thanks for asking
+    end
+  </div>
+  
+</div>
+
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+
+  <aside class="book-toc levels-6 fixed">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#mermaid-chart">Mermaid Chart</a>
+<ul>
+<li><a href="#example">Example</a></li>
+</ul></li>
+</ul>
+</nav>
+  </aside>
+
+
+
+  </main>
+
+  
+</body>
+
+</html>

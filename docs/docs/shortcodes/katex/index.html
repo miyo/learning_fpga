@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta property="og:title" content="" />
+<meta property="og:description" content=" KaTeX KaTeX shortcode let you render math typesetting in markdown document. See KaTeX
+Example {{&lt; katex [class=&quot;text-center&quot;] &gt;}} x = \begin{cases} a &amp;\text{if } b \\ c &amp;\text{if } d \end{cases} {{&lt; /katex &gt;}}    
+$$ x = \begin{cases} a &\text{if } b \\ c &\text{if } d \end{cases} $$   " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://miyo.github.io/docs/docs/shortcodes/katex/" />
+
+<title>Katex | My New Hugo Site</title>
+<link rel="icon" href="/docs/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/docs/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
+
+
+<script defer src="/docs/search.min.56e045713173205f03c674209e435848f39a43ad7557d76ebc8c249b4e3749f3.js" integrity="sha256-VuBFcTFzIF8DxnQgnkNYSPOaQ611V9duvIwkm043SfM="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav>
+<h2 class="book-brand">
+  <a href="https://miyo.github.io/docs/"><span>My New Hugo Site</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" placeholder="Search" id="book-search-input" maxlength="64" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+    
+
+  
+  
+
+
+
+
+
+ 
+  
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        
+
+  <li  class="book-section-flat" >
+    
+      
+
+  <a href="/docs/docs/example/" >
+      Example Site
+  </a>
+
+
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        
+
+  <li >
+    
+      
+
+  <a href="/docs/docs/example/table-of-contents/" >
+      Table of Contents
+  </a>
+
+
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/docs/docs/example/table-of-contents/with-toc/" >
+      With ToC
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/example/table-of-contents/without-toc/" >
+      Without ToC
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      
+
+  <a href="/docs/docs/example/2nd/" >
+      2nd
+  </a>
+
+
+    
+
+    
+
+
+
+
+
+
+  </li>
+
+
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li  class="book-section-flat" >
+    
+      <span>Shortcodes</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/buttons/" >
+      Buttons
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/columns/" >
+      Columns
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/expand/" >
+      Expand
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/hints/" >
+      Hints
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/katex/"  class="active">
+      Katex
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/mermaid/" >
+      Mermaid
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/docs/docs/shortcodes/tabs/" >
+      Tabs
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+  </ul>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+    </aside>
+
+    <div class="book-page">
+      <header class="flex align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="/docs/svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>Katex</strong>
+</header>
+
+      
+<article class="markdown">
+
+<h1 id="katex">KaTeX</h1>
+
+<p>KaTeX shortcode let you render math typesetting in markdown document. See <a href="https://katex.org/">KaTeX</a></p>
+
+<h2 id="example">Example</h2>
+
+<div class="book-columns flex flex-wrap">
+  
+  <div class="flex-even markdown-inner">
+    <pre><code class="language-latex">{{&lt; katex [class=&quot;text-center&quot;] &gt;}}
+x = \begin{cases}
+   a &amp;\text{if } b \\
+   c &amp;\text{if } d
+\end{cases}
+{{&lt; /katex &gt;}}
+</code></pre>
+  </div>
+  
+  <div class="flex-even markdown-inner">
+    <p><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css" integrity="sha384-BdGj8xC2eZkQaxoQ8nSLefg4AV4/AwB3Fj+8SUSo7pnKP6Eoy18liIKTPn9oBYNG" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.js" integrity="sha384-JiKN5O8x9Hhs/UE5cT5AAJqieYlOZbGT3CHws/y97o3ty4R7/O5poG9F3JoiOYw1" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script></p>
+
+<p class="katex">
+  $$ 
+x = \begin{cases}
+   a &\text{if } b \\
+   c &\text{if } d
+\end{cases}
+ $$
+</p>
+
+  </div>
+  
+</div>
+
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+
+  <aside class="book-toc levels-6 fixed">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#katex">KaTeX</a>
+<ul>
+<li><a href="#example">Example</a></li>
+</ul></li>
+</ul>
+</nav>
+  </aside>
+
+
+
+  </main>
+
+  
+</body>
+
+</html>
