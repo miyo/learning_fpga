@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta property="og:title" content="実験" />
+<meta property="og:description" content="HDLのいろいろな記述方法を使って，少し複雑なモジュールの設計に取り組んでみましょう．
+はじめに これまでに学んできた内容を利用して，少し応用的な実験に取り組んでみましょう．
+ストップウォッチを作ってみよう ここでは，
+ アクションボタンを押すとミリ秒毎のカウントアップを開始する カウント中に，アクションボタンを押すとカウントを一時停止する 一時停止中に，アクションボタンを押すとカウントを再開する リセットボタンを押すとカウントを0にクリアする  という機能をもったストップウォッチを作ってみましょう．
+残念ながら，ZYBO Z7-20には，7セグメントLEDのような数字を表示する分かりやすい表示器はありませんので，4つのLEDと2つの3色LEDを使って数を表現するとよいでしょう．
+次のリストはストップウォッチを実装するためのトップモジュールの例です．3色LEDの明るさを適当に調節するために，PWMモジュールを使って出力を変調しています．PWMモジュールによって，たとえば\verb|&lsquo;1&rsquo;|を出力する場合でも，適当なタイミングで&rsquo;1&rsquo;と&rsquo;0&rsquo;がまぜられることで明るさを抑えることができます．
+library ieee; use ieee.std_logic_1164.all; use ieee.numeric_std.all; entity stopwatch_z7_20 is port ( CLK : in std_logic; led6_r : out std_logic; led6_g : out std_logic; led6_b : out std_logic; led5_r : out std_logic; led5_g : out std_logic; led5_b : out std_logic; LD : out std_logic_vector(3 downto 0); btn : in std_logic_vector(1 downto 0) ); end entity stopwatch_z7_20; architecture RTL of stopwatch_z7_20 is attribute ASYNC_REG : string; attribute mark_debug : string; component stopwatch generic ( FREQ_MHz : integer := 125 ); port ( clk : in std_logic; reset : in std_logic; action : in std_logic; msec_out : out std_logic_vector(9 downto 0); sec_out : out std_logic_vector(5 downto 0); min_out : out std_logic_vector(5 downto 0); hour_out : out std_logic_vector(4 downto 0) ); end component stopwatch; component pwm port ( clk : in std_logic; a : in std_logic_vector(3 downto 0); d : in std_logic; q : out std_logic ); end component pwm; signal btn_d0 : std_logic_vector(1 downto 0); signal btn_d1 : std_logic_vector(1 downto 0); attribute ASYNC_REG of btn_d0, btn_d1 : signal is &quot;TRUE&quot;; signal msec_out : std_logic_vector(9 downto 0); signal sec_out : std_logic_vector(5 downto 0); signal min_out : std_logic_vector(5 downto 0); signal hour_out : std_logic_vector(4 downto 0); attribute mark_debug of msec_out : signal is &quot;true&quot;; attribute mark_debug of sec_out : signal is &quot;true&quot;; attribute mark_debug of min_out : signal is &quot;true&quot;; attribute mark_debug of hour_out : signal is &quot;true&quot;; begin process(CLK) begin if rising_edge(CLK) then btn_d0 &lt;= btn; btn_d1 &lt;= btn_d0; end if; end process; U: stopwatch generic map( FREQ_MHz =&gt; 125 ) port map( clk =&gt; CLK, reset =&gt; btn_d1(0), action =&gt; btn_d1(1), msec_out =&gt; msec_out, sec_out =&gt; sec_out, min_out =&gt; min_out, hour_out =&gt; hour_out ); LD &lt;= sec_out(3 downto 0); PWM0 : pwm port map(clk =&gt; clk, a =&gt; &quot;1100&quot;, d =&gt; msec_out(0), q =&gt; led5_r); PWM1 : pwm port map(clk =&gt; clk, a =&gt; &quot;1100&quot;, d =&gt; msec_out(1), q =&gt; led5_g); PWM2 : pwm port map(clk =&gt; clk, a =&gt; &quot;1100&quot;, d =&gt; msec_out(2), q =&gt; led5_b); PWM3 : pwm port map(clk =&gt; clk, a =&gt; &quot;1100&quot;, d =&gt; msec_out(3), q =&gt; led6_r); PWM4 : pwm port map(clk =&gt; clk, a =&gt; &quot;1100&quot;, d =&gt; msec_out(4), q =&gt; led6_g); PWM5 : pwm port map(clk =&gt; clk, a =&gt; &quot;1100&quot;, d =&gt; msec_out(5), q =&gt; led6_b); end RTL;  stopwatchモジュールを実装して，完成させてみましょう．" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://miyo.github.io/learning_fpga/docs/book01/experiments/" />
+<meta property="article:published_time" content="2019-10-30T19:15:46+09:00" />
+<meta property="article:modified_time" content="2019-10-30T19:15:46+09:00" />
+<title>実験 | Learning FPGA</title>
+<link rel="icon" href="/learning_fpga/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
+
+
+<script defer src="/learning_fpga/search.min.b0c7737532ec8eb72d0b0971aa341b9d68600435e88f50c4f93e89ce3e15708e.js" integrity="sha256-sMdzdTLsjrctCwlxqjQbnWhgBDXoj1DE&#43;T6Jzj4VcI4="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav>
+<h2 class="book-brand">
+  <a href="https://miyo.github.io/learning_fpga/"><span>Learning FPGA</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" placeholder="Search" id="book-search-input" maxlength="64" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+    
+
+  
+  
+
+
+
+
+
+ 
+  
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        
+
+  <li  class="book-section-flat" >
+    
+      
+
+  <a href="/learning_fpga/docs/example/" >
+      Example Site
+  </a>
+
+
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        
+
+  <li >
+    
+      
+
+  <a href="/learning_fpga/docs/example/table-of-contents/" >
+      Table of Contents
+  </a>
+
+
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/example/table-of-contents/with-toc/" >
+      With ToC
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/example/table-of-contents/without-toc/" >
+      Without ToC
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      
+
+  <a href="/learning_fpga/docs/example/2nd/" >
+      2nd
+  </a>
+
+
+    
+
+    
+
+
+
+
+
+
+  </li>
+
+
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/introduction/" >
+      Introduction
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/languages/" >
+      VHDL/Veilog 入門
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/quickstart/" >
+      クイックスタート
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/simulation/" >
+      シミュレーション
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/basics/" >
+      基本実験
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/experiments/"  class="active">
+      実験
+  </a>
+
+</li>
+      
+    
+      
+        
+
+  <li  class="book-section-flat" >
+    
+      <span>Shortcodes</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/buttons/" >
+      Buttons
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/columns/" >
+      Columns
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/expand/" >
+      Expand
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/hints/" >
+      Hints
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/katex/" >
+      Katex
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/mermaid/" >
+      Mermaid
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/tabs/" >
+      Tabs
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+  </ul>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+    </aside>
+
+    <div class="book-page">
+      <header class="flex align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="/learning_fpga/svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>実験</strong>
+</header>
+
+      
+<article class="markdown">
+
+<p>HDLのいろいろな記述方法を使って，少し複雑なモジュールの設計に取り組んでみましょう．</p>
+
+<h1 id="はじめに">はじめに</h1>
+
+<p>これまでに学んできた内容を利用して，少し応用的な実験に取り組んでみましょう．</p>
+
+<h1 id="ストップウォッチを作ってみよう">ストップウォッチを作ってみよう</h1>
+
+<p>ここでは，</p>
+
+<ul>
+<li>アクションボタンを押すとミリ秒毎のカウントアップを開始する</li>
+<li>カウント中に，アクションボタンを押すとカウントを一時停止する</li>
+<li>一時停止中に，アクションボタンを押すとカウントを再開する</li>
+<li>リセットボタンを押すとカウントを0にクリアする</li>
+</ul>
+
+<p>という機能をもったストップウォッチを作ってみましょう．</p>
+
+<p>残念ながら，ZYBO Z7-20には，7セグメントLEDのような数字を表示する分かりやすい表示器はありませんので，4つのLEDと2つの3色LEDを使って数を表現するとよいでしょう．</p>
+
+<p>次のリストはストップウォッチを実装するためのトップモジュールの例です．3色LEDの明るさを適当に調節するために，PWMモジュールを使って出力を変調しています．PWMモジュールによって，たとえば\verb|&lsquo;1&rsquo;|を出力する場合でも，適当なタイミングで&rsquo;1&rsquo;と&rsquo;0&rsquo;がまぜられることで明るさを抑えることができます．</p>
+
+<pre><code>library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity stopwatch_z7_20 is
+  port (
+    CLK : in  std_logic;
+
+    led6_r : out std_logic;
+    led6_g : out std_logic;
+    led6_b : out std_logic;
+    
+    led5_r : out std_logic;
+    led5_g : out std_logic;
+    led5_b : out std_logic;
+
+    LD : out std_logic_vector(3 downto 0);
+    
+    btn : in std_logic_vector(1 downto 0)
+    );
+  
+end entity stopwatch_z7_20;
+
+architecture RTL of stopwatch_z7_20 is
+
+  attribute ASYNC_REG : string;
+  attribute mark_debug : string;
+
+  component stopwatch
+    generic (
+      FREQ_MHz : integer := 125
+      );
+    port (
+      clk      : in  std_logic;
+      reset    : in  std_logic;
+      action   : in  std_logic;
+      msec_out : out std_logic_vector(9 downto 0);
+      sec_out  : out std_logic_vector(5 downto 0);
+      min_out  : out std_logic_vector(5 downto 0);
+      hour_out : out std_logic_vector(4 downto 0)
+      );
+  end component stopwatch;
+
+  component pwm
+    port (
+      clk : in  std_logic;
+      a   : in  std_logic_vector(3 downto 0);
+      d   : in  std_logic;
+      q   : out std_logic
+      );
+  end component pwm;
+
+  signal btn_d0 : std_logic_vector(1 downto 0);
+  signal btn_d1 : std_logic_vector(1 downto 0);
+  
+  attribute ASYNC_REG of btn_d0, btn_d1 : signal is &quot;TRUE&quot;;
+
+  signal msec_out : std_logic_vector(9 downto 0);
+  signal sec_out  : std_logic_vector(5 downto 0);
+  signal min_out  : std_logic_vector(5 downto 0);
+  signal hour_out : std_logic_vector(4 downto 0);
+
+  attribute mark_debug of msec_out : signal is &quot;true&quot;;
+  attribute mark_debug of sec_out  : signal is &quot;true&quot;;
+  attribute mark_debug of min_out  : signal is &quot;true&quot;;
+  attribute mark_debug of hour_out : signal is &quot;true&quot;;
+
+begin
+
+  process(CLK)
+  begin
+    if rising_edge(CLK) then
+      btn_d0 &lt;= btn;
+      btn_d1 &lt;= btn_d0;
+    end if;
+  end process;
+
+  U: stopwatch
+    generic map(
+      FREQ_MHz =&gt; 125
+      )
+    port map(
+      clk      =&gt; CLK,
+      reset    =&gt; btn_d1(0),
+      action   =&gt; btn_d1(1),
+      msec_out =&gt; msec_out,
+      sec_out  =&gt; sec_out,
+      min_out  =&gt; min_out,
+      hour_out =&gt; hour_out
+      );
+
+  LD &lt;= sec_out(3 downto 0);
+  
+  PWM0 : pwm
+    port map(clk =&gt; clk, a =&gt; &quot;1100&quot;, d =&gt; msec_out(0), q =&gt; led5_r);
+  PWM1 : pwm
+    port map(clk =&gt; clk, a =&gt; &quot;1100&quot;, d =&gt; msec_out(1), q =&gt; led5_g);
+  PWM2 : pwm
+    port map(clk =&gt; clk, a =&gt; &quot;1100&quot;, d =&gt; msec_out(2), q =&gt; led5_b);
+  PWM3 : pwm
+    port map(clk =&gt; clk, a =&gt; &quot;1100&quot;, d =&gt; msec_out(3), q =&gt; led6_r);
+  PWM4 : pwm
+    port map(clk =&gt; clk, a =&gt; &quot;1100&quot;, d =&gt; msec_out(4), q =&gt; led6_g);
+  PWM5 : pwm
+    port map(clk =&gt; clk, a =&gt; &quot;1100&quot;, d =&gt; msec_out(5), q =&gt; led6_b);
+
+end RTL;
+</code></pre>
+
+<p><code>stopwatch</code>モジュールを実装して，完成させてみましょう．</p>
+
+<h1 id="シリアル通信に挑戦してみよう">シリアル通信に挑戦してみよう</h1>
+
+<p>最近のパソコンの外部機器のI/OのほとんどはUSBです．ノート・パソコンは勿論，省スペースのデスクトップ・パソコンにさえ，RS-232-Cのシリアル通信のポートが搭載されなくなってきました．それでも，送信と受信の2本で通信可能なRS-232-Cは，パソコンとFPGAの間やFPGAとFPGAの間でデータを手軽にやりとりする手段として基本的かつ必要不可欠な存在です．</p>
+
+<p>シリアル・ポートのないノート・パソコンでも，市販のUSB-シリアル変換ケーブルやBluetooth-シリアル変換モジュールを使って簡単に接続できます．</p>
+
+<h2 id="シリアル通信のしくみ">シリアル通信のしくみ</h2>
+
+<p>シリアル通信では，受信と送信で独立したポートを持ちます．機器を直結する場合には，お互いの送受信ポートをクロスして結線します(図\ref{fig:serial_comm})．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.6\textwidth]{chapter06_figures/serial_comm.eps}
+  \end{center}<br />
+  \caption{シリアル通信の結線\label{fig:serial_comm}}
+ \end{figure}</p>
+
+<p>RS-232-Cでは，図\ref{fig:serial_comm_format}のように，8ビットのデータにスタート・ビット（&rsquo;0&rsquo;）とストップ・ビット（&rsquo;1&rsquo;）を付加してデータを通信します．接続した機器同士であらかじめ決めた速度(たとえば19200bpsなど)で信号を送受信することで，共通したクロックを持つことなくデータの送受信ができます．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.6\textwidth]{chapter06_figures/serial_comm_format.eps}
+  \end{center}<br />
+  \caption{シリアル通信の信号の伝送方式\label{fig:serial_comm_format}}
+ \end{figure}</p>
+
+<h2 id="送信モジュール">送信モジュール</h2>
+
+<p>決められた速度で信号をパタパタと変化させるだけです．ただし，一般に，シリアル通信の速度は回路の動作クロックに対して，とても遅いので，データを送信している途中に送るべき信号を更新してしまわないようにブロックする仕組みが必要です．VHDLによる実装例を示します．</p>
+
+<pre><code>library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity uart_tx is
+  -- 定数宣言
+  generic (
+    sys_clk : integer := 14000000;             --クロック周波数
+    rate    : integer := 9600                  --転送レート,単位はbps(ビット毎秒)
+    );
+  -- 入出力ポート宣言
+  port (
+    clk   : in  std_logic;                     -- クロック
+    reset : in  std_logic;                     -- リセット
+    wr    : in  std_logic;                     -- 送信要求
+    din   : in  std_logic_vector(7 downto 0);  --送信データ
+    dout  : out std_logic;                     --シリアル出力
+    ready : out std_logic                      --送信要求を受け付けられるか
+    );
+end uart_tx;
+
+architecture rtl of uart_tx is
+  -- クロック分周モジュールの呼び出しの準備
+  component clk_div is
+    port (clk     : in  std_logic;
+          rst     : in  std_logic;
+          div     : in  std_logic_vector(15 downto 0);
+          clk_out : out std_logic);
+  end component;
+  -- 内部変数定義
+  signal in_din : std_logic_vector(7 downto 0);  -- 送信データ一時保存用レジスタ
+  signal buf    : std_logic_vector(7 downto 0);  -- 一時的にしようするバッファ
+  signal load   : std_logic := '0';              -- 送信データを読み込んだかどうか
+  signal cbit   : unsigned(2 downto 0) := (others =&gt; '0');  -- 送信するビット番号
+
+  signal run : std_logic := '0';               -- 送信状態にあるかどうか
+
+  signal tx_en   : std_logic; -- 送信用クロック
+  signal tx_en_d : std_logic := '0'; -- 送信用クロックの立ち上がり検出用
+  
+  signal tx_div : std_logic_vector(15 downto 0); -- クロック分周の倍率
+
+  signal status : unsigned(1 downto 0); -- 状態遷移用レジスタ
+
+begin
+
+  -- クロック分周モジュールの呼び出し
+  -- clk_divの入出力ポートにこのモジュールの内部変数を接続
+  tx_div &lt;= std_logic_vector(to_unsigned((sys_clk / rate) - 1, 16));
+  U0 : clk_div port map (clk=&gt;clk, rst=&gt;reset, div=&gt;tx_div, clk_out=&gt;tx_en);
+
+  -- readyへの代入, 常時値を更新している
+  ready  &lt;= '1' when (wr = '0' and run = '0' and load = '0') else '0';
+
+  process(clk) --変化を監視する信号を記述する, この場合クロック
+  begin
+    if rising_edge(clk) then  --クロックの立ち上がり時の動作
+      if reset = '1' then                 --リセット時の動作, 初期値の設定
+        load &lt;= '0';
+      else
+        if(wr = '1' and run = '0') then    --送信要求があり，かつ送信中でない場合
+          load   &lt;= '1';                   --データを取り込んだフラグを立てる
+          in_din &lt;= din;                   --一時保存用レジスタに値を格納
+        end if;
+        if(load = '1' and run = '1') then  --送信中で，かつデータを取り込んだ
+                                           --ことを示すフラグが立っている場合
+          load &lt;= '0';                     --データを取り込んだフラグを下げる
+        end if;
+      end if;
+    end if;
+  end process;
+
+  process(clk)                            --変化を監視する信号(クロック)
+  begin
+    if rising_edge(clk) then
+      if reset = '1' then                 --リセット時の動作, 初期値の設定
+        dout    &lt;= '1';
+        cbit    &lt;= (others =&gt; '0');
+        status  &lt;= (others =&gt; '0');
+        run     &lt;= '0';
+        tx_en_d &lt;= '0';
+      else
+        tx_en_d &lt;= tx_en;
+        if tx_en = '1' and tx_en_d = '0' then -- tx_enの立ち上がりで動作
+          case to_integer(status) is        --statusの値に応じて動作が異なる
+            when 0          =&gt;              --初期状態
+              cbit &lt;= (others =&gt; '0');        --カウンタをクリア
+              if load = '1' then              -- データを取り込んでいる場合
+                dout   &lt;= '0';                -- スタートビット0を出力
+                status &lt;= status + 1;         -- 次の状態へ
+                buf    &lt;= in_din;             -- 送信データを一時バッファに退避
+                run    &lt;= '1';                -- 送信中の状態へ遷移
+              else                            --なにもしない状態へ遷移
+                dout &lt;= '1';
+                run  &lt;= '0';                  --送信要求受付可能状態へ
+              end if;
+            when 1 =&gt;                         --データをLSBから順番に送信
+              cbit &lt;= cbit + 1;               -- カウンタをインクリメント
+              dout &lt;= buf(to_integer(cbit));  --一時バッファのcbit目を取出して出力
+              if(to_integer(cbit) = 7) then   -- データの8ビット目を送信したら,
+                                              -- ストップビットを送る状態へ遷移
+                status &lt;= status + 1;
+              end if;
+            when 2 =&gt;                         -- ストップビットを送信
+              dout   &lt;= '1';                  --ストップビット1
+              status &lt;= (others =&gt; '0');      --初期状態へ
+            when others =&gt;                    --その他の状態の場合
+              status &lt;= (others =&gt; '0');      -- 初期状態へ遷移
+          end case;
+        end if;
+      end if;
+    end if;
+  end process;
+
+end rtl;
+</code></pre>
+
+<p>内部で利用している<code>clk_div</code>の実装は次の通りです．</p>
+
+<pre><code>library ieee;
+use ieee.std_logic_1164.ALL;
+use ieee.numeric_std.all;
+
+entity clk_div is
+  port(
+    clk     : in  std_logic;
+    rst     : in  std_logic;
+    div     : in  std_logic_vector(15 downto 0);
+    clk_out : out std_logic
+    );
+end clk_div;
+
+architecture RTL of clk_div is
+
+  signal counter : unsigned(15 downto 0) := (others =&gt; '0');
+
+begin
+
+  process(clk)
+  begin
+    if(clk'event and clk = '1') then
+      if(rst = '1') then
+        counter &lt;= (others =&gt; '0');
+      elsif (counter = unsigned(div)) then
+        counter &lt;= (others =&gt; '0');
+        clk_out &lt;= '1';
+      else
+        counter &lt;= counter + 1;
+        clk_out  &lt;= '0';
+      end if;
+    end if; 
+  end process;
+
+end RTL;
+</code></pre>
+
+<p><code>clk_div</code>モジュールで生成した，シリアル送信用の信号にあわせて，送信すべきデータを1bitずつ出力します．
+また，出力中はready信号を<code>'0'</code>にすることで，送信モジュールが動作中であることを上位のモジュールに伝えられるようになっています．</p>
+
+<p>このモジュールの動作をシミュレーションで確認してみましょう．</p>
+
+<h2 id="受信モジュール">受信モジュール</h2>
+
+<p>受信モジュールは送信モジュールに比べて少し複雑になります．送信側は自分のタイミングで信号を送ればいいのに対し，受信側ではスタート・ビットを頼りにデータの開始を検出し，以降の信号を正しい間隔でビットに分割しなければならないからです．また，データにはノイズが乗っている可能性もあるので，データを正しく取得する仕組みも必要です．
+VHDLとVerilog HDLによる実装の例が次のリストです．この例では，通信速度の16倍のクロックでデータをサンプリング（一定間隔で読み込む）することで，データを受信しています．</p>
+
+<pre><code>library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity uart_rx is
+  -- 定数宣言
+  generic(
+    sys_clk : integer := 14000000;            --クロック周波数
+    rate    : integer := 9600                 --転送レート,単位はbps(ビット毎秒)
+    );
+  -- 入出力ポート宣言
+  port(
+    clk   : in  std_logic;                    -- クロック
+    reset : in  std_logic;                    -- リセット
+    din   : in  std_logic;                    -- シリアル入力
+    rd    : out std_logic;                    -- 受信完了を示す
+    dout  : out std_logic_vector(7 downto 0)  -- 受信データ
+    );
+end uart_rx;
+
+architecture rtl of uart_rx is
+
+  --クロック分周モジュールのインスタンス生成の準備
+  component clk_div is
+    port(
+      clk     : in  std_logic;
+      rst     : in  std_logic;
+      div     : in  std_logic_vector(15 downto 0);
+      clk_out : out std_logic
+      );
+  end component;
+  --内部変数宣言
+  signal buf       : std_logic_vector(7 downto 0);   --受信データ系列の一時保存用
+  signal receiving : std_logic;         --受信しているかどうか
+  signal cbit      : integer range 0 to 150; -- データの取り込みタイミング用カウンタ
+  signal rx_en     : std_logic;         --受信用クロック
+  signal rx_en_d   : std_logic := '0';  --受信用クロック立ち上がり判定用レジスタ
+  signal rx_div    : std_logic_vector(15 downto 0);  --クロック分周の倍率
+
+begin
+  --クロック分周モジュールのインスタンス生成
+  --受信側は送信側の16倍の速度で値を取り込み処理を行う
+  rx_div &lt;= std_logic_vector(to_unsigned(((sys_clk / rate) / 16) - 1, 16));
+  U0 : clk_div port map (clk=&gt;clk, rst=&gt;reset, div=&gt;rx_div, clk_out=&gt;rx_en);
+  
+  process(clk)                          --変化を監視する信号を記述,この場合クロック
+  begin
+    if rising_edge(clk) then
+      if reset = '1' then               --リセット時の動作, 初期値の設定
+        receiving &lt;= '0';
+        cbit      &lt;= 0;
+        buf       &lt;= (others =&gt; '0');
+        dout      &lt;= (others =&gt; '0');
+        rd        &lt;= '0';
+        rx_en_d   &lt;= '0';
+      else
+        rx_en_d &lt;= rx_en;
+        if rx_en = '1' and rx_en_d = '0' then   --受信用クロック立ち上がり時の動作
+          if receiving = '0' then       --受信中でない場合
+            if din = '0' then           --スタートビット0を受信したら
+              rd &lt;= '0';                --受信完了のフラグをさげる
+              receiving &lt;= '1';
+            end if;
+          else                          --受信中の場合
+            case cbit is                --カウンタに合わせてデータをラッチ
+              when 6 =&gt;                 -- スタートビットのチェック
+                if din = '1' then       -- スタートビットが中途半端．入力をキャンセル
+                  receiving &lt;= '0';
+                  cbit      &lt;= 0;
+                else
+                  cbit &lt;= cbit + 1;
+                end if;
+              when 22 | 38 | 54 | 70 | 86 | 102 | 118 | 134 =&gt;  --data
+                cbit &lt;= cbit + 1;
+                buf  &lt;= din &amp; buf(7 downto 1);  -- 新しい入力と受信済みデータを連結
+              when 150 =&gt;               --stop
+                rd        &lt;= '1';
+                dout      &lt;= buf;
+                receiving &lt;= '0';       -- 受信完了
+                cbit      &lt;= 0;
+              when others =&gt;
+                cbit &lt;= cbit + 1;
+            end case;
+          end if;
+        end if;
+      end if;
+    end if;
+  end process;
+
+end RTL;
+</code></pre>
+
+<p>通信速度の16倍でデータをサンプリングしているので，スタート・ビットは16サイクル分が取得できるはずです．スタートビットのはじまりと思われる&rsquo;0&rsquo;というデータを確認してから6サイクル目のデータをもう一度取得し，そのデータがやっぱり&rsquo;0&rsquo;であれば，データ送信が開始されたと解釈します（ソース・コード中の状態1）．データが送信されていることを確認した後は，16サイクル毎にデータを取得します（ソース・コード中の状態2）．8bit分データを取得したら完了です．</p>
+
+<p>送信モジュールと同じように，テストベンチを書いてシミュレーションで動作を確認してみましょう．</p>
+
+<h2 id="実機で動作確認">実機で動作確認</h2>
+
+<p>シリアル通信を実機で動作確認してみましょう．入出力にPMODコネクタJEの1ピンと7ピンを割当て，物理的に両者をジャンパピンで接続すれば，通信ができるはずです．動作をILAを使って確認してみましょう．{\bf 注意: PMODコネクタの6ピンと12ピンは3.3V，5ピンと11ピンはGNDです．間違って6ピンと5ピンなどのように3.3VとGNDを直結しないようにしましょう．}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.6\textwidth]{chapter06_figures/IMG_0007.JPG}
+  \end{center}
+  \label{fig:serial_comm_test}
+  \caption{PMODコネクタのJEの1ピンと7ピンをジャンパケーブルで接続した様子}
+ \end{figure}</p>
+
+<h1 id="音声信号を観測してみよう">音声信号を観測してみよう</h1>
+
+<p>ZYBO Z7-20には音声入出力用のジャックが備わっています．これを利用すると外部からの音声信号を取り込みFPGAで処理することができます．信号は，SSM2603というICでA/D変換されます．SSM2603とFPGAはI2Sで音声データをやりとりすることができます．</p>
+
+<p>SSM2603とやりとりするI2S信号は図\ref{fig:ssm2603_protocol}の通りです．
+ \begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter06_figures/zybo-z7-audio.png}
+  \end{center}
+  \label{fig:ssm2603_protocol}
+  \caption{SSM2603との通信インターフェース}
+ \end{figure}
+これを送受信するモジュールを実装して音声信号の入出力をやってみましょう．
+でてくる信号が少し増えて複雑にみえるかもしれませんが，方針はRS-232-Cの送受信と同じです．</p>
+
+<h2 id="i2sの送信">I2Sの送信</h2>
+
+<p>次のリストは，I2Sの送信モジュールの実装例です．シミュレーションによって，信号が図\ref{fig:ssm2603_protocol}に示したように出力されることを確認してみましょう．</p>
+
+<pre><code>library ieee;
+
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity i2s_encoder is
+  generic (
+    WIDTH : integer := 24
+    );
+  port (
+    CLK : in std_logic; -- BCLK 4x
+
+    BCLK : in  std_logic;
+    LRC  : in  std_logic;
+    DAT  : out std_logic;
+
+    LIN : in std_logic_vector(WIDTH-1 downto 0);
+    RIN : in std_logic_vector(WIDTH-1 downto 0)
+    );
+end entity i2s_encoder;
+
+architecture RTL of i2s_encoder is
+
+  attribute mark_debug : string;
+
+  signal left_data  : std_logic_vector(WIDTH-1 downto 0) := (others =&gt; '0');
+  signal left_cnt   : unsigned(7 downto 0) := (others =&gt; '0');
+
+  signal right_data  : std_logic_vector(WIDTH-1 downto 0) := (others =&gt; '0');
+  signal right_cnt   : unsigned(7 downto 0) := (others =&gt; '0');
+  
+  signal lrc_d : std_logic := '0';
+  signal bclk_d : std_logic := '0';
+
+  attribute mark_debug of left_data  : signal is &quot;true&quot;;
+  attribute mark_debug of left_cnt   : signal is &quot;true&quot;;
+  
+  attribute mark_debug of right_data  : signal is &quot;true&quot;;
+  attribute mark_debug of right_cnt   : signal is &quot;true&quot;;
+
+begin
+
+  process(CLK)
+  begin
+    if rising_edge(CLK) then
+      
+      lrc_d  &lt;= LRC;
+      bclk_d &lt;= BCLK;
+      
+      if lrc_d = '1' and LRC = '0' then
+        left_cnt  &lt;= (others =&gt; '0');
+        left_data &lt;= LIN;
+      else
+        if left_cnt &lt;= 4*WIDTH-1 then
+          left_cnt  &lt;= left_cnt + 1;
+          if 3 &lt;= left_cnt then
+            DAT        &lt;= left_data(WIDTH-1);
+            if left_cnt(1 downto 0) = &quot;10&quot; then
+              left_data &lt;= left_data(WIDTH-2 downto 0) &amp; '0';
+            end if;
+          end if;
+        end if;
+      end if;
+      
+      if lrc_d = '0' and LRC = '1' then
+        right_cnt  &lt;= (others =&gt; '0');
+        right_data &lt;= RIN;
+      else
+        if right_cnt &lt;= 4*WIDTH-1 then
+          right_cnt  &lt;= right_cnt + 1;
+          if 3 &lt;= right_cnt then
+            DAT        &lt;= right_data(WIDTH-1);
+            if right_cnt(1 downto 0) = &quot;10&quot; then
+              right_data &lt;= right_data(WIDTH-2 downto 0) &amp; '0';
+            end if;
+          end if;
+        end if;
+      end if;
+      
+    end if;
+  end process;
+
+end RTL;
+</code></pre>
+
+<h2 id="i2sの受信">I2Sの受信</h2>
+
+<p>次は受信モジュールです．送信モジュールと組み合わせてシミュレーションすることで，入力した音声信号をI2Sフォーマットに変換し，それが復号される様を観測することができます．</p>
+
+<pre><code>library ieee;
+
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity i2s_decoder is
+  generic (
+    WIDTH : integer := 24
+    );
+  port (
+    CLK : in std_logic;
+    
+    BCLK : in std_logic;
+    LRC  : in std_logic;
+    DAT  : in std_logic;
+
+    LOUT : out std_logic_vector(WIDTH-1 downto 0);
+    ROUT : out std_logic_vector(WIDTH-1 downto 0);
+    LOUT_VALID : out std_logic;
+    ROUT_VALID : out std_logic
+    );
+end entity i2s_decoder;
+
+architecture RTL of i2s_decoder is
+
+  attribute mark_debug : string;
+
+  signal left_data  : std_logic_vector(WIDTH-1 downto 0) := (others =&gt; '0');
+  signal left_cnt   : unsigned(5 downto 0) := (others =&gt; '0');
+  signal left_valid : std_logic := '0';
+
+  signal right_data  : std_logic_vector(WIDTH-1 downto 0) := (others =&gt; '0');
+  signal right_cnt   : unsigned(5 downto 0) := (others =&gt; '0');
+  signal right_valid : std_logic := '0';
+  
+  signal lrc_d : std_logic := '0';
+
+  attribute mark_debug of left_data  : signal is &quot;true&quot;;
+  attribute mark_debug of left_valid : signal is &quot;true&quot;;
+  attribute mark_debug of left_cnt   : signal is &quot;true&quot;;
+  
+  attribute mark_debug of right_data  : signal is &quot;true&quot;;
+  attribute mark_debug of right_valid : signal is &quot;true&quot;;
+  attribute mark_debug of right_cnt   : signal is &quot;true&quot;;
+
+  signal bclk_d : std_logic := '0';
+
+begin
+
+  LOUT_VALID &lt;= left_valid;
+  ROUT_VALID &lt;= right_valid;
+  
+  LOUT &lt;= left_data;
+  ROUT &lt;= right_data;
+
+  process(CLK)
+  begin
+    if rising_edge(CLK) then
+      bclk_d &lt;= BCLK;
+
+      if bclk_d = '0' and BCLK = '1' then
+        
+        left_data  &lt;= left_data(WIDTH-2 downto 0) &amp; DAT;
+        right_data &lt;= right_data(WIDTH-2 downto 0) &amp; DAT;
+
+        lrc_d &lt;= LRC;
+        
+        if lrc_d = '1' and LRC = '0' then
+          left_cnt &lt;= (others =&gt; '0');
+        else
+          if left_cnt = WIDTH-1 then
+            left_valid &lt;= '1';
+          else
+            left_valid &lt;= '0';
+          end if;
+          if left_cnt &lt;= WIDTH-1 then
+            left_cnt &lt;= left_cnt + 1;
+          end if;
+        end if;
+        
+        if lrc_d = '0' and LRC = '1' then
+          right_cnt &lt;= (others =&gt; '0');
+        else
+          if right_cnt = WIDTH-1 then
+            right_valid &lt;= '1';
+          else
+            right_valid &lt;= '0';
+          end if;
+          if right_cnt &lt;= WIDTH-1 then
+            right_cnt &lt;= right_cnt + 1;
+          end if;
+        end if;
+      end if;
+    end if;
+  end process;
+
+end RTL;
+</code></pre>
+
+<h1 id="発展">発展</h1>
+
+<p>紹介したアプリケーション実験を応用して，次のような課題に挑戦してみましょう．</p>
+
+<ol>
+<li>ストップウォッチモジュールを改造して，カウントダウンできるようにしてみましょう．</li>
+<li>いろいろな通信速度でRS-232-C通信を試してみましょう．</li>
+<li>音声入出力ができるようになったので，たとえば，規定値より大きな値がきたときだけ音声を出力する，平滑化フィルタで音を滑らかにする，などが簡単には考えられるでしょう．</li>
+</ol>
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+
+  <aside class="book-toc levels-6 fixed">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#はじめに">はじめに</a></li>
+<li><a href="#ストップウォッチを作ってみよう">ストップウォッチを作ってみよう</a></li>
+<li><a href="#シリアル通信に挑戦してみよう">シリアル通信に挑戦してみよう</a>
+<ul>
+<li><a href="#シリアル通信のしくみ">シリアル通信のしくみ</a></li>
+<li><a href="#送信モジュール">送信モジュール</a></li>
+<li><a href="#受信モジュール">受信モジュール</a></li>
+<li><a href="#実機で動作確認">実機で動作確認</a></li>
+</ul></li>
+<li><a href="#音声信号を観測してみよう">音声信号を観測してみよう</a>
+<ul>
+<li><a href="#i2sの送信">I2Sの送信</a></li>
+<li><a href="#i2sの受信">I2Sの受信</a></li>
+</ul></li>
+<li><a href="#発展">発展</a></li>
+</ul>
+</nav>
+  </aside>
+
+
+
+  </main>
+
+  
+</body>
+
+</html>

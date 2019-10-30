@@ -53,6 +53,26 @@
   </url>
   
   <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/quickstart/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/simulation/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/basics/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/experiments/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://miyo.github.io/learning_fpga/posts/</loc>
     <lastmod>2014-09-28T00:00:00+00:00</lastmod>
   </url>
@@ -88,12 +108,12 @@
   </url>
   
   <url>
-    <loc>https://miyo.github.io/learning_fpga/tags/golang/</loc>
+    <loc>https://miyo.github.io/learning_fpga/categories/golang/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://miyo.github.io/learning_fpga/categories/golang/</loc>
+    <loc>https://miyo.github.io/learning_fpga/tags/golang/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
   </url>
   

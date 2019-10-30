@@ -107,6 +107,79 @@ HDLでもソフトウェア・プログラミング同様に，演算した結�
     </item>
     
     <item>
+      <title>クイックスタート</title>
+      <link>https://miyo.github.io/learning_fpga/docs/book01/quickstart/</link>
+      <pubDate>Wed, 30 Oct 2019 19:15:46 +0900</pubDate>
+      
+      <guid>https://miyo.github.io/learning_fpga/docs/book01/quickstart/</guid>
+      <description>FPGA開発におけるHello World ``Lチカ&amp;rdquo; を通して，開発の手順に慣れよう
+はじめに この章では，FPGA開発におけるHello World，すなわち最初に試してみるサンプルとして Lチカ を題材に，開発の手順に慣れてみましょう． Lチカ とは，「LEDをチカチカさせる」の略です．
+単にLEDとチカチカさせるだけ，なのですが，開発の手順を身につけるには十分です．また，実際多くの信号制御は何かしらの規則にしたがって信号をON/OFFしていることですから，すべての信号制御はLチカの応用にあるとも言えます．簡単ですが大事ですよ．
+実習 プロジェクトの用意 \begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_24.png} \end{center} \caption{VivadoのFileメニューから，New Project&amp;hellip;を選択する} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_32.png} \end{center} \caption{プロジェクト作成ダイアログが開くので，Next$\gt$で次へ} \end{figure}
+プロジェクト名と格納先を決めます．ここでは，ホームディレクトリの下のVivadoというフォルダの下にプロジェクトを格納することとし，名前をproject_1としています． \begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_37.png} \end{center} \caption{プロジェクト名と格納先を決めます} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_43.png} \end{center} \caption{プロジェクトタイプの指定です．RTLプロジェクトを指定します} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_24.png} \end{center} \caption{すでにソースコードがある場合にはここで追加できます．今回はないのでNext$\gt$で，そのまま次へ} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_30.png} \end{center} \caption{すでに制約ファイルがある場合にはここで追加できます．今回はないのでNext$\gt$で，そのまま次へ} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_49.png} \end{center} \caption{ターゲットとするFPGAの選択画面です．BoardタブをクリックしZybo Z7-20を選択して$\gt$で次へ} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_55.png} \end{center} \caption{確認画面です．Finishをクリックするとプロジェクトの作成は完了です} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_03_06.png} \end{center} \caption{プロジェクト作成には少し時間がかかります} \end{figure}</description>
+    </item>
+    
+    <item>
+      <title>シミュレーション</title>
+      <link>https://miyo.github.io/learning_fpga/docs/book01/simulation/</link>
+      <pubDate>Wed, 30 Oct 2019 19:15:46 +0900</pubDate>
+      
+      <guid>https://miyo.github.io/learning_fpga/docs/book01/simulation/</guid>
+      <description>この章では，``Lチカ&amp;rdquo;を題材に設計したデザインがどのように動いているのか，Vivado付属のシミュレータを使ったシミュレーションによって確認する方法を学びます．
+はじめに 実際の開発現場で不具合を解析するときにもシミュレーションは大変有用な手段です．
+HDLで記述したアプリケーション回路をFPGA上で動作させるためには，合成や配置配線を実行してFPGA書き込み用のコンフィギュレーション情報のファイルを生成する必要があります．回路規模が大きくなると，コンフィギュレーション情報を作成するのにも長い時間が必要になります．しかし，シミュレーションの場合は簡単なコンパイルでおしまいです．デバッグなどで，何度もソース・コードを変更するような場合には，シミュレータで動作を確認できれば圧倒的に短時間で済みます．
+また，FPGAで動作しているアプリケーション回路の各信号が，どのように変化しているか，外から観測するのはなかなか難しいものです．一方で，シミュレーションでは自由に記述したロジックの信号の変化を観察できます．
+そのため，シミュレーションを使用した内部の信号の観測がHDLレベルでの論理的なデバッグに有効です．この章では，このHDLコードの動作をVivadoシミュレータでシミュレーションする方法を学びましょう．
+シミュレーションに必要なもの &amp;mdash; テスト・ベンチ CPUを買ってきても，マザーボードがないとパソコンとして動かないように，FPGAも周辺部品の載った``マザーボード&amp;rdquo;がないと動きません．FPGAもFPGA単体では動作せず，MicroBoardやDE0 nanoに搭載されているような回路を駆動するクロック信号やリセット信号が必須です．
+実際にFPGAを使ったシステムでは，クロックは外から与えられるものですが，シミュレーションでは，FPGAに実装したHDLモジュールが動作するのに必要なクロック信号やリセット信号なども自前で用意しなければなりません(図\ref{fig:test_bench_image})．
+\begin{figure}[H] \begin{center} \includegraphics[width=.95\textwidth]{chapter04_figures/test_bench_image.png} \end{center} \caption{設計したモジュールを実機で動作させる場合(a)とシミュレーションする場合(b)の違い．シミュレーションする場合にはテスト・ベンチを用意する必要がある．\label{fig:test_bench_image}} \end{figure}
+といっても，とりたてて新しく特別なことを覚える必要があるわけではありません．外から与えられるべきクロック信号やリセット信号もHDLで記述できます．これをシミュレーション・コードやテスト・ベンチと呼びます．シミュレーション対象のモジュールで必要となる信号は，すべてテスト・ベンチで生成します．テスト・ベンチの記述方法はHDLソースとほとんど同じで，違いは下記の3つになります．
+ エンティティの中身(モジュールの入出力信号)が空である 時間を表す構文を使って信号の振る舞いを規定する ハードウェアでは実現できない仮想的な機能を利用できる  設計したHDLモジュールを動作させるのには必要な，マザーボードに相当する部分をすべて記述しなければなりません．逆にいうと，テスト・ベンチは外部との入出力があってはいけないということです．そのため，VHDLの場合はテスト・ベンチのエンティティの中身が，Verilog HDLの場合moduleの引数が空になるというわけです．
+テスト・ベンチでは 時間 を表現する必要がある 「スイッチを10秒押してから離す」や「50MHzの信号」などの振る舞いは時間を扱うので，HDLのビヘイビア・モデル（動作記述）を用いて記述します．
+たとえば，「10nsの時間を待つ」という動作はHDLで次のように記述します．この記述はビヘイビア・モデルの基本中の基本です． VHDLで記述する場合は， \begin{figure}[H] \begin{quote} \begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8] wait for 10ns; \end{Verbatim} \end{quote} \end{figure} Verilog HDLで記述する場合には，初めにtimescaleを使って， \begin{figure}[H] \begin{quote} \begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8] timescale 1ns / 1ps \end{Verbatim} \end{quote} \end{figure} と，シミュレーションの単位時間を指定して，時間を挿入したい個所で \begin{figure}[H] \begin{quote} \begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8] #10 \end{Verbatim} \end{quote} \end{figure} と記述すると，指定した単位時間分の時間(この例では10ns)を作ることができます．
+テストベンチの書き方 またか!</description>
+    </item>
+    
+    <item>
+      <title>基本実験</title>
+      <link>https://miyo.github.io/learning_fpga/docs/book01/basics/</link>
+      <pubDate>Wed, 30 Oct 2019 19:15:46 +0900</pubDate>
+      
+      <guid>https://miyo.github.io/learning_fpga/docs/book01/basics/</guid>
+      <description>かんたんな実験を通じてFPGAでのハードウェア作りの基礎力を手に入れましょう．
+はじめに いくつかの簡単なHDLコードを書いて，FPGAでのハードウェア作りの基礎力を手に入れましょう．実際にHDLコードを書き，シミュレーションして，実機動作を確認することは，より複雑なハードウェアを設計するための第一歩です．
+ILAを使ってFPGA内部の信号を観測する FPGAは，FPGAの中で回路がどのように動作しているのかを知るためのILA(Internal Logic Analyzer)という仕組みを持っています．実験コードを書きはじめる前に，このILAの使い方を学んでみましょう．
+LチカでILAの動作を学ぶ 三度目の登場ですが，LチカでILAの動作を学びましょう．第4章で利用した\verb|project_2|を使用します．
+準備 ILAを使ってデバッグするために，topモジュールのソースコードを次のように書き変えてください．
+\begin{figure}[H] \begin{quote} \begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8] library ieee; use ieee.std_logic_1164.all; use ieee.numeric_std.all;
+entity top is Port ( clk : in std_logic; reset : in std_logic; led : out std_logic ); end top;
+architecture RTL of top is
+attribute mark_debug : string; &amp;ndash; (1) 追加 signal counter : unsigned(31 downto 0) := (others =&amp;gt; &amp;lsquo;0&amp;rsquo;); attribute mark_debug of counter : signal is &amp;ldquo;true&amp;rdquo;; &amp;ndash; (2) 追加</description>
+    </item>
+    
+    <item>
+      <title>実験</title>
+      <link>https://miyo.github.io/learning_fpga/docs/book01/experiments/</link>
+      <pubDate>Wed, 30 Oct 2019 19:15:46 +0900</pubDate>
+      
+      <guid>https://miyo.github.io/learning_fpga/docs/book01/experiments/</guid>
+      <description>HDLのいろいろな記述方法を使って，少し複雑なモジュールの設計に取り組んでみましょう．
+はじめに これまでに学んできた内容を利用して，少し応用的な実験に取り組んでみましょう．
+ストップウォッチを作ってみよう ここでは，
+ アクションボタンを押すとミリ秒毎のカウントアップを開始する カウント中に，アクションボタンを押すとカウントを一時停止する 一時停止中に，アクションボタンを押すとカウントを再開する リセットボタンを押すとカウントを0にクリアする  という機能をもったストップウォッチを作ってみましょう．
+残念ながら，ZYBO Z7-20には，7セグメントLEDのような数字を表示する分かりやすい表示器はありませんので，4つのLEDと2つの3色LEDを使って数を表現するとよいでしょう．
+次のリストはストップウォッチを実装するためのトップモジュールの例です．3色LEDの明るさを適当に調節するために，PWMモジュールを使って出力を変調しています．PWMモジュールによって，たとえば\verb|&amp;lsquo;1&amp;rsquo;|を出力する場合でも，適当なタイミングで&amp;rsquo;1&amp;rsquo;と&amp;rsquo;0&amp;rsquo;がまぜられることで明るさを抑えることができます．
+library ieee; use ieee.std_logic_1164.all; use ieee.numeric_std.all; entity stopwatch_z7_20 is port ( CLK : in std_logic; led6_r : out std_logic; led6_g : out std_logic; led6_b : out std_logic; led5_r : out std_logic; led5_g : out std_logic; led5_b : out std_logic; LD : out std_logic_vector(3 downto 0); btn : in std_logic_vector(1 downto 0) ); end entity stopwatch_z7_20; architecture RTL of stopwatch_z7_20 is attribute ASYNC_REG : string; attribute mark_debug : string; component stopwatch generic ( FREQ_MHz : integer := 125 ); port ( clk : in std_logic; reset : in std_logic; action : in std_logic; msec_out : out std_logic_vector(9 downto 0); sec_out : out std_logic_vector(5 downto 0); min_out : out std_logic_vector(5 downto 0); hour_out : out std_logic_vector(4 downto 0) ); end component stopwatch; component pwm port ( clk : in std_logic; a : in std_logic_vector(3 downto 0); d : in std_logic; q : out std_logic ); end component pwm; signal btn_d0 : std_logic_vector(1 downto 0); signal btn_d1 : std_logic_vector(1 downto 0); attribute ASYNC_REG of btn_d0, btn_d1 : signal is &amp;quot;TRUE&amp;quot;; signal msec_out : std_logic_vector(9 downto 0); signal sec_out : std_logic_vector(5 downto 0); signal min_out : std_logic_vector(5 downto 0); signal hour_out : std_logic_vector(4 downto 0); attribute mark_debug of msec_out : signal is &amp;quot;true&amp;quot;; attribute mark_debug of sec_out : signal is &amp;quot;true&amp;quot;; attribute mark_debug of min_out : signal is &amp;quot;true&amp;quot;; attribute mark_debug of hour_out : signal is &amp;quot;true&amp;quot;; begin process(CLK) begin if rising_edge(CLK) then btn_d0 &amp;lt;= btn; btn_d1 &amp;lt;= btn_d0; end if; end process; U: stopwatch generic map( FREQ_MHz =&amp;gt; 125 ) port map( clk =&amp;gt; CLK, reset =&amp;gt; btn_d1(0), action =&amp;gt; btn_d1(1), msec_out =&amp;gt; msec_out, sec_out =&amp;gt; sec_out, min_out =&amp;gt; min_out, hour_out =&amp;gt; hour_out ); LD &amp;lt;= sec_out(3 downto 0); PWM0 : pwm port map(clk =&amp;gt; clk, a =&amp;gt; &amp;quot;1100&amp;quot;, d =&amp;gt; msec_out(0), q =&amp;gt; led5_r); PWM1 : pwm port map(clk =&amp;gt; clk, a =&amp;gt; &amp;quot;1100&amp;quot;, d =&amp;gt; msec_out(1), q =&amp;gt; led5_g); PWM2 : pwm port map(clk =&amp;gt; clk, a =&amp;gt; &amp;quot;1100&amp;quot;, d =&amp;gt; msec_out(2), q =&amp;gt; led5_b); PWM3 : pwm port map(clk =&amp;gt; clk, a =&amp;gt; &amp;quot;1100&amp;quot;, d =&amp;gt; msec_out(3), q =&amp;gt; led6_r); PWM4 : pwm port map(clk =&amp;gt; clk, a =&amp;gt; &amp;quot;1100&amp;quot;, d =&amp;gt; msec_out(4), q =&amp;gt; led6_g); PWM5 : pwm port map(clk =&amp;gt; clk, a =&amp;gt; &amp;quot;1100&amp;quot;, d =&amp;gt; msec_out(5), q =&amp;gt; led6_b); end RTL;  stopwatchモジュールを実装して，完成させてみましょう．</description>
+    </item>
+    
+    <item>
       <title>(Hu)go Template Primer</title>
       <link>https://miyo.github.io/learning_fpga/posts/goisforlovers/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>

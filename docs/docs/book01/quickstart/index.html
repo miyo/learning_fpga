@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta property="og:title" content="クイックスタート" />
+<meta property="og:description" content="FPGA開発におけるHello World ``Lチカ&rdquo; を通して，開発の手順に慣れよう
+はじめに この章では，FPGA開発におけるHello World，すなわち最初に試してみるサンプルとして Lチカ を題材に，開発の手順に慣れてみましょう． Lチカ とは，「LEDをチカチカさせる」の略です．
+単にLEDとチカチカさせるだけ，なのですが，開発の手順を身につけるには十分です．また，実際多くの信号制御は何かしらの規則にしたがって信号をON/OFFしていることですから，すべての信号制御はLチカの応用にあるとも言えます．簡単ですが大事ですよ．
+実習 プロジェクトの用意 \begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_24.png} \end{center} \caption{VivadoのFileメニューから，New Project&hellip;を選択する} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_32.png} \end{center} \caption{プロジェクト作成ダイアログが開くので，Next$\gt$で次へ} \end{figure}
+プロジェクト名と格納先を決めます．ここでは，ホームディレクトリの下のVivadoというフォルダの下にプロジェクトを格納することとし，名前をproject_1としています． \begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_37.png} \end{center} \caption{プロジェクト名と格納先を決めます} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_43.png} \end{center} \caption{プロジェクトタイプの指定です．RTLプロジェクトを指定します} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_24.png} \end{center} \caption{すでにソースコードがある場合にはここで追加できます．今回はないのでNext$\gt$で，そのまま次へ} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_30.png} \end{center} \caption{すでに制約ファイルがある場合にはここで追加できます．今回はないのでNext$\gt$で，そのまま次へ} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_49.png} \end{center} \caption{ターゲットとするFPGAの選択画面です．BoardタブをクリックしZybo Z7-20を選択して$\gt$で次へ} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_55.png} \end{center} \caption{確認画面です．Finishをクリックするとプロジェクトの作成は完了です} \end{figure}
+\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_03_06.png} \end{center} \caption{プロジェクト作成には少し時間がかかります} \end{figure}" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://miyo.github.io/learning_fpga/docs/book01/quickstart/" />
+<meta property="article:published_time" content="2019-10-30T19:15:46+09:00" />
+<meta property="article:modified_time" content="2019-10-30T19:15:46+09:00" />
+<title>クイックスタート | Learning FPGA</title>
+<link rel="icon" href="/learning_fpga/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
+
+
+<script defer src="/learning_fpga/search.min.b0c7737532ec8eb72d0b0971aa341b9d68600435e88f50c4f93e89ce3e15708e.js" integrity="sha256-sMdzdTLsjrctCwlxqjQbnWhgBDXoj1DE&#43;T6Jzj4VcI4="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav>
+<h2 class="book-brand">
+  <a href="https://miyo.github.io/learning_fpga/"><span>Learning FPGA</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" placeholder="Search" id="book-search-input" maxlength="64" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+    
+
+  
+  
+
+
+
+
+
+ 
+  
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        
+
+  <li  class="book-section-flat" >
+    
+      
+
+  <a href="/learning_fpga/docs/example/" >
+      Example Site
+  </a>
+
+
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        
+
+  <li >
+    
+      
+
+  <a href="/learning_fpga/docs/example/table-of-contents/" >
+      Table of Contents
+  </a>
+
+
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/example/table-of-contents/with-toc/" >
+      With ToC
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/example/table-of-contents/without-toc/" >
+      Without ToC
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      
+
+  <a href="/learning_fpga/docs/example/2nd/" >
+      2nd
+  </a>
+
+
+    
+
+    
+
+
+
+
+
+
+  </li>
+
+
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/introduction/" >
+      Introduction
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/languages/" >
+      VHDL/Veilog 入門
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/quickstart/"  class="active">
+      クイックスタート
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/simulation/" >
+      シミュレーション
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/basics/" >
+      基本実験
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/experiments/" >
+      実験
+  </a>
+
+</li>
+      
+    
+      
+        
+
+  <li  class="book-section-flat" >
+    
+      <span>Shortcodes</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/buttons/" >
+      Buttons
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/columns/" >
+      Columns
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/expand/" >
+      Expand
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/hints/" >
+      Hints
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/katex/" >
+      Katex
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/mermaid/" >
+      Mermaid
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/shortcodes/tabs/" >
+      Tabs
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+  </ul>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+    </aside>
+
+    <div class="book-page">
+      <header class="flex align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="/learning_fpga/svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>クイックスタート</strong>
+</header>
+
+      
+<article class="markdown">
+
+<p>FPGA開発におけるHello World ``Lチカ&rdquo; を通して，開発の手順に慣れよう</p>
+
+<h1 id="はじめに">はじめに</h1>
+
+<p>この章では，FPGA開発におけるHello World，すなわち最初に試してみるサンプルとして <strong>Lチカ</strong> を題材に，開発の手順に慣れてみましょう． <strong>Lチカ</strong> とは，「LEDをチカチカさせる」の略です．</p>
+
+<p>単にLEDとチカチカさせるだけ，なのですが，開発の手順を身につけるには十分です．また，実際多くの信号制御は何かしらの規則にしたがって信号をON/OFFしていることですから，すべての信号制御はLチカの応用にあるとも言えます．簡単ですが大事ですよ．</p>
+
+<h1 id="実習">実習</h1>
+
+<h2 id="プロジェクトの用意">プロジェクトの用意</h2>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_24.png}
+  \end{center}
+  \caption{VivadoのFileメニューから，New Project&hellip;を選択する}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_32.png}
+  \end{center}
+  \caption{プロジェクト作成ダイアログが開くので，Next$\gt$で次へ}
+ \end{figure}</p>
+
+<p>プロジェクト名と格納先を決めます．ここでは，ホームディレクトリの下のVivadoというフォルダの下にプロジェクトを格納することとし，名前をproject_1としています．
+ \begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_37.png}
+  \end{center}
+  \caption{プロジェクト名と格納先を決めます}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_43.png}
+  \end{center}
+  \caption{プロジェクトタイプの指定です．RTLプロジェクトを指定します}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_24.png}
+  \end{center}
+  \caption{すでにソースコードがある場合にはここで追加できます．今回はないのでNext$\gt$で，そのまま次へ}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_30.png}
+  \end{center}
+  \caption{すでに制約ファイルがある場合にはここで追加できます．今回はないのでNext$\gt$で，そのまま次へ}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_49.png}
+  \end{center}
+  \caption{ターゲットとするFPGAの選択画面です．BoardタブをクリックしZybo Z7-20を選択して$\gt$で次へ}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_55.png}
+  \end{center}
+  \caption{確認画面です．Finishをクリックするとプロジェクトの作成は完了です}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_03_06.png}
+  \end{center}
+  \caption{プロジェクト作成には少し時間がかかります}
+ \end{figure}</p>
+
+<p>これでプロジェクトの完成です．Product FamilyがZynq-7000に，Project Summaryの表示を見ると，Project partがZybo Z7-20と，Z7-20向けのプロジェクトができていることがわかります．
+ \begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_03_17.png}
+  \end{center}
+  \caption{プロジェクトができあがりました．}
+ \end{figure}</p>
+
+<h2 id="ファイルの作成">ファイルの作成</h2>
+
+<p>作成したプロジェクトで，LEDをチカチカさせるためのデザインを追加していきます．ここではVivadoのウィザードを使ってデザインファイルを用意する方法ですすめていきます．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_03_27.png}
+  \end{center}
+  \caption{SourcesのDesign Sourceの上で右クリックし，Add Sources&hellip;を選択する}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_03_35.png}
+  \end{center}
+  \caption{ファイル追加ダイアログが開く}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_03_42.png}
+  \end{center}
+  \caption{2番目のAdd or create design sources&hellip;にチェックをいれてNext$\gt$をクリック}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_03_54.png}
+  \end{center}
+  \caption{ここで新しくファイルを作るので，Create Fileをクリック}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_04_01.png}
+  \end{center}
+  \caption{使用言語とモジュール名を決めます．ここではVHDLを使うこととし，名前をtopと決めてOKをクリック}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_04_44.png}
+  \end{center}
+  \caption{作成するファイルがリストに登録されたので，Finishをクリックします}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_04_59.png}
+  \end{center}
+  \caption{新たに作成したtopモジュールのポートなどを定義することができます．あとで自分で書いてもいいのですが，入力ポートのclkと出力ポートのledを追加しましょう．OKをクリックします}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_05_13.png}
+  \end{center}
+  \caption{作成したtopモジュールがプロジェクトに組み込まれました}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_06_55.png}
+  \end{center}
+  \caption{組み込まれたtopをダブルクリックするとファイルを編集することができます}
+ \end{figure}</p>
+
+<h2 id="デザインの修正">デザインの修正</h2>
+
+<p>ウィザードで作成したtopモジュールは雛形でしかないので，このままでは，もちろん所望の動作はしません．次の内容で書き変えてください．スペースの都合上，作成されたコメントは取り除いています．ファイルを編集するときには気をつけてください．また，リスト中のコメントは説明上のものですので，実際には入力する必要はありません．</p>
+
+<p>\begin{figure}[H]
+\begin{quote}
+\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use ieee.numeric_std.all; &ndash; 追加する．数値演算に必要(1)．</p>
+
+<p>entity top is
+  Port ( clk : in STD_LOGIC;
+         led : out STD_LOGIC); &ndash; このPortはウィザードで作成された
+end top;</p>
+
+<p>architecture Behavioral of top is</p>
+
+<p>&ndash; 次の行を追加．カウンタ変数の定義(2)．
+  signal counter : unsigned(31 downto 0) := (others =&gt; &lsquo;0&rsquo;);</p>
+
+<p>begin
+  &ndash; 追加，ここから(3)
+  led &lt;= std_logic(counter(23)); &ndash; カウンタの23bit目をledに接続</p>
+
+<p>process(clk) &ndash; クロックの変化で動作するプロセス
+  begin
+    if rising_edge(clk) then &ndash; クロックの立ち上がりであれば
+      counter &lt;= counter + 1; &ndash; カウンタをインクリメント
+    end if;
+  end process;
+  &ndash; 追加，ここまで
+end Behavioral;
+  \end{Verbatim}
+ \end{quote}
+\end{figure}</p>
+
+<p>追加箇所は多くないので，少し詳しくみてみましょう．</p>
+
+<h4 id="追加箇所-1">追加箇所(1)</h4>
+
+<p>数値演算に必要なライブラリ，今回の場合でいうと``+&ldquo;演算を利用するために\verb|use ieee.numeric_std.all|という前置きをしています．</p>
+
+<h4 id="追加箇所-2">追加箇所(2)</h4>
+
+<p>LEDチカチカの，``チカチカ&rdquo;というタイミングを制御するためのカウンタ変数を定義です．+演算を利用したいので\verb|unsigned|型で定義しています．</p>
+
+<h4 id="追加箇所-3">追加箇所(3)</h4>
+
+<p>いわば処理の本体です．一行目の代入文は，定義したcounter変数の23bit目を出力ポートであるledに接続することを意味しています．\verb|unsigned|の1bitですので\verb|std_logic|に型変換しています．次のprocess文では，clkが立ち上がることにcounterに1を足すことを意味しています．すなわち，(3)で追加した部分では，clkの立ち上がり8M回毎にledの&rsquo;1&rsquo;と&rsquo;0&rsquo;が反転する回路を定義していることになります．</p>
+
+<h2 id="まずは合成してみる">まずは合成してみる</h2>
+
+<p>ファイルの編集がおわったら合成してみましょう．といっても，左サイドにあるFlow Navigatorの中にあるRun Synthesisをクリックするだけです．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_07_02.png}
+  \end{center}
+  \caption{Run Synthesisをクリックすると合成開始ダイアログが開く．OKをクリックして合成を開始}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_07_16.png}
+  \end{center}
+  \caption{合成中は，Running Synth_designの横に，ぐるぐるアニメーションが表示される}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_08_08.png}
+  \end{center}
+  \caption{合成が完了した}
+ \end{figure}</p>
+
+<h2 id="i-oの設定">I/Oの設定</h2>
+
+<p>合成が完了したことでデザインがVivadoに受け付けられることが確認できました．しかし，これでそのままFPGAでデザインが動くわけではありません．I/Oピンの設定をしていないからです．HDLのデザイン上は，入力ポートclkと出力ポートのledを定義しましたが，Vivadoは，このポートをFPGAのどのピンに割り当てていいか分かりません．FPGAを使った開発では人手でこの割り当てを決める必要があります．</p>
+
+<p>ピンの割当ては合成結果を下敷にGUIで行なうことができます．まずは，合成結果を表示します．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_08_14.png}
+  \end{center}
+  \caption{合成後のダイアログで，``Open Synthesized Design&rdquo;を選択し，OKをクリックする}
+ \end{figure}</p>
+
+<p>もし，うっかり合成後のダイアログを閉じてしまったり，ピン配置を指定しないまま次のステップにすすんでしまった場合には，Flow Navigatorの中にあるOpen Synthesized Designをクリックしましょう．</p>
+
+<p>合成結果が表示できたら，LayoutのI/O PlanningをクリックしてI/O設定用のモードに変更します．
+ \begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_09_32.png}
+  \end{center}
+  \caption{LayoutのI/O PlanningをクリックしてI/O設定用のモードに変更}
+ \end{figure}</p>
+
+<p>画面下のI/O割当て表でピン配置を決定します．clkとledのPackage pinを，それぞれ，K17とM14に決め，どちらもI/O stdをLVCMOS33を選択します．
+ \begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_45_27.png}
+  \end{center}
+  \caption{I/Oのピン割り当てを決める}
+ \end{figure}</p>
+
+<h2 id="合成-配置配線">合成・配置配線</h2>
+
+<p>ピン配置がおわったので，FPGA向けの書き込みファイルを作成します．Flow Navigatorの中にあるGenerate bitstreamをクリックするだけです．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_15_52.png}
+  \end{center}
+  \caption{Flow Navigatorの中にあるGenerate bitstreamをクリックする．必要な合成・配置配線は一気通貫に実行される \label{fig:file_save_dialog}}
+ \end{figure}</p>
+
+<h3 id="制約ファイルの保存">制約ファイルの保存</h3>
+
+<p>おそらく先のピン配置の変更が保存されていないので，図\ref{fig:file_save_dialog}のダイアログが開くことでしょう．もちろん保存してください．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_15_59.png}
+  \end{center}
+  \caption{ピン配置の変更が保存されてないために表示されるダイアログ．Saveをクリック． \label{fig:file_save_dialog}}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_16_26.png}
+  \end{center}
+  \caption{ファイル保存すると合成の結果が無効になるよという警告．OKで閉じる．}
+ \end{figure}</p>
+
+<h3 id="制約ファイルの指定-最初だけ">制約ファイルの指定(最初だけ)</h3>
+
+<p>はじめは，保存先のファイルが用意されていないので，図\ref{fig:xdc_config}のダイアログが開きます．ここでは，HDLモジュールと同じ名前のtopというファイル名にします．なお，拡張子はxdcで自動的に付与されます．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_16_35.png}
+  \end{center}
+  \caption{ピン配置を保存するファイルの作成を促すダイアログ．topという名前にしてOKをクリック \label{fig:xdc_config}}
+ \end{figure}</p>
+
+<h3 id="合成-配置配線の開始">合成・配置配線の開始</h3>
+
+<p>指定したピン配置の設定によって合成からやりなおしになります．``Yes&rdquo;をクリックしてフローをすすめます．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_16_41.png}
+  \end{center}
+  \caption{合成からやりなおし}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_16_46.png}
+  \end{center}
+  \caption{合成開始ダイアログ．OKで合成を開始．}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_20_45.png}
+  \end{center}
+  \caption{合成が無事に完了した．メインウインドウにCompleteという文字と緑のチェックマークがついている \label{fig:completed}}
+ \end{figure}</p>
+
+<h2 id="配置配線結果の確認">配置配線結果の確認</h2>
+
+<p>配置配線後，どのようにFPGA上に回路が配置されたかを確認することができます．今回は指定していませんが，動作クロックの指定を行った場合などには，正しくクロックの指定ができているか，その指定にあった回路ができているか，を確認する必要があります．</p>
+
+<p>今回は，まず雰囲気だけみてみましょう．合成後の図\ref{fig:completed}のダイアログで，Open Implementation DesignにチェックをいれてOKをクリックするか，Navigator FlowでOpen Implemnetation Designをクリックします．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_21_16.png}
+  \end{center}
+  \caption{配置配線結果を開いてみたところ．右側の水色部分が使用しているハードウェアリソース}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_22_24.png}
+  \end{center}
+  \caption{接続パスを表示し，拡大してみたところ}
+ \end{figure}</p>
+
+<h2 id="実機での動作確認">実機での動作確認</h2>
+
+<p>できあがったデータをFPGAボードにダウンロードして動作させてみましょう．</p>
+
+<p>まずは，FPGAとパソコンをUSBケーブルで接続します．ここで，JP5のジャンパをJTAGに，JP16のジャンパをUSB側にセットしておいてください．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/IMG_0002.JPG}
+  \end{center}
+  \caption{FPGAとパソコンをUSBケーブルで接続．JP5とJP16の位置にも注意}
+ \end{figure}</p>
+
+<p>書き込みの手順は次の通りです．</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_34_35.png}
+  \end{center}
+  \caption{Navigator FlowでOpen Hardwareをクリックしたところ}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_34_45.png}
+  \end{center}
+  \caption{Open Targetをクリックし，Auto Connectをクリック}
+ \end{figure}</p>
+
+<p>\begin{figure}[H]
+  \begin{center}
+   \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_51_49.png}
+  \end{center}
+  \caption{FPGAボードと接続できたら，Program Deviceをクリック．開いたファイルダイアログでOKをクリック．}
+ \end{figure}</p>
+
+<p>これでFPGAボード上のLED LD0が点滅するはずです．</p>
+
+<h1 id="課題">課題</h1>
+
+<ol>
+<li>点滅の間隔を変えてみよう</li>
+<li>FPGA上のほかのLEDも点滅させてみよう</li>
+</ol>
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+
+  <aside class="book-toc levels-6 fixed">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#はじめに">はじめに</a></li>
+<li><a href="#実習">実習</a>
+<ul>
+<li><a href="#プロジェクトの用意">プロジェクトの用意</a></li>
+<li><a href="#ファイルの作成">ファイルの作成</a></li>
+<li><a href="#デザインの修正">デザインの修正</a>
+<ul>
+<li>
+<ul>
+<li><a href="#追加箇所-1">追加箇所(1)</a></li>
+<li><a href="#追加箇所-2">追加箇所(2)</a></li>
+<li><a href="#追加箇所-3">追加箇所(3)</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#まずは合成してみる">まずは合成してみる</a></li>
+<li><a href="#i-oの設定">I/Oの設定</a></li>
+<li><a href="#合成-配置配線">合成・配置配線</a>
+<ul>
+<li><a href="#制約ファイルの保存">制約ファイルの保存</a></li>
+<li><a href="#制約ファイルの指定-最初だけ">制約ファイルの指定(最初だけ)</a></li>
+<li><a href="#合成-配置配線の開始">合成・配置配線の開始</a></li>
+</ul></li>
+<li><a href="#配置配線結果の確認">配置配線結果の確認</a></li>
+<li><a href="#実機での動作確認">実機での動作確認</a></li>
+</ul></li>
+<li><a href="#課題">課題</a></li>
+</ul>
+</nav>
+  </aside>
+
+
+
+  </main>
+
+  
+</body>
+
+</html>
