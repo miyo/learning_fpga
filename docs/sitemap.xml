@@ -3,6 +3,41 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/introduction/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/languages/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/quickstart/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/simulation/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/basics/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/experiments/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/ipi/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://miyo.github.io/learning_fpga/docs/example/</loc>
   </url>
   
@@ -39,36 +74,6 @@
   
   <url>
     <loc>https://miyo.github.io/learning_fpga/</loc>
-    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/book01/introduction/</loc>
-    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/book01/languages/</loc>
-    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/book01/quickstart/</loc>
-    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/book01/simulation/</loc>
-    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/book01/basics/</loc>
-    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/book01/experiments/</loc>
     <lastmod>2019-10-30T19:15:46+09:00</lastmod>
   </url>
   

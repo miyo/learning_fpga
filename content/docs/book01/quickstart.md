@@ -3,6 +3,7 @@ title: "クイックスタート"
 date: 2019-10-30T19:15:46+09:00
 type: docs
 draft: false
+weight: -1700
 ---
 
 FPGA開発におけるHello World **Lチカ** を通して，開発の手順に慣れよう

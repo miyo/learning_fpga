@@ -12,47 +12,6 @@
     
     
     <item>
-      <title>With ToC</title>
-      <link>https://miyo.github.io/learning_fpga/docs/example/table-of-contents/with-toc/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://miyo.github.io/learning_fpga/docs/example/table-of-contents/with-toc/</guid>
-      <description>Caput vino delphine in tamen vias Cognita laeva illo fracta Lorem markdownum pavent auras, surgit nunc cingentibus libet Laomedonque que est. Pastor An arbor filia foedat, ne fugit aliter, per. Helicona illas et callida neptem est Oresitrophos caput, dentibus est venit. Tenet reddite famuli praesentem fortibus, quaeque vis foret si frondes gelidos gravidae circumtulit inpulit armenta nativum.
- Te at cruciabere vides rubentis manebo Maturuit in praetemptat ruborem ignara postquam habitasse Subitarum supplevit quoque fontesque venabula spretis modo Montis tot est mali quasque gravis Quinquennem domus arsit ipse Pellem turis pugnabant locavit  Natus quaerere Pectora et sine mulcere, coniuge dum tincta incurvae.</description>
-    </item>
-    
-    <item>
-      <title>Without ToC</title>
-      <link>https://miyo.github.io/learning_fpga/docs/example/table-of-contents/without-toc/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://miyo.github.io/learning_fpga/docs/example/table-of-contents/without-toc/</guid>
-      <description>At me ipso nepotibus nunc celebratior genus Tanto oblite Lorem markdownum pectora novis patenti igne sua opus aurae feras materiaque illic demersit imago et aristas questaque posset. Vomit quoque suo inhaesuro clara. Esse cumque, per referri triste. Ut exponit solisque communis in tendens vincetis agisque iamque huic bene ante vetat omina Thebae rates. Aeacus servat admonitu concidit, ad resimas vultus et rugas vultu dignamque Siphnon.
-Quam iugulum regia simulacra, plus meruit humo pecorumque haesit, ab discedunt dixit: ritu pharetramque.</description>
-    </item>
-    
-    <item>
-      <title>Creating a New Theme</title>
-      <link>https://miyo.github.io/learning_fpga/posts/creating-a-new-theme/</link>
-      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://miyo.github.io/learning_fpga/posts/creating-a-new-theme/</guid>
-      <description>Introduction This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&amp;rsquo;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&amp;rsquo;t cover using CSS to style your theme.
-We&amp;rsquo;ll start with creating a new site with a very basic template.</description>
-    </item>
-    
-    <item>
-      <title>Migrate to Hugo from Jekyll</title>
-      <link>https://miyo.github.io/learning_fpga/posts/migrate-from-jekyll/</link>
-      <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://miyo.github.io/learning_fpga/posts/migrate-from-jekyll/</guid>
-      <description>Move static content to static Jekyll has a rule that any directory not starting with _ will be copied as-is to the _site output. Hugo keeps all static content under static. You should therefore move it all there. With Jekyll, something that looked like
-▾ &amp;lt;root&amp;gt;/ ▾ images/ logo.png  should become
-▾ &amp;lt;root&amp;gt;/ ▾ static/ ▾ images/ logo.png  Additionally, you&amp;rsquo;ll want any files that should reside at the root (such as CNAME) to be moved to static.</description>
-    </item>
-    
-    <item>
       <title>Introduction</title>
       <link>https://miyo.github.io/learning_fpga/docs/book01/introduction/</link>
       <pubDate>Wed, 30 Oct 2019 19:15:46 +0900</pubDate>
@@ -61,22 +20,26 @@ We&amp;rsquo;ll start with creating a new site with a very basic template.</desc
       <description>イントロダクション ○○を制御したいけどソフトウェアじゃ難しい 実験などのために，何かの入力を観測しながら，それに応じて何かの処理をする，という機会がありませんか？そのような場合，パソコンやマイコンで実装してみようとしても
  モータやセンサをたくさんつなぎたいから100個くらい自由に使える入出力があればいいのに システムを乾電池1本で動作しないかなあ 決められた時間内できちんと処理を終わらせたい/繰り返したい 処理専用の特別な命令を実行できたら高速化できるのにな いくつもの処理を並行して実行できたらいいのにな 361ビットの値の演算が一発でできたらすっきり書けるのに など，ソフトウェアではあと一息痒いところに手が届かず，歯痒い思いをしたことはないでしょうか．  プロセッサがプログラムを実行する パソコンはもちろんのこと，今やテレビや携帯電話，自動車などのあらゆる製品の中でソフトウェアが動作しています．それらのソフトウェアは，実現したいアプリケーションや動作させる環境に応じて，さまざまなプログラミング言語で記述されています．たとえば，JavaScriptはWebアプリケーションを便利に華やかにしてくれますし，Cで記述されたプログラムはシステムを細やかに制御し，高速に動作させることができます．
 近年のソフトウェアが動作する環境は，プログラミング言語やオペレーティング・システム，ライブラリなどにより上手に隠蔽されていますので，抽象化された世界の上でプログラムを書けるソフトウェア・エンジニアは，ハードウェアを意識することが少ないかもしれませんが，どのような言語を使ったプログラムでも，ハードウェアであるプロセッサで処理が実行されます．
-たとえば，パソコン上で動作するソフトウェアはIntelのCore i7などのプロセッサの上で動作し，スマートフォンの上のソフトはARMプロセッサの上で動作しています．また，組み込み機器でも各種マイコンの上で処理が実行されています．一般に，マイコンは，演算装置に加え様々なデバイスを制御するためのI/Oコントローラを備えているためセンサの入力を読み取ったり，モーターを回したりといった処理をソフトウェアで操作できます． 「プロセッサ」や「マイコン」はデバイスそのものがアプリケーションに応じて変化するわけではなく，図\ref{fig:software_on_processor})のように，ソフトウェアによって処理させる内容をその時々で決めることができるため，幅広い用途に活用されています．
-  \end{center} \caption{ソフトウェアプログラムはプロセッサの上で処理される．どんなプログラムを実行する場合でもプロセッサの構造は変わらない \label{fig:software_on_processor}} \end{figure}
-一方で，自由に設計できるようにみえるソフトウェアも，実際に動作するときには，常にプロセッサの制約を受けます．たとえば，プロセッサの処理能力の限界を越えるような速さでの計算や，プロセッサがもっていないI/Oを操作するといったことはできません． しかし，デバイスそのものをアプリケーションに応じて変化させて，冒頭に挙げたような「もし○○なプログラムが書けたなら」の希望を現実にできる手段があれば，今まで手を出しにくかったアプリケーションが実現できるのではないでしょうか．
-ハードウェア・デバイスを作るための便利な仕組み そんなときには，オリジナルのハードウェアを作るという解決策があります．ハードウェアを作るといっても，げじげじの足が付いたデバイスを一つずつはんだ付けしたり，半導体工場に製作を依頼する必要はありません．ハードウェア記述言語（HDL；Hardware Description Language）を用いて作成したハードウェア・イメージを専用のデバイス（FPGA）に書き込むだけでオリジナルのハードウェア・デバイスを作る便利な仕組みがあります． FPGAは，図\ref{fig:fpga_simple_image}のように，論理回路になる素や，論理回路同士を接続する素がパッケージされたLSIです．
-\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter01_figures/fpga_simple_image.png} \end{center} \caption{FPGAは，論理回路の素や配線回路の素がパッケージされたLSI \label{fig:fpga_simple_image}} \end{figure}
-用途によって，とにかく短い時間で処理をしたい，低消費電力で処理をさせたい，同時にたくさんのI/Oにアクセスしたいといったことが求められることもあるでしょう．FPGAは，そんな要求に応えることができる，やりたい処理をさせるための専用ハードウェアを自在に作れる柔らかいプログラム可能なハードウェア・デバイスです(図\ref{fig:fpga_processing_image})．
-\begin{figure}[H] \begin{center} \includegraphics[width=.95\textwidth]{chapter01_figures/fpga_processing_image.png} \end{center} \caption{FPGAは，実現したい処理向けの専用ロジックを自分で作ることができる \label{fig:fpga_processing_image}} \end{figure}
-FPGAには小さなメモリ(LUT)がたくさん入っている FPGAの中身はどのようになっているのか，もう少し詳しくのぞいてみましょう．図\ref{fig:inside_fpga_example}は，代表的なFPGAメーカーであるXilinxとIntelのFPGAの内部構造です．多少違いはありますが，基本的な構成要素は，LUT(Look-up Table)と記憶素子(D-FF)で構成されるロジック・セルです．
-\begin{figure}[H] \begin{center} \includegraphics[width=.95\textwidth]{chapter01_figures/inside_fpga_example.png} \end{center} \caption{FPGAの内部構造 \label{fig:inside_fpga_example}} \end{figure}
-好きな論理演算を実現する鍵はLUTで，これは小規模なメモリのようなものです．入力されたデータに対して出力する信号を決定するためのテーブルの役割を持ちます．
-たとえば，図\ref{fig:inside_fpga_example}のように，アドレス0に0，それ以外のアドレス1〜63には，1と書いてあるLUTの場合には，6入力1出力のOR回路に相当します．同様に，アドレス0〜62に0をアドレス63に1と書いておけば，6入力1出力のAND回路を作ることができます．また，1が奇数個のアドレス，たとえば，アドレス1，2，4，7など，のみに1と書いておけば，6入力1出力のXOR回路になります．
+たとえば，パソコン上で動作するソフトウェアはIntelのCore i7などのプロセッサの上で動作し，スマートフォンの上のソフトはARMプロセッサの上で動作しています．また，組み込み機器でも各種マイコンの上で処理が実行されています．一般に，マイコンは，演算装置に加え様々なデバイスを制御するためのI/Oコントローラを備えているためセンサの入力を読み取ったり，モーターを回したりといった処理をソフトウェアで操作できます． 「プロセッサ」や「マイコン」はデバイスそのものがアプリケーションに応じて変化するわけではなく，図1のように，ソフトウェアによって処理させる内容をその時々で決めることができるため，幅広い用途に活用されています．
+ 図1: ソフトウェアプログラムはプロセッサの上で処理される．どんなプログラムを実行する場合でもプロセッサの構造は変わらない
+  一方で，自由に設計できるようにみえるソフトウェアも，実際に動作するときには，常にプロセッサの制約を受けます．たとえば，プロセッサの処理能力の限界を越えるような速さでの計算や，プロセッサがもっていないI/Oを操作するといったことはできません． しかし，デバイスそのものをアプリケーションに応じて変化させて，冒頭に挙げたような「もし○○なプログラムが書けたなら」の希望を現実にできる手段があれば，今まで手を出しにくかったアプリケーションが実現できるのではないでしょうか．
+ハードウェア・デバイスを作るための便利な仕組み そんなときには，オリジナルのハードウェアを作るという解決策があります．ハードウェアを作るといっても，げじげじの足が付いたデバイスを一つずつはんだ付けしたり，半導体工場に製作を依頼する必要はありません．ハードウェア記述言語（HDL；Hardware Description Language）を用いて作成したハードウェア・イメージを専用のデバイス（FPGA）に書き込むだけでオリジナルのハードウェア・デバイスを作る便利な仕組みがあります． FPGAは，図2のように，論理回路になる素や，論理回路同士を接続する素がパッケージされたLSIです．
+ 図2: FPGAは，論理回路の素や配線回路の素がパッケージされたLSI
+  用途によって，とにかく短い時間で処理をしたい，低消費電力で処理をさせたい，同時にたくさんのI/Oにアクセスしたいといったことが求められることもあるでしょう．FPGAは，そんな要求に応えることができる，やりたい処理をさせるための専用ハードウェアを自在に作れる柔らかいプログラム可能なハードウェア・デバイスです(図3)．
+ 図2: FPGAは，実現したい処理向けの専用ロジックを自分で作ることができる
+  FPGAには小さなメモリ(LUT)がたくさん入っている FPGAの中身はどのようになっているのか，もう少し詳しくのぞいてみましょう．図3は，代表的なFPGAメーカーであるXilinxとIntelのFPGAの内部構造です．多少違いはありますが，基本的な構成要素は，LUT(Look-up Table)と記憶素子(D-FF)で構成されるロジック・セルです．
+ 図3: FPGAの内部構造
+  好きな論理演算を実現する鍵はLUTで，これは小規模なメモリのようなものです．入力されたデータに対して出力する信号を決定するためのテーブルの役割を持ちます．
+たとえば，図3のように，アドレス0に0，それ以外のアドレス1〜63には，1と書いてあるLUTの場合には，6入力1出力のOR回路に相当します．同様に，アドレス0〜62に0をアドレス63に1と書いておけば，6入力1出力のAND回路を作ることができます．また，1が奇数個のアドレス，たとえば，アドレス1，2，4，7など，のみに1と書いておけば，6入力1出力のXOR回路になります．
 入力ビット幅の範囲で好きな論理演算を決められるLUTと，複数のLUTを好きに接続できる接続テーブルによって，大規模な論理演算を好きに構成することができますね．
 ハードウェアと記述言語 LUTと接続テーブルを設定して，ハードウェアを自由に設計できるといっても，ソフトウェアでは簡単に書ける足し算や引き算といった基本的な演算を，一つ一つ論理回路で構成するのは骨が折れる作業です．そこで利用するのがハードウェア記述言語(HDL; Hardware Description Language)です．
 HDLは，Cプログラミングなどと同じように変数への加減算や条件分岐などを用いてハードウェアを設計できるプログラミング言語です．ユーザは，まるでプログラムをロードするように，ハードウェア・データをFPGAに書き込むことで所望のデバイスを作ることができます．
 ハードウェア・プログラミングを理解する三つのポイント オリジナルのハードウェアを作成するための手段が，ハードウェア・プログラミングです．ソフトウェア・プログラミングでは，プロセッサ(というハードウェア)を動作させるための命令列を設計するのに対し，ハードウェア・プログラミングは，ハードウェアそのものを設計します．ハードウェア・プログラミングにチャレンジするにあたり，ハードウェアの基本概念となる「演算の決め方」と「データの単位」，「処理の動作方式」についてソフトウェア・プログラミングと比較しながら説明します．
-演算の決め方 ソフトウェア・プログラミングでは，演算はプロセッサのもつ命令として決められています．一方でハードウェア・プログラミングでは，論理演算を組み合わせて自分で演算を決めることができます．</description>
+演算の決め方 ソフトウェア・プログラミングでは，演算はプロセッサのもつ命令として決められています．一方でハードウェア・プログラミングでは，論理演算を組み合わせて自分で演算を決めることができます．
+ソフトウェア・プログラミング ソフトウェア・プログラミングは，プロセッサの演算ユニットが持つ機能をどのように利用するかを指示します．プロセッサの演算ユニットでは，足し算や掛け算などの算術演算や，比較演算，分岐などの処理を制御する命令を実行できます．また，信号処理を高速に処理できるように「掛け算して足し算」するといった命令を備えているプロセッサもありあます．実際にプロセッサの演算ユニットをどのように使うか，を決定するのはコンパイラの仕事で，プログラマは，普段ほとんど意識する必要はありません．
+ハードウェア・プログラミング ハードウェア・プログラミングは，ハードウェアそのものを作成するので，ベースとなる演算ユニットというものは存在しません．演算処理は，基本的には，NOT，AND，ORの論理演算とそれらの組み合わせで実現します．
+データの単位 ソフトウェア・プログラミングとハードウェア・プログラミングで取り扱い可能なデータの単位について比べてみます．
+ソフトウェア・プログラミング 一般に，プロセッサの作業領域であるレジスタの幅は固定されていて，ソフトウェア・プログラミングではそのサイズでしかデータを取り扱えません．たとえば，レジスタ幅が32ビットのプロセッサでは，1という値も4294967295という大きな値も32ビット幅のデータとして処理されます．また，512ビットという大きな値を取り扱うためには，512÷32の16回分のデータ処理を必要とします．</description>
     </item>
     
     <item>
@@ -90,12 +53,12 @@ HDLは，Cプログラミングなどと同じように変数への加減算や�
 ハードウェア記述言語の基本概念 プログラミング言語に多くの種類があるように，ハードウェア記述言語(HDL)にもさまざまな種類があります．その中でもよく利用されるのが，VHDLとVerilog HDLです．VHDLとVerilog HDLは，どちらも，ハードウェアを表現するための似たような概念を取り扱うことができる言語です．
 ただし，似たような概念でもそれぞれの言語で使用する言葉が違うので注意が必要です．両方の言語に共通する概念と，言語の特徴について説明します．
 構造の基本 &amp;mdash; エンティティ/モジュール どの言語にも基本的な構造があります．たとえば，Cでは関数，Javaではクラスなどです．HDLでは，与えられた入力に対して出力を生成するブロックが基本的な単位です(図\ref{fig:design_unit})．このブロックをVHDLではエンティティ(\verb|entityt|)，Verilog HDLではモジュール(\verb|module|)と呼びます．ただし，この章では，特にVHDLやVerilog HDLに違いがない説明では，モジュールと呼ぶことにします．
-\begin{figure}[H] \begin{center} \includegraphics[width=.5\textwidth]{chapter02_figures/design_unit.png} \end{center} \caption{ハードウェア・プログラミングの基本的な単位 \label{fig:design_unit}} \end{figure}
-通常のプログラミング言語とHDLの大きな違いは，エンティティ/モジュールは，最初から最後まで与えられた入力に対する出力を生成し続けるということです．Cなどで関数を呼び出す場合，mainプログラムからその関数内へ処理が移ります(\ref{fig:software_running_model})．処理を終えると戻り値を呼び出し元に返し，mainプログラムが再び動き始めます．つまり，mainプログラムは，呼び出した関数の処理が完了するまで待たされます．これは，プログラム・カウンタが，プログラムを順々に呼び出して実行するからです．
-\begin{figure}[H] \begin{center} \includegraphics[width=.75\textwidth]{chapter02_figures/software_running_model.png} \end{center} \caption{Cで記述した一般的なソフトウェア・プログラムの実行の様子 \label{fig:software_running_model}} \end{figure}
-一方，HDLで記述されたエンティティ/モジュールには，共通のプログラム・カウンタのような，複数の演算回路の動作を制御する仕組みはありません．(図\ref{fig:hardware_instances})．どのモジュールも常に存在し，独立して動作します．したがって，特定の入力を与えると出力を返すというよりも，入力されているデータに対して出力するデータを作り続けているというイメージになります．複数のモジュール間で制御が必要であれば自分で，そのように設計する必要があります．
-\begin{figure}[H] \begin{center} \includegraphics[width=.65\textwidth]{chapter02_figures/hardware_instances.png} \end{center} \caption{ハードウェアは常に存在し，演算回路の動作が制御されることはない(制御が必要なら自分で記述する必要がある) \label{fig:hardware_instances}} \end{figure}
-2種類の基本処理方法 &amp;mdash; 同時処理文と順次処理文 繰り返しになりますが，ハードウェア・プログラミングでは，独立して動作するモジュールを扱う必要があります．すなわちハードウェアを記述するための言語では，独立して動作する同時並行的な処理を記述できる必要があります．とはいえ，実現したい処理によっては，条件分岐のような依存関係のある処理の記述が望まれます．これらの要求を満たすため，VHDLとVerilog HDLのどちらも，同時処理文と順次処理文と呼ばれる二種類の記述方式をサポートしています．具体的な記述方法は後で説明しますが，それぞれの考え方を頭に入れておいてください．
+ 図1: ハードウェア・プログラミングの基本的な単位
+  通常のプログラミング言語とHDLの大きな違いは，エンティティ/モジュールは，最初から最後まで与えられた入力に対する出力を生成し続けるということです．Cなどで関数を呼び出す場合，mainプログラムからその関数内へ処理が移ります(\ref{fig:software_running_model})．処理を終えると戻り値を呼び出し元に返し，mainプログラムが再び動き始めます．つまり，mainプログラムは，呼び出した関数の処理が完了するまで待たされます．これは，プログラム・カウンタが，プログラムを順々に呼び出して実行するからです．
+ 図2: Cで記述した一般的なソフトウェア・プログラムの実行の様子
+  一方，HDLで記述されたエンティティ/モジュールには，共通のプログラム・カウンタのような，複数の演算回路の動作を制御する仕組みはありません．(図\ref{fig:hardware_instances})．どのモジュールも常に存在し，独立して動作します．したがって，特定の入力を与えると出力を返すというよりも，入力されているデータに対して出力するデータを作り続けているというイメージになります．複数のモジュール間で制御が必要であれば自分で，そのように設計する必要があります．
+ 図3: ハードウェアは常に存在し，演算回路の動作が制御されることはない(制御が必要なら自分で記述する必要がある)
+  2種類の基本処理方法 &amp;mdash; 同時処理文と順次処理文 繰り返しになりますが，ハードウェア・プログラミングでは，独立して動作するモジュールを扱う必要があります．すなわちハードウェアを記述するための言語では，独立して動作する同時並行的な処理を記述できる必要があります．とはいえ，実現したい処理によっては，条件分岐のような依存関係のある処理の記述が望まれます．これらの要求を満たすため，VHDLとVerilog HDLのどちらも，同時処理文と順次処理文と呼ばれる二種類の記述方式をサポートしています．具体的な記述方法は後で説明しますが，それぞれの考え方を頭に入れておいてください．
 同時処理文 同時処理文とは，周りの処理に依存せず独立して動作する処理です．複数の同時処理文は，ある特定の時点で一斉に処理されます．そのため，記述順や各処理文の間には，構文的な順序が存在せず，「ある時点」で入力された値に従って出力が生成されます．出力が確定するまでの時間は，物理的にデバイスの中を電気が流れる速さや信号遅延に依存します．
 順次処理文 順次処理文は，複数の処理同士に構文などによって順序が規定された処理です．たとえば，ソフトウェアには欠かせない分岐などの制御文の表現には順序が必要になります．
 使用できる変数 &amp;mdash; 数値と信号 プログラミング言語と同じようにHDLでも変数を利用できます．VHDLでもVerilog HDLでも，変数はすべて型を持ちます．ハードウェアとして，基本的な型は1本の信号線です．また，信号線を束ねた配列もサポートされます．このほかに，整数や自分で定義した型も利用できます．
@@ -103,7 +66,9 @@ HDLは，Cプログラミングなどと同じように変数への加減算や�
 演算の基本 &amp;mdash; 算術/論理減算，比較，代入 VHDLおよびVerilog HDLでは加減算や論理演算，比較などの演算子を利用することができます．ソフトウェア・プログラミングの場合は演算子を使って記述された処理はプロセッサに与える命令に変換されますが，HDLの場合は，その演算に相当するハードウェア・ロジックとしてLUTやFFなどの組み合わせに合成されます．FPGAの中には，小さなディジタルシグナルプロセッサや乗算器を持つものがあり，条件にうまく合致すると，それらが使用されます．
 HDLでもソフトウェア・プログラミング同様に，演算した結果を代入演算を利用して，ほかの(あるいは同じ)変数に代入することができます．HDLの代入には，ブロッキング代入とノンブロッキング代入の2種類があります．ブロッキング代入は，その時点で値を代入して次に進む代入です．一方，ノンブロッキング代入は，複数の代入文において，それらの代入の同時実行を規定します．Cなどで記述した単一スレッドのソフトウェア・プログラムの代入は，HDLでいうところのブロッキング代入に相当します．
 値の基本 &amp;mdash; &amp;lsquo;0&amp;rsquo;，&amp;rsquo;1&amp;rsquo;，&amp;rsquo;Z&amp;rsquo;，&amp;rsquo;X&amp;rsquo; ハードウェアの値は&amp;rsquo;0&amp;rsquo;と&amp;rsquo;1&amp;rsquo;の値をとります．加えて，ハードウェアにはハイ・インピーダンスという，「抵抗が無限大」を意味する状態が存在します．VHDLやVerilog HDLでは&amp;rsquo;Z&amp;rsquo;で表されます．値として「抵抗が無限大」というのは，少しわかりにくいかもしれません．物理的には，図\ref{fig:high_imp_image}のようにスイッチを切った状態をイメージしてください．複数の信号が一つにまとめられるとき，&amp;rsquo;Z&amp;rsquo;は，「ほかの値に影響を与えない」ということを意味します．
-\begin{figure}[H] \begin{center} \includegraphics[width=.</description>
+ 図4: HDLではハイ・インピーダンスでスイッチオフを記述できる．
+  また，&amp;rsquo;0&amp;rsquo;でも&amp;rsquo;1&amp;rsquo;のどちらでもいい値として不定値という概念があります．これは，&amp;rsquo;X&amp;rsquo;と表現されます．
+ソフトウェア・プログラミングでは，通常，&amp;rsquo;0&amp;rsquo;と&amp;rsquo;1&amp;rsquo;の2値をとる値をビットと呼びますが，&amp;rsquo;Z&amp;rsquo;と&amp;rsquo;X&amp;rsquo;も加えた4つの値をとる信号が便宜上ビットと呼ばれることが多くあります．</description>
     </item>
     
     <item>
@@ -112,7 +77,7 @@ HDLでもソフトウェア・プログラミング同様に，演算した結�
       <pubDate>Wed, 30 Oct 2019 19:15:46 +0900</pubDate>
       
       <guid>https://miyo.github.io/learning_fpga/docs/book01/quickstart/</guid>
-      <description>FPGA開発におけるHello World ``Lチカ&amp;rdquo; を通して，開発の手順に慣れよう
+      <description>FPGA開発におけるHello World Lチカ を通して，開発の手順に慣れよう
 はじめに この章では，FPGA開発におけるHello World，すなわち最初に試してみるサンプルとして Lチカ を題材に，開発の手順に慣れてみましょう． Lチカ とは，「LEDをチカチカさせる」の略です．
 単にLEDとチカチカさせるだけ，なのですが，開発の手順を身につけるには十分です．また，実際多くの信号制御は何かしらの規則にしたがって信号をON/OFFしていることですから，すべての信号制御はLチカの応用にあるとも言えます．簡単ですが大事ですよ．
 実習 プロジェクトの用意 \begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_24.png} \end{center} \caption{VivadoのFileメニューから，New Project&amp;hellip;を選択する} \end{figure}
@@ -177,6 +142,56 @@ attribute mark_debug : string; &amp;ndash; (1) 追加 signal counter : unsigned(
 残念ながら，ZYBO Z7-20には，7セグメントLEDのような数字を表示する分かりやすい表示器はありませんので，4つのLEDと2つの3色LEDを使って数を表現するとよいでしょう．
 次のリストはストップウォッチを実装するためのトップモジュールの例です．3色LEDの明るさを適当に調節するために，PWMモジュールを使って出力を変調しています．PWMモジュールによって，たとえば\verb|&amp;lsquo;1&amp;rsquo;|を出力する場合でも，適当なタイミングで&amp;rsquo;1&amp;rsquo;と&amp;rsquo;0&amp;rsquo;がまぜられることで明るさを抑えることができます．
 library ieee; use ieee.std_logic_1164.all; use ieee.numeric_std.all; entity stopwatch_z7_20 is port ( CLK : in std_logic; led6_r : out std_logic; led6_g : out std_logic; led6_b : out std_logic; led5_r : out std_logic; led5_g : out std_logic; led5_b : out std_logic; LD : out std_logic_vector(3 downto 0); btn : in std_logic_vector(1 downto 0) ); end entity stopwatch_z7_20; architecture RTL of stopwatch_z7_20 is attribute ASYNC_REG : string; attribute mark_debug : string; component stopwatch generic ( FREQ_MHz : integer := 125 ); port ( clk : in std_logic; reset : in std_logic; action : in std_logic; msec_out : out std_logic_vector(9 downto 0); sec_out : out std_logic_vector(5 downto 0); min_out : out std_logic_vector(5 downto 0); hour_out : out std_logic_vector(4 downto 0) ); end component stopwatch; component pwm port ( clk : in std_logic; a : in std_logic_vector(3 downto 0); d : in std_logic; q : out std_logic ); end component pwm; signal btn_d0 : std_logic_vector(1 downto 0); signal btn_d1 : std_logic_vector(1 downto 0); attribute ASYNC_REG of btn_d0, btn_d1 : signal is &amp;quot;TRUE&amp;quot;; signal msec_out : std_logic_vector(9 downto 0); signal sec_out : std_logic_vector(5 downto 0); signal min_out : std_logic_vector(5 downto 0); signal hour_out : std_logic_vector(4 downto 0); attribute mark_debug of msec_out : signal is &amp;quot;true&amp;quot;; attribute mark_debug of sec_out : signal is &amp;quot;true&amp;quot;; attribute mark_debug of min_out : signal is &amp;quot;true&amp;quot;; attribute mark_debug of hour_out : signal is &amp;quot;true&amp;quot;; begin process(CLK) begin if rising_edge(CLK) then btn_d0 &amp;lt;= btn; btn_d1 &amp;lt;= btn_d0; end if; end process; U: stopwatch generic map( FREQ_MHz =&amp;gt; 125 ) port map( clk =&amp;gt; CLK, reset =&amp;gt; btn_d1(0), action =&amp;gt; btn_d1(1), msec_out =&amp;gt; msec_out, sec_out =&amp;gt; sec_out, min_out =&amp;gt; min_out, hour_out =&amp;gt; hour_out ); LD &amp;lt;= sec_out(3 downto 0); PWM0 : pwm port map(clk =&amp;gt; clk, a =&amp;gt; &amp;quot;1100&amp;quot;, d =&amp;gt; msec_out(0), q =&amp;gt; led5_r); PWM1 : pwm port map(clk =&amp;gt; clk, a =&amp;gt; &amp;quot;1100&amp;quot;, d =&amp;gt; msec_out(1), q =&amp;gt; led5_g); PWM2 : pwm port map(clk =&amp;gt; clk, a =&amp;gt; &amp;quot;1100&amp;quot;, d =&amp;gt; msec_out(2), q =&amp;gt; led5_b); PWM3 : pwm port map(clk =&amp;gt; clk, a =&amp;gt; &amp;quot;1100&amp;quot;, d =&amp;gt; msec_out(3), q =&amp;gt; led6_r); PWM4 : pwm port map(clk =&amp;gt; clk, a =&amp;gt; &amp;quot;1100&amp;quot;, d =&amp;gt; msec_out(4), q =&amp;gt; led6_g); PWM5 : pwm port map(clk =&amp;gt; clk, a =&amp;gt; &amp;quot;1100&amp;quot;, d =&amp;gt; msec_out(5), q =&amp;gt; led6_b); end RTL;  stopwatchモジュールを実装して，完成させてみましょう．</description>
+    </item>
+    
+    <item>
+      <title>IP Integrator入門</title>
+      <link>https://miyo.github.io/learning_fpga/docs/book01/ipi/</link>
+      <pubDate>Wed, 30 Oct 2019 19:15:46 +0900</pubDate>
+      
+      <guid>https://miyo.github.io/learning_fpga/docs/book01/ipi/</guid>
+      <description>Vivado IP Integratorを使った，IPベースの設計手法を身につけてみましょう．大規模かつ複雑なデザインも小さな部品を組み合わせるボトムアップ設計で開発効率の向上が図れます．</description>
+    </item>
+    
+    <item>
+      <title>With ToC</title>
+      <link>https://miyo.github.io/learning_fpga/docs/example/table-of-contents/with-toc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://miyo.github.io/learning_fpga/docs/example/table-of-contents/with-toc/</guid>
+      <description>Caput vino delphine in tamen vias Cognita laeva illo fracta Lorem markdownum pavent auras, surgit nunc cingentibus libet Laomedonque que est. Pastor An arbor filia foedat, ne fugit aliter, per. Helicona illas et callida neptem est Oresitrophos caput, dentibus est venit. Tenet reddite famuli praesentem fortibus, quaeque vis foret si frondes gelidos gravidae circumtulit inpulit armenta nativum.
+ Te at cruciabere vides rubentis manebo Maturuit in praetemptat ruborem ignara postquam habitasse Subitarum supplevit quoque fontesque venabula spretis modo Montis tot est mali quasque gravis Quinquennem domus arsit ipse Pellem turis pugnabant locavit  Natus quaerere Pectora et sine mulcere, coniuge dum tincta incurvae.</description>
+    </item>
+    
+    <item>
+      <title>Without ToC</title>
+      <link>https://miyo.github.io/learning_fpga/docs/example/table-of-contents/without-toc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://miyo.github.io/learning_fpga/docs/example/table-of-contents/without-toc/</guid>
+      <description>At me ipso nepotibus nunc celebratior genus Tanto oblite Lorem markdownum pectora novis patenti igne sua opus aurae feras materiaque illic demersit imago et aristas questaque posset. Vomit quoque suo inhaesuro clara. Esse cumque, per referri triste. Ut exponit solisque communis in tendens vincetis agisque iamque huic bene ante vetat omina Thebae rates. Aeacus servat admonitu concidit, ad resimas vultus et rugas vultu dignamque Siphnon.
+Quam iugulum regia simulacra, plus meruit humo pecorumque haesit, ab discedunt dixit: ritu pharetramque.</description>
+    </item>
+    
+    <item>
+      <title>Creating a New Theme</title>
+      <link>https://miyo.github.io/learning_fpga/posts/creating-a-new-theme/</link>
+      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://miyo.github.io/learning_fpga/posts/creating-a-new-theme/</guid>
+      <description>Introduction This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&amp;rsquo;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&amp;rsquo;t cover using CSS to style your theme.
+We&amp;rsquo;ll start with creating a new site with a very basic template.</description>
+    </item>
+    
+    <item>
+      <title>Migrate to Hugo from Jekyll</title>
+      <link>https://miyo.github.io/learning_fpga/posts/migrate-from-jekyll/</link>
+      <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://miyo.github.io/learning_fpga/posts/migrate-from-jekyll/</guid>
+      <description>Move static content to static Jekyll has a rule that any directory not starting with _ will be copied as-is to the _site output. Hugo keeps all static content under static. You should therefore move it all there. With Jekyll, something that looked like
+▾ &amp;lt;root&amp;gt;/ ▾ images/ logo.png  should become
+▾ &amp;lt;root&amp;gt;/ ▾ static/ ▾ images/ logo.png  Additionally, you&amp;rsquo;ll want any files that should reside at the root (such as CNAME) to be moved to static.</description>
     </item>
     
     <item>
