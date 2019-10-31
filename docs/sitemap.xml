@@ -138,6 +138,11 @@
   </url>
   
   <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/introduction_figures/readme/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://miyo.github.io/learning_fpga/docs/example/2nd/3rd/4th/</loc>
     <priority>0</priority>
   </url>

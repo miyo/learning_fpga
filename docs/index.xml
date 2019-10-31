@@ -62,7 +62,7 @@ We&amp;rsquo;ll start with creating a new site with a very basic template.</desc
  モータやセンサをたくさんつなぎたいから100個くらい自由に使える入出力があればいいのに システムを乾電池1本で動作しないかなあ 決められた時間内できちんと処理を終わらせたい/繰り返したい 処理専用の特別な命令を実行できたら高速化できるのにな いくつもの処理を並行して実行できたらいいのにな 361ビットの値の演算が一発でできたらすっきり書けるのに など，ソフトウェアではあと一息痒いところに手が届かず，歯痒い思いをしたことはないでしょうか．  プロセッサがプログラムを実行する パソコンはもちろんのこと，今やテレビや携帯電話，自動車などのあらゆる製品の中でソフトウェアが動作しています．それらのソフトウェアは，実現したいアプリケーションや動作させる環境に応じて，さまざまなプログラミング言語で記述されています．たとえば，JavaScriptはWebアプリケーションを便利に華やかにしてくれますし，Cで記述されたプログラムはシステムを細やかに制御し，高速に動作させることができます．
 近年のソフトウェアが動作する環境は，プログラミング言語やオペレーティング・システム，ライブラリなどにより上手に隠蔽されていますので，抽象化された世界の上でプログラムを書けるソフトウェア・エンジニアは，ハードウェアを意識することが少ないかもしれませんが，どのような言語を使ったプログラムでも，ハードウェアであるプロセッサで処理が実行されます．
 たとえば，パソコン上で動作するソフトウェアはIntelのCore i7などのプロセッサの上で動作し，スマートフォンの上のソフトはARMプロセッサの上で動作しています．また，組み込み機器でも各種マイコンの上で処理が実行されています．一般に，マイコンは，演算装置に加え様々なデバイスを制御するためのI/Oコントローラを備えているためセンサの入力を読み取ったり，モーターを回したりといった処理をソフトウェアで操作できます． 「プロセッサ」や「マイコン」はデバイスそのものがアプリケーションに応じて変化するわけではなく，図\ref{fig:software_on_processor})のように，ソフトウェアによって処理させる内容をその時々で決めることができるため，幅広い用途に活用されています．
-\begin{figure}[H] \begin{center} \includegraphics[width=.95\textwidth]{chapter01_figures/software_on_processor.png} \end{center} \caption{ソフトウェアプログラムはプロセッサの上で処理される．どんなプログラムを実行する場合でもプロセッサの構造は変わらない \label{fig:software_on_processor}} \end{figure}
+  \end{center} \caption{ソフトウェアプログラムはプロセッサの上で処理される．どんなプログラムを実行する場合でもプロセッサの構造は変わらない \label{fig:software_on_processor}} \end{figure}
 一方で，自由に設計できるようにみえるソフトウェアも，実際に動作するときには，常にプロセッサの制約を受けます．たとえば，プロセッサの処理能力の限界を越えるような速さでの計算や，プロセッサがもっていないI/Oを操作するといったことはできません． しかし，デバイスそのものをアプリケーションに応じて変化させて，冒頭に挙げたような「もし○○なプログラムが書けたなら」の希望を現実にできる手段があれば，今まで手を出しにくかったアプリケーションが実現できるのではないでしょうか．
 ハードウェア・デバイスを作るための便利な仕組み そんなときには，オリジナルのハードウェアを作るという解決策があります．ハードウェアを作るといっても，げじげじの足が付いたデバイスを一つずつはんだ付けしたり，半導体工場に製作を依頼する必要はありません．ハードウェア記述言語（HDL；Hardware Description Language）を用いて作成したハードウェア・イメージを専用のデバイス（FPGA）に書き込むだけでオリジナルのハードウェア・デバイスを作る便利な仕組みがあります． FPGAは，図\ref{fig:fpga_simple_image}のように，論理回路になる素や，論理回路同士を接続する素がパッケージされたLSIです．
 \begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter01_figures/fpga_simple_image.png} \end{center} \caption{FPGAは，論理回路の素や配線回路の素がパッケージされたLSI \label{fig:fpga_simple_image}} \end{figure}
@@ -201,6 +201,15 @@ More complete instructions are available at Install Hugo
 Step 2. Build the Docs Hugo has its own example site which happens to also be the documentation site you are reading right now.
 Follow the following steps:
  Clone the Hugo repository Go into the repo Run hugo in server mode and build the docs Open your browser to http://localhost:1313  Corresponding pseudo commands:</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://miyo.github.io/learning_fpga/docs/book01/introduction_figures/readme/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://miyo.github.io/learning_fpga/docs/book01/introduction_figures/readme/</guid>
+      <description></description>
     </item>
     
     <item>
