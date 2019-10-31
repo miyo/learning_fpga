@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Xilinx活用編 on Learning FPGA</title>
+    <link>https://miyo.github.io/learning_fpga/docs/book03/</link>
+    <description>Recent content in Xilinx活用編 on Learning FPGA</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 30 Oct 2019 19:15:46 +0900</lastBuildDate>
+    
+	<atom:link href="https://miyo.github.io/learning_fpga/docs/book03/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>IP Integrator入門</title>
+      <link>https://miyo.github.io/learning_fpga/docs/book03/ipi/</link>
+      <pubDate>Wed, 30 Oct 2019 19:15:46 +0900</pubDate>
+      
+      <guid>https://miyo.github.io/learning_fpga/docs/book03/ipi/</guid>
+      <description>Vivado IP Integratorを使った，IPベースの設計手法を身につけてみましょう．大規模かつ複雑なデザインも小さな部品を組み合わせるボトムアップ設計で開発効率の向上が図れます．</description>
+    </item>
+    
+  </channel>
+</rss>

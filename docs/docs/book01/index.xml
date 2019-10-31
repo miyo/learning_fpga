@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Top on Learning FPGA</title>
-    <link>https://miyo.github.io/learning_fpga/</link>
-    <description>Recent content in Top on Learning FPGA</description>
+    <title>RTL編 on Learning FPGA</title>
+    <link>https://miyo.github.io/learning_fpga/docs/book01/</link>
+    <description>Recent content in RTL編 on Learning FPGA</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 30 Oct 2019 19:15:46 +0900</lastBuildDate>
     
-	<atom:link href="https://miyo.github.io/learning_fpga/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://miyo.github.io/learning_fpga/docs/book01/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -150,15 +150,6 @@ library ieee; use ieee.std_logic_1164.all; use ieee.numeric_std.all; entity stop
       <pubDate>Wed, 30 Oct 2019 19:15:46 +0900</pubDate>
       
       <guid>https://miyo.github.io/learning_fpga/docs/book01/ipi/</guid>
-      <description>Vivado IP Integratorを使った，IPベースの設計手法を身につけてみましょう．大規模かつ複雑なデザインも小さな部品を組み合わせるボトムアップ設計で開発効率の向上が図れます．</description>
-    </item>
-    
-    <item>
-      <title>IP Integrator入門</title>
-      <link>https://miyo.github.io/learning_fpga/docs/book03/ipi/</link>
-      <pubDate>Wed, 30 Oct 2019 19:15:46 +0900</pubDate>
-      
-      <guid>https://miyo.github.io/learning_fpga/docs/book03/ipi/</guid>
       <description>Vivado IP Integratorを使った，IPベースの設計手法を身につけてみましょう．大規模かつ複雑なデザインも小さな部品を組み合わせるボトムアップ設計で開発効率の向上が図れます．</description>
     </item>
     

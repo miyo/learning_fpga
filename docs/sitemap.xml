@@ -3,6 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book01/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book02/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://miyo.github.io/learning_fpga/docs/book01/introduction/</loc>
     <lastmod>2019-10-30T19:15:46+09:00</lastmod>
   </url>
@@ -38,37 +48,12 @@
   </url>
   
   <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/example/</loc>
+    <loc>https://miyo.github.io/learning_fpga/docs/book03/ipi/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
   </url>
   
   <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/example/table-of-contents/with-toc/</loc>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/example/table-of-contents/without-toc/</loc>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/posts/creating-a-new-theme/</loc>
-    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/posts/migrate-from-jekyll/</loc>
-    <lastmod>2014-03-10T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/example/table-of-contents/</loc>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/example/2nd/</loc>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/</loc>
+    <loc>https://miyo.github.io/learning_fpga/docs/book03/</loc>
     <lastmod>2019-10-30T19:15:46+09:00</lastmod>
   </url>
   
@@ -78,126 +63,20 @@
   </url>
   
   <url>
-    <loc>https://miyo.github.io/learning_fpga/posts/</loc>
-    <lastmod>2014-09-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/posts/goisforlovers/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/categories/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/categories/development/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/tags/development/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/posts/hugoisforlovers/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/tags/go/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/categories/golang/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/tags/golang/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/tags/hugo/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/tags/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/tags/templates/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/tags/themes/</loc>
-    <lastmod>2014-04-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://miyo.github.io/learning_fpga/docs/book01/introduction_figures/readme/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/example/2nd/3rd/4th/</loc>
-    <priority>0</priority>
+    <loc>https://miyo.github.io/learning_fpga/categories/</loc>
   </url>
   
   <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/example/2nd/3rd/</loc>
-    <priority>0</priority>
+    <loc>https://miyo.github.io/learning_fpga/docs/</loc>
   </url>
   
   <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/example/hidden/</loc>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/shortcodes/</loc>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/shortcodes/buttons/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/shortcodes/columns/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/shortcodes/expand/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/shortcodes/hints/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/shortcodes/katex/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/shortcodes/mermaid/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/shortcodes/tabs/</loc>
-    <priority>0</priority>
+    <loc>https://miyo.github.io/learning_fpga/tags/</loc>
   </url>
   
 </urlset>
