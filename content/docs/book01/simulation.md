@@ -6,7 +6,7 @@ draft: false
 weight: -1600
 ---
 
-この章では，``Lチカ''を題材に設計したデザインがどのように動いているのか，Vivado付属のシミュレータを使ったシミュレーションによって確認する方法を学びます．
+この章では，**Lチカ** を題材に設計したデザインがどのように動いているのか，Vivado付属のシミュレータを使ったシミュレーションによって確認する方法を学びます．
 
 # はじめに
 実際の開発現場で不具合を解析するときにもシミュレーションは大変有用な手段です．
@@ -18,16 +18,11 @@ HDLで記述したアプリケーション回路をFPGA上で動作させるた�
 そのため，シミュレーションを使用した内部の信号の観測がHDLレベルでの論理的なデバッグに有効です．この章では，このHDLコードの動作をVivadoシミュレータでシミュレーションする方法を学びましょう．
 
 # シミュレーションに必要なもの --- テスト・ベンチ
-CPUを買ってきても，マザーボードがないとパソコンとして動かないように，FPGAも周辺部品の載った``マザーボード''がないと動きません．FPGAもFPGA単体では動作せず，MicroBoardやDE0 nanoに搭載されているような回路を駆動するクロック信号やリセット信号が必須です．
+CPUを買ってきても，マザーボードがないとパソコンとして動かないように，FPGAも周辺部品の載った **マザーボード** がないと動きません．FPGAもFPGA単体では動作せず，MicroBoardやDE0 nanoに搭載されているような回路を駆動するクロック信号やリセット信号が必須です．
 
 実際にFPGAを使ったシステムでは，クロックは外から与えられるものですが，シミュレーションでは，FPGAに実装したHDLモジュールが動作するのに必要なクロック信号やリセット信号なども自前で用意しなければなりません(図\ref{fig:test_bench_image})．
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.95\textwidth]{chapter04_figures/test_bench_image.png}
-  \end{center}
-  \caption{設計したモジュールを実機で動作させる場合(a)とシミュレーションする場合(b)の違い．シミュレーションする場合にはテスト・ベンチを用意する必要がある．\label{fig:test_bench_image}}
- \end{figure}
+{{<figure src="../simulation_figures/test_bench_image.png" class="center" caption="図l: 設計したモジュールを実機で動作させる場合(a)とシミュレーションする場合(b)の違い．シミュレーションする場合にはテスト・ベンチを用意する必要がある．">}}
 
 といっても，とりたてて新しく特別なことを覚える必要があるわけではありません．外から与えられるべきクロック信号やリセット信号もHDLで記述できます．これをシミュレーション・コードやテスト・ベンチと呼びます．シミュレーション対象のモジュールで必要となる信号は，すべてテスト・ベンチで生成します．テスト・ベンチの記述方法はHDLソースとほとんど同じで，違いは下記の3つになります．
 
@@ -42,29 +37,20 @@ CPUを買ってきても，マザーボードがないとパソコンとして�
 
 たとえば，「10nsの時間を待つ」という動作はHDLで次のように記述します．この記述はビヘイビア・モデルの基本中の基本です．
 VHDLで記述する場合は，
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 wait for 10ns;
-\end{Verbatim}
-\end{quote}
-\end{figure}
-Verilog HDLで記述する場合には，初めに`timescaleを使って，
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< /highlight >}}
+
+Verilog HDLで記述する場合には，初めに ``timescale`を使って，
+
+{{< highlight vhdl "linenos=table" >}}
 `timescale 1ns / 1ps
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
+
 と，シミュレーションの単位時間を指定して，時間を挿入したい個所で
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 #10
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 と記述すると，指定した単位時間分の時間(この例では10ns)を作ることができます．
 
 # テストベンチの書き方
@@ -79,9 +65,7 @@ Verilog HDLで記述する場合には，初めに`timescaleを使って，
 #### モジュールのタイプをRTLに変更
 モジュールのタイプをBehaviorではなくRTLとしています．実際のところ今のVivadoでは，ここのキーワードは特に意味をなさないのですがシミュレーションのためのテストベンチをBehavior，合成してハードウェア化もするファイルはRTLと分けておくと見分けるのが容易になります．
 
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
  library ieee;
  use ieee.std_logic_1164.all;
  use ieee.numeric_std.all;
@@ -114,10 +98,7 @@ Verilog HDLで記述する場合には，初めに`timescaleを使って，
   end process;
 
  end RTL;
-\end{Verbatim}
-\end{quote}
-\caption{シミュレーション対象のコード\label{fig:target_list}}
-\end{figure}
+{{</ highlight >}}
 
 FPGA上に実装する場合には，第3章で紹介したように，3つの入出力信号をFPGA上の適切なI/Oに接続しなければなりません．一方，ソフトウェアで動作をシミュレーションするためには，これらの信号テスト・ベンチで生成して外から与える，ことにします．
 
@@ -125,16 +106,14 @@ FPGA上に実装する場合には，第3章で紹介したように，3つの�
 順序回路の要がクロック信号です．従って，クロック信号の生成はテスト・ベンチの基本中の基本です．
 
 カウンタ・モジュールの動作をシミュレーションするために，
-\verb|clk|に50MHzのクロック信号，すなわち10nsごとに\verb|‘1’|と\verb|‘0’|を繰り返す信号をテスト・ベンチで生成してみましょう．
+ `clk` に50MHzのクロック信号，すなわち10nsごとに `‘1’` と `‘0’` を繰り返す信号をテスト・ベンチで生成してみましょう．
 記述方法は，次の通りです．
 
 ### VHDLで記述する場合
 
-信号\verb|clk_i|を定義し，\verb|clk_i|に‘1’を代入して10ns待ちます．その10ns後\verb|clk_i|に‘0’を代入，その10n後に再び‘1’を\verb|clk_i|に代入，…ということを繰り返すことで，10nsで周期的に0→1→0→1...と変化する信号，すなわち50MHzのクロック信号が生成できます．
+信号 `clk_i` を定義し， `clk_i` に‘1’を代入して10ns待ちます．その10ns後 `clk_i` に‘0’を代入，その10n後に再び‘1’を `clk_i` に代入，…ということを繰り返すことで，10nsで周期的に0→1→0→1...と変化する信号，すなわち50MHzのクロック信号が生成できます．
 VHDLのコードで素直に実装すると，「10ns待つ」処理に相当する「wait for 10ns」を使って，
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 process begin
   clk_i <= '1';
   wait for 10ns;
@@ -146,56 +125,42 @@ process begin
   wait for 10ns;
   ...
 end process;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 となります．
 
-この\verb|process|文には，きっかけになる信号なしで，シミュレーションの開始同時にすぐさま処理が開始されます．
+この `process` 文には，きっかけになる信号なしで，シミュレーションの開始同時にすぐさま処理が開始されます．
 もちろん，これでもよいのですが，実はプロセス文は最後まで到達すると，また先頭から開始されるので
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 process begin
   clk_i <= '1'; wait for 10ns;
   clk_i <= '0'; wait for 10ns;
 end process;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 という記述で，ずっとクロック信号を作り続けることができます．
 
 ### Verilog HDLで記述する場合
-Verilog HDLでは，「単位時間XXが経過」を「\verb|#XX|」で表現できますから，\verb|clk_i|に'1'を代入したあと，
-「単位時間10が経過」の後\verb|clk_i|に'0'を代入して，また「単位時間10が経過」の後\verb|clk_i|に'1'を代入...
+Verilog HDLでは，「単位時間XXが経過」を「 `#XX` 」で表現できますから， `clk_i` に'1'を代入したあと，
+「単位時間10が経過」の後 `clk_i` に'0'を代入して，また「単位時間10が経過」の後 `clk_i` に'1'を代入...
 と繰り返すことで，1→0→1→...というシーケンスが定義できます．
 
 Verilog HDLでは，initial文で，シミュレーション実行開始時に一度だけ処理されるブロックを定義できます．
 すなわち，次のコード片で，シミュレーション開始後から単位時間10毎に信号を反転させる処理，つまり50MHzのクロック信号を生成できます．
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 initial begin
   clk_i = 0; #10;
   clk_i = 1; #10;
   ...
   forever #10 clk_i = !clk_i;
 end
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
-ずっと繰り返す処理を意味する\verb|forever|を使って，
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+ずっと繰り返す処理を意味する `forever` を使って，
+{{< highlight vhdl "linenos=table" >}}
 initial begin
   clk_i = 0;
   forever #10 clk_i = !clk_i;
 end
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 と記述することもできます．
 
 ## 必要な入力信号を生成する
@@ -213,10 +178,8 @@ end
  
 の2種類が考えられます．
 
-ここでは，クロックとは別のプロセス・ブロック内で，変数\verb|reset_i|の値を0→1→0と変化させることで，リセット・ボタンが押されたことに相当する信号を生成することにします．Verilog HDLであれば，リセットに相当するレジスタ変数\verb|reset_i|が適当なタイミングで変化するように記述できます．
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+ここでは，クロックとは別のプロセス・ブロック内で，変数 `reset_i` の値を0→1→0と変化させることで，リセット・ボタンが押されたことに相当する信号を生成することにします．Verilog HDLであれば，リセットに相当するレジスタ変数 `reset_i` が適当なタイミングで変化するように記述できます．
+{{< highlight vhdl "linenos=table" >}}
 initial begin
   reset_i <= '0'; -- 最初はリセット信号は'0'
   wait for 5ns;
@@ -225,9 +188,7 @@ initial begin
   reset_i <= '0'; -- しばらくしたら(100n秒後)，リセット信号を'0'に
   wait; -- 以降は何もしない
 end
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
 ## テスト・ベンチとシミュレーション対象のモジュールを接続する
 FPGA上に書き込んだ回路に信号を与えるためには，物理的にクロックやスイッチの端子を配線することになります．
@@ -246,9 +207,7 @@ VHDLでは，
 の2段階で，サブモジュールとして回路を呼び出すことができます．
 
 具体的には，はじめに，次のように，
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 -- サブ・モジュールであるtestの素性を記述
 component test
   port (
@@ -257,22 +216,16 @@ component test
     led   : out std_logic
 );
 end component;
-\end{Verbatim}
-\end{quote}
-\end{figure}
-\verb|component|として，使用するモジュールの素性を宣言したあとで，次のように
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< /highlight >}}
+ `component` として，使用するモジュールの素性を宣言したあとで，次のように
+{{< highlight vhdl "linenos=table" >}}
 -- サブ・モジュールをインスタンス化する
 U: test port map(
      clk   => clk_i,
      reset => reset_i
      led   => led,
    );
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 このモジュールのインスタンスを生成，配線関係を記述します．
 
 プログラミング言語Cでも，関数を呼び出す時には，関数の素性を明らかにするために「プロトタイプ宣言」をした上で，
@@ -283,9 +236,7 @@ U: test port map(
 説明が長くなりましたが，図\ref{fig:target_list}のリストをシミュレーションするためのテスト・ベンチの全容は，
 図\ref{fig:simulation_list}のようになります．
 
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -327,197 +278,68 @@ begin
     wait;
   end process;
 end Behavioral;
-\end{Verbatim}
-\end{quote}
-\caption{図\ref{fig:target_list}をシミレーションするためのVHDLによるテスト・ベンチ\label{fig:simulation_list}}
-\end{figure}
+{{</ highlight >}}
 
 # シミュレーションの実行手順
 
 シミュレーションのテスト用に新しくプロジェクトを作成しましょう．
-プロジェクト名は，\verb|project_2|としました．
+プロジェクト名は， `project_2` としました．
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_11_59_40.png}
-  \end{center}
-  \caption{新しく作成したプロジェクト}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_11_59_40.png" class="center" caption="新しく作成したプロジェクト" >}}
 
 前章と同様にtopモジュールを作成・追加してプロジェクトを作成したら，
 topモジュールの中身を図\ref{fig:target_list}のように変更しておきます．
 
 以降の手順は次の通りです．
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_11_59_46.png}
-  \end{center}
-  \caption{Sourcesの中のSimulation Sourcesの上で右クリックしてAdd Sourcesを選択}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_11_59_46.png" class="center" caption="Sourcesの中のSimulation Sourcesの上で右クリックしてAdd Sourcesを選択" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_11_59_52.png}
-  \end{center}
-  \caption{``Add or create simulation sources''にチェックが入っていることを確認してNextをクリック}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_11_59_52.png" class="center" caption="**Add or create simulation sources**にチェックが入っていることを確認してNextをクリック" >}}
+{{<figure src="../simulation4_figures/VirtualBox_Windows10_19_03_2018_12_00_00.png" class="center" caption="ファイル追加ダイアログで，Create Fileを選択" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_00_00.png}
-  \end{center}
-  \caption{ファイル追加ダイアログで，Create Fileを選択}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_01_34.png" class="center" caption="VHDLファイルとして，top\_simという名前のモジュールを作成する" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_01_34.png}
-  \end{center}
-  \caption{VHDLファイルとして，top\_simという名前のモジュールを作成する}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_01_42.png" class="center" caption="リストに追加された" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_01_42.png}
-  \end{center}
-  \caption{リストに追加された}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_01_49.png" class="center" caption="ポートの指定ダイアログ．今回は何もせずにOKをクリック" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_01_49.png}
-  \end{center}
-  \caption{ポートの指定ダイアログ．今回は何もせずにOKをクリック}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_01_54.png" class="center" caption="変更ないことを確認されるのでYesをクリックして，作業ステップをすすめる" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_01_54.png}
-  \end{center}
-  \caption{変更ないことを確認されるのでYesをクリックして，作業ステップをすすめる}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_02_05.png" class="center" caption="シミュレーション用のモジュールがプロジェクトに追加された" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_02_05.png}
-  \end{center}
-  \caption{シミュレーション用のモジュールがプロジェクトに追加された}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_06_25.png" class="center" caption="シミュレーションコードをtop\_simに反映したところ．top\_simからtopのモジュールがUという名前でインスタンス化されている様子が階層化されて表示される．" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_06_25.png}
-  \end{center}
-  \caption{シミュレーションコードをtop\_simに反映したところ．top\_simからtopのモジュールがUという名前でインスタンス化されている様子が階層化されて表示される．}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_06_33.png" class="center" caption="Flow NavigatorのRun Simulationでシミュレーションの開始" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_06_33.png}
-  \end{center}
-  \caption{Flow NavigatorのRun Simulationでシミュレーションの開始}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_06_40.png" class="center" caption="Run Behavioral Simultaionを選択" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_06_40.png}
-  \end{center}
-  \caption{Run Behavioral Simultaionを選択}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_06_45.png" class="center" caption="シミュレーション開始には少し時間がかかる" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_06_45.png}
-  \end{center}
-  \caption{シミュレーション開始には少し時間がかかる}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_07_37.png" class="center" caption="シミュレーションが開始された" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_07_37.png}
-  \end{center}
-  \caption{シミュレーションが開始された}
- \end{figure}
-
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_07_58.png}
-  \end{center}
-  \caption{シミュレーション時間を指定して，シミュレーションステップをすすめる}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_07_58.png" class="center" caption="シミュレーション時間を指定して，シミュレーションステップをすすめる" >}}
 
 指定した時間のシミュレーションが終わるとストップします．いつまでもストップしない場合には，一時停止アイコンをクリックして，強制的に止めることができます．
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_08_05.png}
-  \end{center}
-  \caption{指定した時間のシミュレーションが終了}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_05.png" class="center" caption="指定した時間のシミュレーションが終了" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_08_09.png}
-  \end{center}
-  \caption{波形表示画面に全シミュレーション結果を表示(FIT)させたところ}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_09.png" class="center" caption="波形表示画面に全シミュレーション結果を表示(FIT)させたところ" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_08_29.png}
-  \end{center}
-  \caption{一部分を拡大した様子．3bit目をledに接続しているため8クロック毎にledがON/OFFしている様子がみてとれる}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_29.png" class="center" caption="一部分を拡大した様子．3bit目をledに接続しているため8クロック毎にledがON/OFFしている様子がみてとれる" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_08_38.png}
-  \end{center}
-  \caption{内部モジュール(今回でいうとtopの中身を確認することもできる)}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_38.png" class="center" caption="内部モジュール(今回でいうとtopの中身を確認することもできる)" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_08_48.png}
-  \end{center}
-  \caption{topモジュールのcounterを波形表示画面に追加．ただし，内部の値の多くは非表示状態では保存されていないので，そのままでは値の変化を確認できない}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_48.png" class="center" caption="topモジュールのcounterを波形表示画面に追加．ただし，内部の値の多くは非表示状態では保存されていないので，そのままでは値の変化を確認できない" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_08_52.png}
-  \end{center}
-  \caption{シミュレーションを一度リセット}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_52.png" class="center" caption="シミュレーションを一度リセット" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_08_58.png}
-  \end{center}
-  \caption{再度シミュレーション．今度は時間指定なくシミューレションしてみる}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_58.png" class="center" caption="再度シミュレーション．今度は時間指定なくシミューレションしてみる" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_09_04.png}
-  \end{center}
-  \caption{いつまでも終わらないので一時停止アイコンでシミュレーションをストップ}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_09_04.png" class="center" caption="いつまでも終わらないので一時停止アイコンでシミュレーションをストップ" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_09_10.png}
-  \end{center}
-  \caption{ストップした箇所のソースコードが表示される}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_09_10.png" class="center" caption="ストップした箇所のソースコードが表示される" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter04_figures/VirtualBox_Windows10_19_03_2018_12_09_39.png}
-  \end{center}
-  \caption{波形を確認してみると，内部のcounterがclkにあわせてインクリメントしていること，counterの3bit目がledの'0'/'1'と同じであることが確認できる}
- \end{figure}
+{{<figure src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_09_39.png" class="center" caption="波形を確認してみると，内部のcounterがclkにあわせてインクリメントしていること，counterの3bit目がledの'0'/'1'と同じであることが確認できる" >}}
 
 # 課題
 

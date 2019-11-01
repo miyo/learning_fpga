@@ -25,7 +25,7 @@ HDLのいろいろな記述方法を使って，少し複雑なモジュール�
 
 次のリストはストップウォッチを実装するためのトップモジュールの例です．3色LEDの明るさを適当に調節するために，PWMモジュールを使って出力を変調しています．PWMモジュールによって，たとえば\verb|'1'|を出力する場合でも，適当なタイミングで'1'と'0'がまぜられることで明るさを抑えることができます．
 
-```
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -133,7 +133,7 @@ begin
     port map(clk => clk, a => "1100", d => msec_out(5), q => led6_b);
 
 end RTL;
-```
+{{< /highlight >}}
 
 `stopwatch`モジュールを実装して，完成させてみましょう．
 
@@ -165,7 +165,7 @@ RS-232-Cでは，図\ref{fig:serial_comm_format}のように，8ビットのデ�
 ## 送信モジュール
 決められた速度で信号をパタパタと変化させるだけです．ただし，一般に，シリアル通信の速度は回路の動作クロックに対して，とても遅いので，データを送信している途中に送るべき信号を更新してしまわないようにブロックする仕組みが必要です．VHDLによる実装例を示します．
 
-```
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -281,11 +281,11 @@ begin
   end process;
 
 end rtl;
-```
+{{< /highlight >}}
 
 内部で利用している`clk_div`の実装は次の通りです．
 
-```
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 use ieee.std_logic_1164.ALL;
 use ieee.numeric_std.all;
@@ -321,7 +321,7 @@ begin
   end process;
 
 end RTL;
-```
+{{< /highlight >}}
 
 `clk_div`モジュールで生成した，シリアル送信用の信号にあわせて，送信すべきデータを1bitずつ出力します．
 また，出力中はready信号を`'0'`にすることで，送信モジュールが動作中であることを上位のモジュールに伝えられるようになっています．
@@ -332,7 +332,7 @@ end RTL;
 受信モジュールは送信モジュールに比べて少し複雑になります．送信側は自分のタイミングで信号を送ればいいのに対し，受信側ではスタート・ビットを頼りにデータの開始を検出し，以降の信号を正しい間隔でビットに分割しなければならないからです．また，データにはノイズが乗っている可能性もあるので，データを正しく取得する仕組みも必要です．
 VHDLとVerilog HDLによる実装の例が次のリストです．この例では，通信速度の16倍のクロックでデータをサンプリング（一定間隔で読み込む）することで，データを受信しています．
 
-```
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -423,7 +423,7 @@ begin
   end process;
 
 end RTL;
-```
+{{< /highlight >}}
 
 通信速度の16倍でデータをサンプリングしているので，スタート・ビットは16サイクル分が取得できるはずです．スタートビットのはじまりと思われる'0'というデータを確認してから6サイクル目のデータをもう一度取得し，そのデータがやっぱり'0'であれば，データ送信が開始されたと解釈します（ソース・コード中の状態1）．データが送信されていることを確認した後は，16サイクル毎にデータを取得します（ソース・コード中の状態2）．8bit分データを取得したら完了です．
 
@@ -458,7 +458,7 @@ SSM2603とやりとりするI2S信号は図\ref{fig:ssm2603_protocol}の通り�
 ## I2Sの送信
 次のリストは，I2Sの送信モジュールの実装例です．シミュレーションによって，信号が図\ref{fig:ssm2603_protocol}に示したように出力されることを確認してみましょう．
 
-```
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 
 use ieee.std_logic_1164.all;
@@ -542,12 +542,12 @@ begin
   end process;
 
 end RTL;
-```
+{{< /highlight >}}
 
 ## I2Sの受信
 次は受信モジュールです．送信モジュールと組み合わせてシミュレーションすることで，入力した音声信号をI2Sフォーマットに変換し，それが復号される様を観測することができます．
 
-```
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 
 use ieee.std_logic_1164.all;
@@ -645,7 +645,7 @@ begin
   end process;
 
 end RTL;
-```
+{{< /highlight >}}
 
 # 発展
 紹介したアプリケーション実験を応用して，次のような課題に挑戦してみましょう．

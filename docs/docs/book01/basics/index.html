@@ -9,10 +9,7 @@
 ILAを使ってFPGA内部の信号を観測する FPGAは，FPGAの中で回路がどのように動作しているのかを知るためのILA(Internal Logic Analyzer)という仕組みを持っています．実験コードを書きはじめる前に，このILAの使い方を学んでみましょう．
 LチカでILAの動作を学ぶ 三度目の登場ですが，LチカでILAの動作を学びましょう．第4章で利用した\verb|project_2|を使用します．
 準備 ILAを使ってデバッグするために，topモジュールのソースコードを次のように書き変えてください．
-\begin{figure}[H] \begin{quote} \begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8] library ieee; use ieee.std_logic_1164.all; use ieee.numeric_std.all;
-entity top is Port ( clk : in std_logic; reset : in std_logic; led : out std_logic ); end top;
-architecture RTL of top is
-attribute mark_debug : string; &ndash; (1) 追加 signal counter : unsigned(31 downto 0) := (others =&gt; &lsquo;0&rsquo;); attribute mark_debug of counter : signal is &ldquo;true&rdquo;; &ndash; (2) 追加" />
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34  library ieee; use ieee.std_logic_1164.all; use ieee.numeric_std.all; entity top is Port ( clk : in std_logic; reset : in std_logic; led : out std_logic ); end top; architecture RTL of top is attribute mark_debug : string; -- (1) 追加 signal counter : unsigned(31 downto 0) := (others =&gt; &#39;0&#39;); attribute mark_debug of counter : signal is &#34;true&#34;; -- (2) 追加 begin -- カウンタの3bit目をledに接続(実機では23bit目を使った) led &lt;= std_logic(counter(3)); process(clk) -- クロックの変化で動作するプロセス begin if rising_edge(clk) then -- クロックの立ち上がりであれば if reset = &#39;1&#39; then counter &lt;= (others =&gt; &#39;0&#39;); else counter &lt;= counter &#43; 1; -- カウンタをインクリメント end if; end if; end process; end RTL;   (1)と(2)が追加ポイントです．(1)で\verb|mark_debug|というattributeを利用することを宣言し，(2)でcounterに\verb|mark_debug|というattributeを付与しています．attributeは，ツールに対する指示子です．Vivadoでは，\verb|mark_debug|を付与した信号はデバッグ対象の可能性があるとして特別扱いします．" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://miyo.github.io/learning_fpga/docs/book01/basics/" />
 <meta property="article:published_time" content="2019-10-30T19:15:46+09:00" />
@@ -24,7 +21,7 @@ attribute mark_debug : string; &ndash; (1) 追加 signal counter : unsigned(31 d
 <link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
 
 
-<script defer src="/learning_fpga/search.min.529345d453eec448d05b64605a61e5afcf4341f7bbf82c125c46c64081a22bea.js" integrity="sha256-UpNF1FPuxEjQW2RgWmHlr89DQfe7&#43;CwSXEbGQIGiK&#43;o="></script>
+<script defer src="/learning_fpga/search.min.b64ae2feb67299754e70109be9d1fa8ab813b22670a4b5b94a857b4be5740e40.js" integrity="sha256-tkri/rZymXVOcBCb6dH6irgTsiZwpLW5SoV7S&#43;V0DkA="></script>
 
 <!--
 Made with Book Theme
@@ -146,16 +143,6 @@ https://github.com/alex-shpak/hugo-book
 
   <a href="/learning_fpga/docs/book01/experiments/" >
       実験
-  </a>
-
-</li>
-      
-    
-      
-        <li>
-
-  <a href="/learning_fpga/docs/book01/ipi/" >
-      IP Integrator入門
   </a>
 
 </li>
@@ -296,251 +283,312 @@ https://github.com/alex-shpak/hugo-book
 
 <p>ILAを使ってデバッグするために，topモジュールのソースコードを次のように書き変えてください．</p>
 
-<p>\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
- library ieee;
- use ieee.std_logic_1164.all;
- use ieee.numeric_std.all;</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"> <span style="color:#66d9ef">library</span> ieee;
+ <span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+ <span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
 
-<p>entity top is
-    Port ( clk   : in std_logic;
-           reset : in std_logic;
-           led   : out std_logic
+ <span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+    <span style="color:#66d9ef">Port</span> ( clk   <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+           reset <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+           led   <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>
          );
- end top;</p>
+ <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">top</span>;
 
-<p>architecture RTL of top is</p>
+ <span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+  
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>; <span style="color:#75715e">-- (1) 追加</span>
+  <span style="color:#66d9ef">signal</span> counter <span style="color:#f92672">:</span> <span style="color:#66d9ef">unsigned</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">:=</span> (<span style="color:#66d9ef">others</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;0&#39;</span>);
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> counter <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>; <span style="color:#75715e">-- (2) 追加</span>
 
-<p>attribute mark_debug : string; &ndash; (1) 追加
-  signal counter : unsigned(31 downto 0) := (others =&gt; &lsquo;0&rsquo;);
-  attribute mark_debug of counter : signal is &ldquo;true&rdquo;; &ndash; (2) 追加</p>
+ <span style="color:#66d9ef">begin</span>
 
-<p>begin</p>
+  <span style="color:#75715e">-- カウンタの3bit目をledに接続(実機では23bit目を使った)</span>
+  led <span style="color:#f92672">&lt;=</span> <span style="color:#66d9ef">std_logic</span>(counter(<span style="color:#ae81ff">3</span>));
 
-<p>&ndash; カウンタの3bit目をledに接続(実機では23bit目を使った)
-  led &lt;= std_logic(counter(3));</p>
+  <span style="color:#66d9ef">process</span>(clk) <span style="color:#75715e">-- クロックの変化で動作するプロセス</span>
+  <span style="color:#66d9ef">begin</span>
+    <span style="color:#66d9ef">if</span> rising_edge(clk) <span style="color:#66d9ef">then</span> <span style="color:#75715e">-- クロックの立ち上がりであれば</span>
+      <span style="color:#66d9ef">if</span> reset <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">then</span>
+        counter <span style="color:#f92672">&lt;=</span> (<span style="color:#66d9ef">others</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;0&#39;</span>);
+      <span style="color:#66d9ef">else</span>
+        counter <span style="color:#f92672">&lt;=</span> counter <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">-- カウンタをインクリメント</span>
+      <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+    <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
 
-<p>process(clk) &ndash; クロックの変化で動作するプロセス
-  begin
-    if rising_edge(clk) then &ndash; クロックの立ち上がりであれば
-      if reset = &lsquo;1&rsquo; then
-        counter &lt;= (others =&gt; &lsquo;0&rsquo;);
-      else
-        counter &lt;= counter + 1; &ndash; カウンタをインクリメント
-      end if;
-    end if;
-  end process;</p>
-
-<p>end RTL;
-\end{Verbatim}
-\end{quote}
-\caption{ILA実験用に変更したリストの例}
-\end{figure}</p>
+ <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div>
 
 <p>(1)と(2)が追加ポイントです．(1)で\verb|mark_debug|というattributeを利用することを宣言し，(2)でcounterに\verb|mark_debug|というattributeを付与しています．attributeは，ツールに対する指示子です．Vivadoでは，\verb|mark_debug|を付与した信号はデバッグ対象の可能性があるとして特別扱いします．</p>
 
 <p>コードが準備できたら，一度合成してピン配置まで終わらせてしまいましょう．</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_13_59_41.png}
-  \end{center}
-  \caption{I/O Planningでclk，reset，ledのピン配置を決定する}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_13_59_41.png"
+         alt="I/O Planningでclk，reset，ledのピン配置を決定する"/> <figcaption>
+            <p>I/O Planningでclk，reset，ledのピン配置を決定する</p>
+        </figcaption>
+</figure>
+
 
 <h2 id="ilaのセットアップと利用方法">ILAのセットアップと利用方法</h2>
 
 <p>準備ができたらILAを追加して，その動作の様子を確認してみましょう．</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_13_57_01.png}
-  \end{center}
-  \caption{一度合成する}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_13_57_01.png"
+         alt="一度合成する"/> <figcaption>
+            <p>一度合成する</p>
+        </figcaption>
+</figure>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_13_58_37.png}
-  \end{center}
-  \caption{合成が終わったらOpen Synthesized Designで合成結果を開く}
- \end{figure}</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_00_09.png}
-  \end{center}
-  \caption{LayoutメニューのDebugをクリックしてデバッグビューに変更する}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_13_58_37.png"
+         alt="合成が終わったらOpen Synthesized Designで合成結果を開く"/> <figcaption>
+            <p>合成が終わったらOpen Synthesized Designで合成結果を開く</p>
+        </figcaption>
+</figure>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_03_37.png}
-  \end{center}
-  \caption{ILA設定用の画面 \label{fig:debug_mode_view}}
- \end{figure}</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_03_43.png}
-  \end{center}
-  \caption{下にある虫みたいなアイコンをクリックしてILA設定用のウィザードを開く}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_00_09.png"
+         alt="LayoutメニューのDebugをクリックしてデバッグビューに変更する"/> <figcaption>
+            <p>LayoutメニューのDebugをクリックしてデバッグビューに変更する</p>
+        </figcaption>
+</figure>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_03_58.png}
-  \end{center}
-  \caption{ILA設定用ウィザードの開始}
- \end{figure}</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_03.png}
-  \end{center}
-  \caption{mark_debugを付与したcounterがリストに追加されているので，そのままNextですすむ．ここで新たにILAによる観測対象を追加したい場合には+アイコンをクリックすると信号を選ぶことができる．逆にリストにある信号を対象から取り除きたい場合には，取り除きたい信号を選択して-をクリックする}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_03_37.png"
+         alt="ILA設定用の画面 \label{fig:debug_mode_view}"/> <figcaption>
+            <p>ILA設定用の画面 \label{fig:debug_mode_view}</p>
+        </figcaption>
+</figure>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_08.png}
-  \end{center}
-  \caption{ILAで取得するデータ数の設定など．今回はそのままにしてNextですすむ}
- \end{figure}</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_13.png}
-  \end{center}
-  \caption{サマリの表示．Finishで完了}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_03_43.png"
+         alt="下にある虫みたいなアイコンをクリックしてILA設定用のウィザードを開く"/> <figcaption>
+            <p>下にある虫みたいなアイコンをクリックしてILA設定用のウィザードを開く</p>
+        </figcaption>
+</figure>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_28.png}
-  \end{center}
-  \caption{ウィザードが閉じてILAの設定は完了．ILAが追加できていることがわかる．あとは，Generate Bitstreamでビットファイルを作成すればよい．}
- \end{figure}</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_33.png}
-  \end{center}
-  \caption{ILAの設定情報をxdcファイルに保存してよいかの確認．Yesで次のステップにすすむ．}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_03_58.png"
+         alt="ILA設定用ウィザードの開始"/> <figcaption>
+            <p>ILA設定用ウィザードの開始</p>
+        </figcaption>
+</figure>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_44.png}
-  \end{center}
-  \caption{Generate bitstreamの前に依存する他のタスクを実行します，という確認ダイアログ．Yesで次のステップへ}
- \end{figure}</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_49.png}
-  \end{center}
-  \caption{合成と配置配線の開始}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_03.png"
+         alt="mark_debugを付与したcounterがリストに追加されているので，そのままNextですすむ．ここで新たにILAによる観測対象を追加したい場合には&#43;アイコンをクリックすると信号を選ぶことができる．逆にリストにある信号を対象から取り除きたい場合には，取り除きたい信号を選択して-をクリックする"/> <figcaption>
+            <p>mark_debugを付与したcounterがリストに追加されているので，そのままNextですすむ．ここで新たにILAによる観測対象を追加したい場合には+アイコンをクリックすると信号を選ぶことができる．逆にリストにある信号を対象から取り除きたい場合には，取り除きたい信号を選択して-をクリックする</p>
+        </figcaption>
+</figure>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_23_17.png}
-  \end{center}
-  \caption{無事に合成と配置配線が終了しビットファイルができあがったところ．Open Hardware Managerを選択してOKをクリックすることで，ハードウェアマネージャの起動の手間を省くことができる}
- \end{figure}</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_23_59.png}
-  \end{center}
-  \caption{FPGAとパソコンをUSBケーブルで接続してAuto connectで認識させた後，Program Deviceをクリック}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_08.png"
+         alt="ILAで取得するデータ数の設定など．今回はそのままにしてNextですすむ"/> <figcaption>
+            <p>ILAで取得するデータ数の設定など．今回はそのままにしてNextですすむ</p>
+        </figcaption>
+</figure>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_24_06.png}
-  \end{center}
-  \caption{bitファイルはFPGAに，ILAのパソコン側の定義ファイルであるilxはVivadoに読み込ませる．}
- \end{figure}</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_24_16.png}
-  \end{center}
-  \caption{書き込み中}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_13.png"
+         alt="サマリの表示．Finishで完了"/> <figcaption>
+            <p>サマリの表示．Finishで完了</p>
+        </figcaption>
+</figure>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_24_38.png}
-  \end{center}
-  \caption{FPGAへのダウンロードが終了した．また，ILAによる動作のモニタ画面が表示された}
- \end{figure}</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_24_53.png}
-  \end{center}
-  \caption{二重矢印のアイコンをクリックすると，その時点での値をキャプチャしてくれる}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_28.png"
+         alt="ウィザードが閉じてILAの設定は完了．ILAが追加できていることがわかる．あとは，Generate Bitstreamでビットファイルを作成すればよい．"/> <figcaption>
+            <p>ウィザードが閉じてILAの設定は完了．ILAが追加できていることがわかる．あとは，Generate Bitstreamでビットファイルを作成すればよい．</p>
+        </figcaption>
+</figure>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_25_07.png}
-  \end{center}
-  \caption{虫眼鏡アイコンで拡大すると，値が1ずつ増えていることが確認できる}
- \end{figure}</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_25_21.png}
-  \end{center}
-  \caption{実機デバッガでは値をキャプチャする条件(トリガ条件)を指定する}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_33.png"
+         alt="ILAの設定情報をxdcファイルに保存してよいかの確認．Yesで次のステップにすすむ．"/> <figcaption>
+            <p>ILAの設定情報をxdcファイルに保存してよいかの確認．Yesで次のステップにすすむ．</p>
+        </figcaption>
+</figure>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_25_27.png}
-  \end{center}
-  \caption{counterの値をトリガ条件に使用することとする}
- \end{figure}</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_25_34.png}
-  \end{center}
-  \caption{counterの値がトリガ条件として登録された}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_44.png"
+         alt="Generate bitstreamの前に依存する他のタスクを実行します，という確認ダイアログ．Yesで次のステップへ"/> <figcaption>
+            <p>Generate bitstreamの前に依存する他のタスクを実行します，という確認ダイアログ．Yesで次のステップへ</p>
+        </figcaption>
+</figure>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_25_50.png}
-  \end{center}
-  \caption{counterが00001000になった時点でキャプチャするように設定．トリガ値を指定したら三角アイコンでキャプチャを開始する}
- \end{figure}</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_27_49.png}
-  \end{center}
-  \caption{counterが00001000になった時点のデータをキャプチャすることができた}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_49.png"
+         alt="合成と配置配線の開始"/> <figcaption>
+            <p>合成と配置配線の開始</p>
+        </figcaption>
+</figure>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_28_03.png}
-  \end{center}
-  \caption{トリガにはドントケア(X)を指定することも可能．ここでは下位16bitが3000になるデータを取得するように指定してみる}
- \end{figure}</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_28_15.png}
-  \end{center}
-  \caption{上位16bitは指定なく，下位16bitが3000の時点のデータがキャプチャできていることがわかる}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_23_17.png"
+         alt="無事に合成と配置配線が終了しビットファイルができあがったところ．Open Hardware Managerを選択してOKをクリックすることで，ハードウェアマネージャの起動の手間を省くことができる"/> <figcaption>
+            <p>無事に合成と配置配線が終了しビットファイルができあがったところ．Open Hardware Managerを選択してOKをクリックすることで，ハードウェアマネージャの起動の手間を省くことができる</p>
+        </figcaption>
+</figure>
+
+
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_23_59.png"
+         alt="FPGAとパソコンをUSBケーブルで接続してAuto connectで認識させた後，Program Deviceをクリック"/> <figcaption>
+            <p>FPGAとパソコンをUSBケーブルで接続してAuto connectで認識させた後，Program Deviceをクリック</p>
+        </figcaption>
+</figure>
+
+
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_24_06.png"
+         alt="bitファイルはFPGAに，ILAのパソコン側の定義ファイルであるilxはVivadoに読み込ませる．"/> <figcaption>
+            <p>bitファイルはFPGAに，ILAのパソコン側の定義ファイルであるilxはVivadoに読み込ませる．</p>
+        </figcaption>
+</figure>
+
+
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_24_16.png"
+         alt="書き込み中"/> <figcaption>
+            <p>書き込み中</p>
+        </figcaption>
+</figure>
+
+
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_24_38.png"
+         alt="FPGAへのダウンロードが終了した．また，ILAによる動作のモニタ画面が表示された"/> <figcaption>
+            <p>FPGAへのダウンロードが終了した．また，ILAによる動作のモニタ画面が表示された</p>
+        </figcaption>
+</figure>
+
+
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_24_53.png"
+         alt="二重矢印のアイコンをクリックすると，その時点での値をキャプチャしてくれる"/> <figcaption>
+            <p>二重矢印のアイコンをクリックすると，その時点での値をキャプチャしてくれる</p>
+        </figcaption>
+</figure>
+
+
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_07.png"
+         alt="虫眼鏡アイコンで拡大すると，値が1ずつ増えていることが確認できる"/> <figcaption>
+            <p>虫眼鏡アイコンで拡大すると，値が1ずつ増えていることが確認できる</p>
+        </figcaption>
+</figure>
+
+
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_21.png"
+         alt="実機デバッガでは値をキャプチャする条件(トリガ条件)を指定する"/> <figcaption>
+            <p>実機デバッガでは値をキャプチャする条件(トリガ条件)を指定する</p>
+        </figcaption>
+</figure>
+
+
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_27.png"
+         alt="counterの値をトリガ条件に使用することとする"/> <figcaption>
+            <p>counterの値をトリガ条件に使用することとする</p>
+        </figcaption>
+</figure>
+
+
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_34.png"
+         alt="counterの値がトリガ条件として登録された"/> <figcaption>
+            <p>counterの値がトリガ条件として登録された</p>
+        </figcaption>
+</figure>
+
+
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_50.png"
+         alt="counterが00001000になった時点でキャプチャするように設定．トリガ値を指定したら三角アイコンでキャプチャを開始する"/> <figcaption>
+            <p>counterが00001000になった時点でキャプチャするように設定．トリガ値を指定したら三角アイコンでキャプチャを開始する</p>
+        </figcaption>
+</figure>
+
+
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_27_49.png"
+         alt="counterが00001000になった時点のデータをキャプチャすることができた"/> <figcaption>
+            <p>counterが00001000になった時点のデータをキャプチャすることができた</p>
+        </figcaption>
+</figure>
+
+
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_28_03.png"
+         alt="トリガにはドントケア(X)を指定することも可能．ここでは下位16bitが3000になるデータを取得するように指定してみる"/> <figcaption>
+            <p>トリガにはドントケア(X)を指定することも可能．ここでは下位16bitが3000になるデータを取得するように指定してみる</p>
+        </figcaption>
+</figure>
+
+
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_28_15.png"
+         alt="上位16bitは指定なく，下位16bitが3000の時点のデータがキャプチャできていることがわかる"/> <figcaption>
+            <p>上位16bitは指定なく，下位16bitが3000の時点のデータがキャプチャできていることがわかる</p>
+        </figcaption>
+</figure>
+
 
 <h2 id="ila挿入すると回路は変わる">ILA挿入すると回路は変わる</h2>
 
@@ -550,12 +598,13 @@ https://github.com/alex-shpak/hugo-book
 
 <p>しかし，mark_debugアトリビュートを付与して合成した場合には，もちろん最適化するわけにはいかないため，図\ref{fig:debug_mode_view}のように要/不要にかかわらず32bit分すべてのレジスタが回路として生成されています．</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_00_24.png}
-  \end{center}
-  \caption{counterにmark_debugがない場合 \label{fig:without_mark_debug}}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_00_24.png"
+         alt="counterにmark_debugがない場合 \label{fig:without_mark_debug}"/> <figcaption>
+            <p>counterにmark_debugがない場合 \label{fig:without_mark_debug}</p>
+        </figcaption>
+</figure>
+
 
 <h1 id="基本実験の準備">基本実験の準備</h1>
 
@@ -563,72 +612,116 @@ https://github.com/alex-shpak/hugo-book
 ここで作るのは，図\ref{fig:experiment_template}のように4bitの入力と4bitの出力ポートで構成されるモジュールです．
 ZYBOのDIPスイッチSW0〜SW3を4bitの入力に，LED LD0〜LD3を4bitの出力にマッピングすることにします．</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.6\textwidth]{chapter05_figures/experiment_template.png}
-  \end{center}<br />
-  \caption{実験用の簡単なテンプレートモジュール \label{fig:experiment_template}}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/experiment_template.png"
+         alt="n{実験用の簡単なテンプレートモジュール \label{fig:experiment_template}"/> <figcaption>
+            <p>n{実験用の簡単なテンプレートモジュール \label{fig:experiment_template}</p>
+        </figcaption>
+</figure>
+
 
 <p>次のような内容のVHDLファイルを用意します．</p>
 
-<p>\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
-library ieee;</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> ieee;
 
-<p>use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;</p>
+<span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+<span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
 
-<p>entity top is
-  port (
-    CLK : in  std_logic;
-    SW  : in  std_logic_vector(3 downto 0);
-    LD  : out std_logic_vector(3 downto 0)
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">port</span> (
+    CLK <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+    SW  <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+    LD  <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>)
     );
-end entity top;</p>
+<span style="color:#66d9ef">end</span> <span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">top</span>;
 
-<p>architecture RTL of top is</p>
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
 
-<p>signal sw_d0 : std_logic_vector(3 downto 0);
-  signal sw_d1 : std_logic_vector(3 downto 0);</p>
+  <span style="color:#66d9ef">signal</span> sw_d0 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">signal</span> sw_d1 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  
+<span style="color:#66d9ef">begin</span>
 
-<p>begin</p>
-
-<p>LD &lt;= sw_d1;</p>
-
-<p>process(CLK)
-  begin
-    if rising_edge(CLK) then
-      sw_d0 &lt;= SW;
-      sw_d1 &lt;= sw_d0;
-    end if;
-  end process;</p>
-
-<p>end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+  LD <span style="color:#f92672">&lt;=</span> sw_d1;
+  
+  <span style="color:#66d9ef">process</span>(CLK)
+  <span style="color:#66d9ef">begin</span>
+    <span style="color:#66d9ef">if</span> rising_edge(CLK) <span style="color:#66d9ef">then</span>
+      sw_d0 <span style="color:#f92672">&lt;=</span> SW;
+      sw_d1 <span style="color:#f92672">&lt;=</span> sw_d0;
+    <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
+  
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div>
 
 <p>ピン定義も用意しましょう．第3章で紹介したようにGUIで設定することもできますが，スクリプトファイルでピン定義を決めることもできます．実験に使用するZYBO Z7-20の全てのI/O定義は\url{<a href="https://github.com/Digilent/digilent-xdc/blob/master/Zybo-Z7-Master.xdc}にまとまっています．URL先の情報に基づいて，使用するピンの定義をまとめると次のようになります．top.xdcなどと，拡張子を.xdcとしてファイルに保存します．">https://github.com/Digilent/digilent-xdc/blob/master/Zybo-Z7-Master.xdc}にまとまっています．URL先の情報に基づいて，使用するピンの定義をまとめると次のようになります．top.xdcなどと，拡張子を.xdcとしてファイルに保存します．</a>
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
-set_property -dict {PACKAGE_PIN K17 IOSTANDARD LVCMOS33 } [get_ports {CLK}];
-create_clock -add -name clk_pin -period 8.00 -waveform {0 4} [get_ports {CLK}];</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl">set_property <span style="color:#f92672">-</span>dict <span style="color:#960050;background-color:#1e0010">{</span>PACKAGE_PIN K17 IOSTANDARD LVCMOS33 <span style="color:#960050;background-color:#1e0010">}</span> [get_ports <span style="color:#960050;background-color:#1e0010">{</span>CLK<span style="color:#960050;background-color:#1e0010">}</span>];
+create_clock <span style="color:#f92672">-</span>add <span style="color:#f92672">-</span>name clk_pin <span style="color:#f92672">-</span>period <span style="color:#ae81ff">8</span>.<span style="color:#ae81ff">00</span> <span style="color:#f92672">-</span>waveform <span style="color:#960050;background-color:#1e0010">{</span><span style="color:#ae81ff">0</span> <span style="color:#ae81ff">4</span><span style="color:#960050;background-color:#1e0010">}</span> [get_ports <span style="color:#960050;background-color:#1e0010">{</span>CLK<span style="color:#960050;background-color:#1e0010">}</span>];
 
-<p>set_property -dict {PACKAGE_PIN G15 IOSTANDARD LVCMOS33} [get_ports {SW[0]}];
-set_property -dict {PACKAGE_PIN P15 IOSTANDARD LVCMOS33} [get_ports {SW[1]}];
-set_property -dict {PACKAGE_PIN W13 IOSTANDARD LVCMOS33} [get_ports {SW[2]}];
-set_property -dict {PACKAGE_PIN T16 IOSTANDARD LVCMOS33} [get_ports {SW[3]}];</p>
+set_property <span style="color:#f92672">-</span>dict <span style="color:#960050;background-color:#1e0010">{</span>PACKAGE_PIN G15 IOSTANDARD LVCMOS33<span style="color:#960050;background-color:#1e0010">}</span> [get_ports <span style="color:#960050;background-color:#1e0010">{</span>SW[<span style="color:#ae81ff">0</span>]<span style="color:#960050;background-color:#1e0010">}</span>];
+set_property <span style="color:#f92672">-</span>dict <span style="color:#960050;background-color:#1e0010">{</span>PACKAGE_PIN P15 IOSTANDARD LVCMOS33<span style="color:#960050;background-color:#1e0010">}</span> [get_ports <span style="color:#960050;background-color:#1e0010">{</span>SW[<span style="color:#ae81ff">1</span>]<span style="color:#960050;background-color:#1e0010">}</span>];
+set_property <span style="color:#f92672">-</span>dict <span style="color:#960050;background-color:#1e0010">{</span>PACKAGE_PIN W13 IOSTANDARD LVCMOS33<span style="color:#960050;background-color:#1e0010">}</span> [get_ports <span style="color:#960050;background-color:#1e0010">{</span>SW[<span style="color:#ae81ff">2</span>]<span style="color:#960050;background-color:#1e0010">}</span>];
+set_property <span style="color:#f92672">-</span>dict <span style="color:#960050;background-color:#1e0010">{</span>PACKAGE_PIN T16 IOSTANDARD LVCMOS33<span style="color:#960050;background-color:#1e0010">}</span> [get_ports <span style="color:#960050;background-color:#1e0010">{</span>SW[<span style="color:#ae81ff">3</span>]<span style="color:#960050;background-color:#1e0010">}</span>];
 
-<p>set_property -dict {PACKAGE_PIN M14 IOSTANDARD LVCMOS33} [get_ports {LD[0]}];
-set_property -dict {PACKAGE_PIN M15 IOSTANDARD LVCMOS33} [get_ports {LD[1]}];
-set_property -dict {PACKAGE_PIN G14 IOSTANDARD LVCMOS33} [get_ports {LD[2]}];
-set_property -dict {PACKAGE_PIN D18 IOSTANDARD LVCMOS33} [get_ports {LD[3]}];
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+set_property <span style="color:#f92672">-</span>dict <span style="color:#960050;background-color:#1e0010">{</span>PACKAGE_PIN M14 IOSTANDARD LVCMOS33<span style="color:#960050;background-color:#1e0010">}</span> [get_ports <span style="color:#960050;background-color:#1e0010">{</span>LD[<span style="color:#ae81ff">0</span>]<span style="color:#960050;background-color:#1e0010">}</span>];
+set_property <span style="color:#f92672">-</span>dict <span style="color:#960050;background-color:#1e0010">{</span>PACKAGE_PIN M15 IOSTANDARD LVCMOS33<span style="color:#960050;background-color:#1e0010">}</span> [get_ports <span style="color:#960050;background-color:#1e0010">{</span>LD[<span style="color:#ae81ff">1</span>]<span style="color:#960050;background-color:#1e0010">}</span>];
+set_property <span style="color:#f92672">-</span>dict <span style="color:#960050;background-color:#1e0010">{</span>PACKAGE_PIN G14 IOSTANDARD LVCMOS33<span style="color:#960050;background-color:#1e0010">}</span> [get_ports <span style="color:#960050;background-color:#1e0010">{</span>LD[<span style="color:#ae81ff">2</span>]<span style="color:#960050;background-color:#1e0010">}</span>];
+set_property <span style="color:#f92672">-</span>dict <span style="color:#960050;background-color:#1e0010">{</span>PACKAGE_PIN D18 IOSTANDARD LVCMOS33<span style="color:#960050;background-color:#1e0010">}</span> [get_ports <span style="color:#960050;background-color:#1e0010">{</span>LD[<span style="color:#ae81ff">3</span>]<span style="color:#960050;background-color:#1e0010">}</span>];</code></pre></td></tr></table>
+</div>
+</div></p>
 
 <p>作成したVHDLファイルと定義ファイルをプロジェクトに追加して合成し，できあがったbitファイルをZYBO Z7-20に書きこみましょう．DIPスイッチをオン・オフすることでLEDが点灯，消灯するはずです．</p>
 
@@ -638,400 +731,718 @@ set_property -dict {PACKAGE_PIN D18 IOSTANDARD LVCMOS33} [get_ports {LD[3]}];
 
 <p>AND/OR/XOR/NOTの動作を確認するためのモジュールとして次のようなモジュールを用意します．
 名前は\verb|logic_test.vhd|として保存することにします．
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
-library ieee;</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> ieee;
 
-<p>use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;</p>
+<span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+<span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
 
-<p>entity logic_test is
-  port (
-    CLK   : in  std_logic;
-    a, b  : in  std_logic;
-    q_and : out std_logic;
-    q_or  : out std_logic;
-    q_xor : out std_logic;
-    q_not : out std_logic
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">logic_test</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">port</span> (
+    CLK   <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+    a, b  <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+    q_and <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+    q_or  <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+    q_xor <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+    q_not <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>
     );
-end entity logic_test;</p>
+<span style="color:#66d9ef">end</span> <span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">logic_test</span>;
 
-<p>architecture RTL of logic_test is</p>
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">logic_test</span> <span style="color:#66d9ef">is</span>
 
-<p>attribute mark_debug : string;</p>
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>;
 
-<p>q_and_i : std_logic;
-  q_or_i  : std_logic;
-  q_xor_i : std_logic</p>
+  q_and_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
+  q_or_i  <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
+  q_xor_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>
 
-<p>attribute mark_debug of q_and_i : signal is &ldquo;true&rdquo;;
-  attribute mark_debug of q_or_i  : signal is &ldquo;true&rdquo;;
-  attribute mark_debug of q_xor_i : signal is &ldquo;true&rdquo;;
-  attribute mark_debug of q_not_i : signal is &ldquo;true&rdquo;;</p>
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> q_and_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> q_or_i  <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> q_xor_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> q_not_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  
+<span style="color:#66d9ef">begin</span>
 
-<p>begin</p>
+  q_and <span style="color:#f92672">&lt;=</span> q_and_i;
+  q_or  <span style="color:#f92672">&lt;=</span> q_or_i;
+  q_xor <span style="color:#f92672">&lt;=</span> q_xor_i;
+  q_not <span style="color:#f92672">&lt;=</span> q_not_i;
 
-<p>q_and &lt;= q_and_i;
-  q_or  &lt;= q_or_i;
-  q_xor &lt;= q_xor_i;
-  q_not &lt;= q_not_i;</p>
-
-<p>process(CLK)
-  begin
-    if rising_edge(CLK) then
-      q_and_i &lt;= a and b;
-      q_or_i  &lt;= a or b;
-      q_xor_i &lt;= a and b;
-      q_not_i &lt;= xor a;
-    end if;
-  end process;</p>
-
-<p>end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+  <span style="color:#66d9ef">process</span>(CLK)
+  <span style="color:#66d9ef">begin</span>
+    <span style="color:#66d9ef">if</span> rising_edge(CLK) <span style="color:#66d9ef">then</span>
+      q_and_i <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</span> b;
+      q_or_i  <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">or</span> b;
+      q_xor_i <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</span> b;
+      q_not_i <span style="color:#f92672">&lt;=</span> <span style="color:#66d9ef">xor</span> a;
+    <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
+  
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div></p>
 
 <p>先に用意したテンプレートに組み込んで，実機で動作を確認するために，\verb|top.vhd|を次のように変更します．</p>
 
-<p>\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
-library ieee;</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> ieee;
 
-<p>use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;</p>
+<span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+<span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
 
-<p>entity top is
-  port (
-    CLK : in  std_logic;
-    SW  : in  std_logic_vector(3 downto 0);
-    LD  : out std_logic_vector(3 downto 0)
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">port</span> (
+    CLK <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+    SW  <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+    LD  <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>)
     );
-end entity top;</p>
+<span style="color:#66d9ef">end</span> <span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">top</span>;
 
-<p>architecture RTL of top is</p>
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
 
-<p>signal sw_d0 : std_logic_vector(3 downto 0);
-  signal sw_d1 : std_logic_vector(3 downto 0);</p>
-
-<p>component logic_test
-    port (
-      CLK   : in  std_logic;
-      a, b  : in  std_logic;
-      q_and : out std_logic;
-      q_or  : out std_logic;
-      q_xor : out std_logic;
-      q_not : out std_logic
+  <span style="color:#66d9ef">signal</span> sw_d0 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">signal</span> sw_d1 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  
+  <span style="color:#66d9ef">component</span> <span style="color:#a6e22e">logic_test</span>
+    <span style="color:#66d9ef">port</span> (
+      CLK   <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+      a, b  <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+      q_and <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+      q_or  <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+      q_xor <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+      q_not <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>
       );
-  end component logic_test;</p>
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">component</span> <span style="color:#a6e22e">logic_test</span>;
+  
+<span style="color:#66d9ef">begin</span>
 
-<p>begin</p>
+  <span style="color:#75715e">-- LD &lt;= sw_d1;</span>
+  
+  <span style="color:#66d9ef">process</span>(CLK)
+  <span style="color:#66d9ef">begin</span>
+    <span style="color:#66d9ef">if</span> rising_edge(CLK) <span style="color:#66d9ef">then</span>
+      sw_d0 <span style="color:#f92672">&lt;=</span> SW;
+      sw_d1 <span style="color:#f92672">&lt;=</span> sw_d0;
+    <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
 
-<p>&ndash; LD &lt;= sw_d1;</p>
-
-<p>process(CLK)
-  begin
-    if rising_edge(CLK) then
-      sw_d0 &lt;= SW;
-      sw_d1 &lt;= sw_d0;
-    end if;
-  end process;</p>
-
-<p>U : logic_test port map(
-    CLK   =&gt; CLK,
-    a     =&gt; sw_d1(0),
-    b     =&gt; sw_d1(1),
-    q_and =&gt; LD(0),
-    q_or  =&gt; LD(1),
-    q_xor =&gt; LD(2),
-    q_not =&gt; LD(3)
-    );</p>
-
-<p>end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+  U <span style="color:#f92672">:</span> logic_test <span style="color:#66d9ef">port</span> <span style="color:#66d9ef">map</span>(
+    CLK   <span style="color:#f92672">=&gt;</span> CLK,
+    a     <span style="color:#f92672">=&gt;</span> sw_d1(<span style="color:#ae81ff">0</span>),
+    b     <span style="color:#f92672">=&gt;</span> sw_d1(<span style="color:#ae81ff">1</span>),
+    q_and <span style="color:#f92672">=&gt;</span> LD(<span style="color:#ae81ff">0</span>),
+    q_or  <span style="color:#f92672">=&gt;</span> LD(<span style="color:#ae81ff">1</span>),
+    q_xor <span style="color:#f92672">=&gt;</span> LD(<span style="color:#ae81ff">2</span>),
+    q_not <span style="color:#f92672">=&gt;</span> LD(<span style="color:#ae81ff">3</span>)
+    );
+  
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div>
 
 <h1 id="ランダムな振る舞いを実現する擬似乱数の生成">ランダムな振る舞いを実現する擬似乱数の生成</h1>
 
 <p>ゲームなどで，ランダムな振る舞いをさせたいときに用いられるのが乱数です．本物の乱数を作るのは非常に難しいため，一般的には数式で導いた擬似乱数で代用します．ソフトウェアで乱数を作成する場合は，rand関数などを呼び出すことで乱数系列に従って生成された値を利用できます．</p>
 
-<p>乱数系列の作り方には，いろいろな方法があります．今回は，ビット操作の練習として，シフトとXOR演算のみで構成できるXORSHIFT法(参考文献1)に基づく乱数生成器を実装してみましょう．32ビットのXORSHIFT法による乱数生成をCで記述すると，
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
- unsigned long xor() {
-  static unsigned long y=2463534242;
-  y ^= (y &lt;&lt; 13);
-  y ^= (y &gt;&gt; 17);
-  return (y ^= (y&lt;&lt;5));
- }
-\end{Verbatim}
-\end{quote}
-\end{figure}
-という関数になります．
+<p>乱数系列の作り方には，いろいろな方法があります．今回は，ビット操作の練習として，シフトとXOR演算のみで構成できるXORSHIFT法(参考文献1)に基づく乱数生成器を実装してみましょう．32ビットのXORSHIFT法による乱数生成をCで記述すると，</p>
+
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"> <span style="color:#66d9ef">unsigned</span> long <span style="color:#66d9ef">xor</span>() <span style="color:#960050;background-color:#1e0010">{</span>
+  static <span style="color:#66d9ef">unsigned</span> long y<span style="color:#f92672">=</span><span style="color:#ae81ff">2463534242</span>;
+  y <span style="color:#f92672">^=</span> (y <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">13</span>);
+  y <span style="color:#f92672">^=</span> (y <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">17</span>);
+  <span style="color:#66d9ef">return</span> (y <span style="color:#f92672">^=</span> (y<span style="color:#f92672">&lt;&lt;</span><span style="color:#ae81ff">5</span>));
+ <span style="color:#960050;background-color:#1e0010">}</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>という関数になります．
 この関数と同等の操作をするハードウェア・モジュールを作成し，シミュレーションと実機で動作を確認してみましょう．</p>
 
-<p>\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
-library ieee;</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> ieee;
 
-<p>use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;</p>
+<span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+<span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
 
-<p>entity xorshift is
-  port (
-    CLK   : in  std_logic;
-    Q     : out std_logic_vector(31 downto 0)
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">xorshift</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">port</span> (
+    CLK   <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+    Q     <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>)
     );
-end entity xorshift;</p>
+<span style="color:#66d9ef">end</span> <span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">xorshift</span>;
 
-<p>architecture RTL of xorshift is</p>
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">xorshift</span> <span style="color:#66d9ef">is</span>
 
-<p>attribute mark_debug : string;</p>
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>;
 
-<p>&ndash; 2463534242 = 0x92d68ca2
-  signal y : std_logic_vector(63 downto 0) := X&rdquo;0000000092d68ca2&rdquo;;
-  signal y0_d, y1_d : std_logic_vector(63 downto 0);</p>
+  <span style="color:#75715e">-- 2463534242 = 0x92d68ca2</span>
+  <span style="color:#66d9ef">signal</span> y <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">63</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">:=</span> <span style="color:#ae81ff">X&#34;0000000092d68ca2&#34;</span>;
+  <span style="color:#66d9ef">signal</span> y0_d, y1_d <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">63</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
 
-<p>attribute mark_debug of y : signal is &ldquo;true&rdquo;;
-  attribute mark_debug of y0_d : signal is &ldquo;true&rdquo;;
-  attribute mark_debug of y1_d : signal is &ldquo;true&rdquo;;</p>
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> y <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> y0_d <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> y1_d <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  
+<span style="color:#66d9ef">begin</span>
 
-<p>begin</p>
+  Q <span style="color:#f92672">&lt;=</span> y(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
 
-<p>Q &lt;= y(31 downto 0);</p>
+  <span style="color:#66d9ef">process</span>(CLK)
+    <span style="color:#66d9ef">variable</span> y0 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">63</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+    <span style="color:#66d9ef">variable</span> y1 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">63</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">begin</span>
+    <span style="color:#66d9ef">if</span> rising_edge(CLK) <span style="color:#66d9ef">then</span>
+      <span style="color:#75715e">-- y ^= (y &lt;&lt; 13);</span>
+      y0 <span style="color:#f92672">:=</span> y <span style="color:#66d9ef">xor</span> (y(<span style="color:#ae81ff">63</span><span style="color:#f92672">-</span><span style="color:#ae81ff">13</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">&amp;</span> <span style="color:#e6db74">&#34;0000000000000&#34;</span>);
+      <span style="color:#75715e">-- y ^= (y &gt;&gt; 17);</span>
+      y1 <span style="color:#f92672">:=</span> y0 <span style="color:#66d9ef">xor</span> (<span style="color:#e6db74">&#34;00000000000000000&#34;</span> <span style="color:#f92672">&amp;</span> y0(<span style="color:#ae81ff">63</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">17</span>));
+      <span style="color:#75715e">-- y ^= (y &lt;&lt; 5);</span>
+      y <span style="color:#f92672">&lt;=</span> y1 <span style="color:#66d9ef">xor</span> (y1(<span style="color:#ae81ff">63</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">&amp;</span> <span style="color:#e6db74">&#34;00000&#34;</span>);
+      
+      <span style="color:#75715e">-- to debug</span>
+      y0_d <span style="color:#f92672">&lt;=</span> y0;
+      y1_d <span style="color:#f92672">&lt;=</span> y1;
+    <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
+  
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div>
 
-<p>process(CLK)
-    variable y0 : std_logic_vector(63 downto 0);
-    variable y1 : std_logic_vector(63 downto 0);
-  begin
-    if rising_edge(CLK) then
-      &ndash; y ^= (y &lt;&lt; 13);
-      y0 := y xor (y(63-13 downto 0) &amp; &ldquo;0000000000000&rdquo;);
-      &ndash; y ^= (y &gt;&gt; 17);
-      y1 := y0 xor (&ldquo;00000000000000000&rdquo; &amp; y0(63 downto 17));
-      &ndash; y ^= (y &lt;&lt; 5);
-      y &lt;= y1 xor (y1(63-5 downto 0) &amp; &ldquo;00000&rdquo;);</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> ieee;
 
-<pre><code>  -- to debug
-  y0_d &lt;= y0;
-  y1_d &lt;= y1;
-end if;
-</code></pre>
+<span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+<span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
 
-<p>end process;</p>
-
-<p>end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
-
-<p>\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
-library ieee;</p>
-
-<p>use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;</p>
-
-<p>entity top is
-  port (
-    CLK : in  std_logic;
-    SW  : in  std_logic_vector(3 downto 0);
-    LD  : out std_logic_vector(3 downto 0)
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">port</span> (
+    CLK <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+    SW  <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+    LD  <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>)
     );
-end entity top;</p>
+<span style="color:#66d9ef">end</span> <span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">top</span>;
 
-<p>architecture RTL of top is</p>
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
 
-<p>signal sw_d0 : std_logic_vector(3 downto 0);
-  signal sw_d1 : std_logic_vector(3 downto 0);</p>
+  <span style="color:#66d9ef">signal</span> sw_d0 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">signal</span> sw_d1 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
 
-<p>component xorshift
-    port (
-      CLK   : in  std_logic;
-      Q     : out std_logic_vector(31 downto 0)
+  <span style="color:#66d9ef">component</span> <span style="color:#a6e22e">xorshift</span>
+    <span style="color:#66d9ef">port</span> (
+      CLK   <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+      Q     <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>)
       );
-  end component xorshift;</p>
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">component</span> <span style="color:#a6e22e">xorshift</span>;
 
-<p>begin</p>
+<span style="color:#66d9ef">begin</span>
 
-<p>&ndash; LD &lt;= sw_d1;</p>
+  <span style="color:#75715e">-- LD &lt;= sw_d1;</span>
+  
+  <span style="color:#66d9ef">process</span>(CLK)
+  <span style="color:#66d9ef">begin</span>
+    <span style="color:#66d9ef">if</span> rising_edge(CLK) <span style="color:#66d9ef">then</span>
+      sw_d0 <span style="color:#f92672">&lt;=</span> SW;
+      sw_d1 <span style="color:#f92672">&lt;=</span> sw_d0;
+    <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
 
-<p>process(CLK)
-  begin
-    if rising_edge(CLK) then
-      sw_d0 &lt;= SW;
-      sw_d1 &lt;= sw_d0;
-    end if;
-  end process;</p>
+  U <span style="color:#f92672">:</span> xorshift
+    <span style="color:#66d9ef">port</span> <span style="color:#66d9ef">map</span>(
+      CLK            <span style="color:#f92672">=&gt;</span> CLK,
+      Q(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>)  <span style="color:#f92672">=&gt;</span> LD(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>),
+      Q(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">4</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">open</span>
+      );
 
-<p>U : xorshift
-    port map(
-      CLK            =&gt; CLK,
-      Q(3 downto 0)  =&gt; LD(3 downto 0),
-      Q(31 downto 4) =&gt; open
-      );</p>
-
-<p>end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div>
 
 <h1 id="ビット加算器を作ってみよう">ビット加算器を作ってみよう</h1>
 
 <p>ビット加算器，つまり足算の基本要素を作ってみましょう．ビット加算器では，足される数，足す数，および，繰り上がりの3bitの入力から，その桁の結果と繰り上がりの2bitを出力します．全加算器は半加算器2個とORで作ることができます．
 以下のリストを参考に，加算器が正しく動作することをシミュレータおよびILAを使って実機で確認してください．</p>
 
-<p>\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
-&ndash; 半加算器
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#75715e">-- 半加算器</span>
+<span style="color:#66d9ef">library</span> ieee;
+<span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+<span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
 
-<p>entity half_addr is
-  port ( a : in std_logic;
-         b : in std_logic;
-         s : out std_logic;
-         c : out std_logic
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">half_addr</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">port</span> ( a <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+         b <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+         s <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+         c <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>
          );
-end half_addr;</p>
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">half_addr</span>;
 
-<p>architecture RTL of half_addr is</p>
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">half_addr</span> <span style="color:#66d9ef">is</span>
+  
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>;
 
-<p>attribute mark_debug : string;</p>
+  <span style="color:#66d9ef">signal</span> s_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
+  <span style="color:#66d9ef">signal</span> c_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
 
-<p>signal s_i : std_logic;
-  signal c_i : std_logic;</p>
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> s_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> c_i  <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
 
-<p>attribute mark_debug of s_i : signal is &ldquo;true&rdquo;;
-  attribute mark_debug of c_i  : signal is &ldquo;true&rdquo;;</p>
+<span style="color:#66d9ef">begin</span>
 
-<p>begin</p>
+  s <span style="color:#f92672">&lt;=</span> s_i;
+  c <span style="color:#f92672">&lt;=</span> c_i;
 
-<p>s &lt;= s_i;
-  c &lt;= c_i;</p>
+  <span style="color:#66d9ef">process</span>(a, b)
+  <span style="color:#66d9ef">begin</span>
+    s_i <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">xor</span> b;
+    c_i <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</span> b;
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
 
-<p>process(a, b)
-  begin
-    s_i &lt;= a xor b;
-    c_i &lt;= a and b;
-  end process;</p>
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div>
 
-<p>end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#75715e">-- 全加算器</span>
+<span style="color:#66d9ef">library</span> ieee;
+<span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+<span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
 
-<p>\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
-&ndash; 全加算器
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;</p>
-
-<p>entity full_addr is
-  Port ( a : in std_logic;
-         b : in std_logic;
-         ci : in std_logic;
-         s : out std_logic;
-         co : out std_logic
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">full_addr</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">Port</span> ( a <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+         b <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+         ci <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+         s <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+         co <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>
          );
-end full_addr;</p>
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">full_addr</span>;
 
-<p>architecture RTL of full_addr is</p>
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">full_addr</span> <span style="color:#66d9ef">is</span>
+  
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>;
 
-<p>attribute mark_debug : string;</p>
+  <span style="color:#66d9ef">signal</span> s_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
+  <span style="color:#66d9ef">signal</span> co_i  <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
 
-<p>signal s_i : std_logic;
-  signal co_i  : std_logic;</p>
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> s_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> co_i  <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
 
-<p>attribute mark_debug of s_i : signal is &ldquo;true&rdquo;;
-  attribute mark_debug of co_i  : signal is &ldquo;true&rdquo;;</p>
-
-<p>component half_addr
-    Port ( a : in std_logic;
-           b : in std_logic;
-           s : out std_logic;
-           c : out std_logic
+  <span style="color:#66d9ef">component</span> <span style="color:#a6e22e">half_addr</span>
+    <span style="color:#66d9ef">Port</span> ( a <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+           b <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+           s <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+           c <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>
            );
-  end component half_addr;</p>
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">component</span> <span style="color:#a6e22e">half_addr</span>;
 
-<p>signal s0 : std_logic;
-  signal c0 : std_logic;
-  signal c1 : std_logic;</p>
+  <span style="color:#66d9ef">signal</span> s0 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
+  <span style="color:#66d9ef">signal</span> c0 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
+  <span style="color:#66d9ef">signal</span> c1 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
 
-<p>begin</p>
+<span style="color:#66d9ef">begin</span>
 
-<p>s &lt;= s_i;
-  co &lt;= co_i;</p>
+  s <span style="color:#f92672">&lt;=</span> s_i;
+  co <span style="color:#f92672">&lt;=</span> co_i;
 
-<p>U0: half_addr port map( a =&gt; a, b =&gt; b, s =&gt; s0, c =&gt; c0);
-  U1: half_addr port map( a =&gt; s0, b =&gt; ci, s =&gt; s_i, c =&gt; c1);
-  co_i &lt;= c0 or c1;</p>
+  U0<span style="color:#f92672">:</span> half_addr <span style="color:#66d9ef">port</span> <span style="color:#66d9ef">map</span>( a <span style="color:#f92672">=&gt;</span> a, b <span style="color:#f92672">=&gt;</span> b, s <span style="color:#f92672">=&gt;</span> s0, c <span style="color:#f92672">=&gt;</span> c0);
+  U1<span style="color:#f92672">:</span> half_addr <span style="color:#66d9ef">port</span> <span style="color:#66d9ef">map</span>( a <span style="color:#f92672">=&gt;</span> s0, b <span style="color:#f92672">=&gt;</span> ci, s <span style="color:#f92672">=&gt;</span> s_i, c <span style="color:#f92672">=&gt;</span> c1);
+  co_i <span style="color:#f92672">&lt;=</span> c0 <span style="color:#66d9ef">or</span> c1;
 
-<p>end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div>
 
 <h1 id="hdlの四則演算を試してみよう">HDLの四則演算を試してみよう</h1>
 
 <p>VHDLやVerilog HDLでは，加算器のレベルでハードウェアを設計する必要はなく，実際には定義されている算術演算を利用することができます．+/-/*の動作をシミュレータおよび実機で確認してみてください．</p>
 
 <p>たとえば，次のようなVHDLコードを書いて試すことができます．
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> ieee;
+<span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+<span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
 
-<p>entity arith_test is
-  port (
-    a          : in  std_logic_vector(1 downto 0);
-    b          : in  std_logic_vector(1 downto 0);
-    q_a_add_b  : out std_logic_vector(2 downto 0);
-    q_a_sub_b  : out std_logic_vector(2 downto 0);
-    q_a_mult_b : out std_logic_vector(3 downto 0)
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">arith_test</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">port</span> (
+    a          <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">1</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+    b          <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">1</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+    q_a_add_b  <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">2</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+    q_a_sub_b  <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">2</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+    q_a_mult_b <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>)
   );
-end arith_test;</p>
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">arith_test</span>;
 
-<p>architecture RTL of arith_test is</p>
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">arith_test</span> <span style="color:#66d9ef">is</span>
+  
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>;
 
-<p>attribute mark_debug : string;</p>
+  <span style="color:#66d9ef">signal</span> q_a_add_b_i  <span style="color:#f92672">:</span> <span style="color:#66d9ef">unsigned</span>(<span style="color:#ae81ff">2</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">signal</span> q_a_sub_b_i  <span style="color:#f92672">:</span> <span style="color:#66d9ef">unsigned</span>(<span style="color:#ae81ff">2</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">signal</span> q_a_mult_b_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">unsigned</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
 
-<p>signal q_a_add_b_i  : unsigned(2 downto 0);
-  signal q_a_sub_b_i  : unsigned(2 downto 0);
-  signal q_a_mult_b_i : unsigned(3 downto 0);</p>
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> q_a_add_b_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> q_a_sub_b_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> q_a_mult_b_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
 
-<p>attribute mark_debug of q_a_add_b_i : signal is &ldquo;true&rdquo;;
-  attribute mark_debug of q_a_sub_b_i : signal is &ldquo;true&rdquo;;
-  attribute mark_debug of q_a_mult_b_i : signal is &ldquo;true&rdquo;;</p>
+<span style="color:#66d9ef">begin</span>
 
-<p>begin</p>
+  q_a_add_b  <span style="color:#f92672">&lt;=</span> <span style="color:#66d9ef">std_logic_vector</span>(q_a_add_b_i);
+  q_a_sub_b  <span style="color:#f92672">&lt;=</span> <span style="color:#66d9ef">std_logic_vector</span>(q_a_sub_b_i);
+  q_a_mult_b <span style="color:#f92672">&lt;=</span> <span style="color:#66d9ef">std_logic_vector</span>(q_a_mult_b_i);
 
-<p>q_a_add_b  &lt;= std_logic_vector(q_a_add_b_i);
-  q_a_sub_b  &lt;= std_logic_vector(q_a_sub_b_i);
-  q_a_mult_b &lt;= std_logic_vector(q_a_mult_b_i);</p>
-
-<p>process(a, b)
-  begin
-    q_a_add_b_i  &lt;= unsigned(&lsquo;0&rsquo; &amp; a) + unsigned(&lsquo;0&rsquo; &amp; b);
-    q_a_sub_b_i  &lt;= unsigned(&lsquo;0&rsquo; &amp; a) - unsigned(&lsquo;0&rsquo; &amp; b);
-    q_a_mult_b_i &lt;= unsigned(a) * unsigned(b);
-  end process;</p>
-
-<p>end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+  <span style="color:#66d9ef">process</span>(a, b)
+  <span style="color:#66d9ef">begin</span>
+    q_a_add_b_i  <span style="color:#f92672">&lt;=</span> <span style="color:#66d9ef">unsigned</span>(<span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#f92672">&amp;</span> a) <span style="color:#f92672">+</span> <span style="color:#66d9ef">unsigned</span>(<span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#f92672">&amp;</span> b);
+    q_a_sub_b_i  <span style="color:#f92672">&lt;=</span> <span style="color:#66d9ef">unsigned</span>(<span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#f92672">&amp;</span> a) <span style="color:#f92672">-</span> <span style="color:#66d9ef">unsigned</span>(<span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#f92672">&amp;</span> b);
+    q_a_mult_b_i <span style="color:#f92672">&lt;=</span> <span style="color:#66d9ef">unsigned</span>(a) <span style="color:#f92672">*</span> <span style="color:#66d9ef">unsigned</span>(b);
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
+  
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div></p>
 
 <h1 id="合計値の計算">合計値の計算</h1>
 
@@ -1040,47 +1451,82 @@ end arith_test;</p>
 <p>もちろん逐次的に，1クロックで1bitずつ&rsquo;0&rsquo;か&rsquo;1&rsquo;かを検査するという，ソフトウェア的な実装も考えられますが，ここでは，入力された値に対して即座に結果を返す組み合わせ回路として設計し，シミュレーションと実機で動作を確認してみてください．</p>
 
 <p>たとえば，次のようなVHDLコードを書いて試すことができます．
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> ieee;
+<span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+<span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
 
-<p>entity bitcount is
-  port (
-    a : in  std_logic_vector(31 downto 0);
-    q : out std_logic_vector(4 downto 0)
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">bitcount</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">port</span> (
+    a <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+    q <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">4</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>)
   );
-end bitcount;</p>
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">bitcount</span>;
 
-<p>architecture RTL of bitcount is</p>
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">bitcount</span> <span style="color:#66d9ef">is</span>
+  
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>;
 
-<p>attribute mark_debug : string;</p>
+  <span style="color:#66d9ef">signal</span> q_i  <span style="color:#f92672">:</span> <span style="color:#66d9ef">unsigned</span>(<span style="color:#ae81ff">4</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> q_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
 
-<p>signal q_i  : unsigned(4 downto 0);
-  attribute mark_debug of q_i : signal is &ldquo;true&rdquo;;</p>
+<span style="color:#66d9ef">begin</span>
 
-<p>begin</p>
+  q <span style="color:#f92672">&lt;=</span> <span style="color:#66d9ef">std_logic_vector</span>(q_i);
 
-<p>q &lt;= std_logic_vector(q_i);</p>
-
-<p>process(a)
-    variable sum : integer := 0;
-  begin
-    sum := 0;
-    for i in 0 to a&rsquo;length-1 loop
-      if a(i) = &lsquo;1&rsquo; then
-        sum := sum + 1;
-      end if;
-    end loop;
-    q_i &lt;= to_unsigned(sum, q_i&rsquo;length);
-  end process;</p>
-
-<p>end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+  <span style="color:#66d9ef">process</span>(a)
+    <span style="color:#66d9ef">variable</span> sum <span style="color:#f92672">:</span> <span style="color:#66d9ef">integer</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>;
+  <span style="color:#66d9ef">begin</span>
+    sum <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">for</span> i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">to</span> a<span style="color:#a6e22e">&#39;length</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">loop</span>
+      <span style="color:#66d9ef">if</span> a(i) <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">then</span>
+        sum <span style="color:#f92672">:=</span> sum <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+      <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+    <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">loop</span>;
+    q_i <span style="color:#f92672">&lt;=</span> to_unsigned(sum, q_i<span style="color:#a6e22e">&#39;length</span>);
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
+  
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div></p>
 
 <h1 id="pwm">PWM</h1>
 
@@ -1088,107 +1534,193 @@ end bitcount;</p>
 ディジタルで簡単に信号の強度を変える方法としてもよく利用されます．</p>
 
 <p>次のVHDLコードは，PWMを実装してみた例です．
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> ieee;
+<span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+<span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
 
-<p>entity pwm is
-  port (
-    clk : in  std_logic;
-    a   : in  std_logic_vector(3 downto 0);
-    d   : in  std_logic;
-    q   : out std_logic
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">pwm</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">port</span> (
+    clk <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+    a   <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+    d   <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+    q   <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>
   );
-end pwm;</p>
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">pwm</span>;
 
-<p>architecture RTL of pwm is</p>
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">pwm</span> <span style="color:#66d9ef">is</span>
+  
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>;
+  
+  <span style="color:#66d9ef">signal</span> counter <span style="color:#f92672">:</span> <span style="color:#66d9ef">unsigned</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">:=</span> (<span style="color:#66d9ef">others</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;0&#39;</span>);
+  <span style="color:#66d9ef">signal</span> q_i     <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#39;0&#39;</span>;
+  
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> q_i     <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> counter <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
 
-<p>attribute mark_debug : string;</p>
+<span style="color:#66d9ef">begin</span>
 
-<p>signal counter : unsigned(3 downto 0) := (others =&gt; &lsquo;0&rsquo;);
-  signal q_i     : std_logic := &lsquo;0&rsquo;;</p>
+  q <span style="color:#f92672">&lt;=</span> q_i;
 
-<p>attribute mark_debug of q_i     : signal is &ldquo;true&rdquo;;
-  attribute mark_debug of counter : signal is &ldquo;true&rdquo;;</p>
-
-<p>begin</p>
-
-<p>q &lt;= q_i;</p>
-
-<p>process(clk)
-  begin
-    if rising_edge(clk) then
-      counter &lt;= counter + 1;
-      if counter &gt;= unsigned(a) and unsigned(a) &lt; 15 then
-        q_i &lt;= d;
-      else
-        q_i &lt;= not d;
-      end if;
-    end if;
-  end process;</p>
-
-<p>end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+  <span style="color:#66d9ef">process</span>(clk)
+  <span style="color:#66d9ef">begin</span>
+    <span style="color:#66d9ef">if</span> rising_edge(clk) <span style="color:#66d9ef">then</span>
+      counter <span style="color:#f92672">&lt;=</span> counter <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+      <span style="color:#66d9ef">if</span> counter <span style="color:#f92672">&gt;=</span> <span style="color:#66d9ef">unsigned</span>(a) <span style="color:#66d9ef">and</span> <span style="color:#66d9ef">unsigned</span>(a) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">15</span> <span style="color:#66d9ef">then</span>
+        q_i <span style="color:#f92672">&lt;=</span> d;
+      <span style="color:#66d9ef">else</span>
+        q_i <span style="color:#f92672">&lt;=</span> <span style="color:#66d9ef">not</span> d;
+      <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+    <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
+  
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div></p>
 
 <p>次のようにスイッチをPWMの幅に，出力をLEDに割り当てて合成したときの動作を
 実機で確認してみましょう．
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> ieee;
+<span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+<span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
 
-<p>entity top is
-  port (
-    CLK : in  std_logic;
-    SW  : in  std_logic_vector(3 downto 0);
-    LD  : out std_logic_vector(3 downto 0)
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">port</span> (
+    CLK <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+    SW  <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+    LD  <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>)
     );
-end entity top;</p>
+<span style="color:#66d9ef">end</span> <span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">top</span>;
 
-<p>architecture RTL of top is
-  signal sw_d0 : std_logic_vector(3 downto 0);
-  signal sw_d1 : std_logic_vector(3 downto 0);
-  component pwm
-    port (
-      clk : in  std_logic;
-      a   : in  std_logic_vector(3 downto 0);
-      d   : in  std_logic;
-      q   : out std_logic
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">signal</span> sw_d0 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">signal</span> sw_d1 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">component</span> <span style="color:#a6e22e">pwm</span>
+    <span style="color:#66d9ef">port</span> (
+      clk <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+      a   <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+      d   <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span>  <span style="color:#66d9ef">std_logic</span>;
+      q   <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>
       );
-  end component pwm;
-  signal pwm_q : std_logic;
-begin</p>
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">component</span> <span style="color:#a6e22e">pwm</span>;
+  <span style="color:#66d9ef">signal</span> pwm_q <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
+<span style="color:#66d9ef">begin</span>
 
-<p>process(CLK)
-  begin
-    if rising_edge(CLK) then
-      sw_d0 &lt;= SW;
-      sw_d1 &lt;= sw_d0;
-    end if;
-  end process;</p>
+  <span style="color:#66d9ef">process</span>(CLK)
+  <span style="color:#66d9ef">begin</span>
+    <span style="color:#66d9ef">if</span> rising_edge(CLK) <span style="color:#66d9ef">then</span>
+      sw_d0 <span style="color:#f92672">&lt;=</span> SW;
+      sw_d1 <span style="color:#f92672">&lt;=</span> sw_d0;
+    <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
 
-<p>U: pwm
-    port map(
-      clk =&gt; clk,
-      a   =&gt; sw_d1,
-      d   =&gt; &lsquo;1&rsquo;,
-      q   =&gt; pwm_q
+  U<span style="color:#f92672">:</span> pwm
+    <span style="color:#66d9ef">port</span> <span style="color:#66d9ef">map</span>(
+      clk <span style="color:#f92672">=&gt;</span> clk,
+      a   <span style="color:#f92672">=&gt;</span> sw_d1,
+      d   <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;1&#39;</span>,
+      q   <span style="color:#f92672">=&gt;</span> pwm_q
       );
-  LD(0) &lt;= pwm_q;
-  LD(1) &lt;= pwm_q;
-  LD(2) &lt;= pwm_q;
-  LD(3) &lt;= pwm_q;
-end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+  LD(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">&lt;=</span> pwm_q;
+  LD(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">&lt;=</span> pwm_q;
+  LD(<span style="color:#ae81ff">2</span>) <span style="color:#f92672">&lt;=</span> pwm_q;
+  LD(<span style="color:#ae81ff">3</span>) <span style="color:#f92672">&lt;=</span> pwm_q;
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div></p>
 
 <h1 id="ステートマシンの作り方と利用方法">ステートマシンの作り方と利用方法</h1>
 
@@ -1214,12 +1746,13 @@ end RTL;
 
 <p>図\ref{fig:statemachine_example}は，そうめんをゆでる手順をステート・マシン的に表現した例です．楕円は「状態」を矢印は「状態遷移」を示しています．矢印に条件が書かれている場合は，その条件が満たされたときだけ状態が遷移する，ということを意味します．</p>
 
-<p>\begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.6\textwidth]{chapter05_figures/statemachine_example.png}
-  \end{center}<br />
-  \caption{そうめんを茹でる流れをステートマシン的に表現してみた例．\label{fig:statemachine_example}}
- \end{figure}</p>
+<figure class="center">
+    <img src="../basics_figures/statemachine_example.png"
+         alt="n{そうめんを茹でる流れをステートマシン的に表現してみた例．\label{fig:statemachine_example}"/> <figcaption>
+            <p>n{そうめんを茹でる流れをステートマシン的に表現してみた例．\label{fig:statemachine_example}</p>
+        </figcaption>
+</figure>
+
 
 <p>ステート・マシンとは，処理を「状態」と「状態遷移」で抽象化した概念です．列挙された状態を定義された状態遷移に従って順々にたどっていくことで所望の処理が実現できます．各状態での処理を定義することで，逐次的な処理をステート・マシンを使って記述できます．</p>
 
@@ -1228,193 +1761,344 @@ end RTL;
 <p>ステート・マシンをハードウェア・プログラミングで実装するのは意外と簡単です．そうめんを茹でる手順をハードウェア記述言語の一つであるVHDLで記述した擬似コードを示します．
 各状態を\verb|std_logic_vector|型の変数stateで管理しています．stateの値が各状態に対応しています．変数stateをクロックごとに参照し，その時点で実行すべき処理を判断します．各状態では，次の状態に遷移するための条件判断と，遷移のための状態変数の更新を行います．</p>
 
-<p>\begin{figure}[H]
-\begin{quote}</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#75715e">---------------------------------------------------------</span>
+<span style="color:#75715e">-- そうめんをゆでるステートマシンの擬似コード</span>
+<span style="color:#75715e">---------------------------------------------------------</span>
+<span style="color:#66d9ef">architecture</span> RTL <span style="color:#66d9ef">of</span> somen
 
-<h2 id="begin-verbatim-frame-single-numbers-left-baselinestretch-0-8">\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]</h2>
+  <span style="color:#66d9ef">signal</span> state <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">2</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">:=</span> (<span style="color:#66d9ef">others</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;0&#39;</span>);
 
-<h2 id="そうめんをゆでるステートマシンの擬似コード">&ndash; そうめんをゆでるステートマシンの擬似コード</h2>
+  <span style="color:#66d9ef">process</span>(clk)
+  <span style="color:#66d9ef">begin</span>
+    <span style="color:#66d9ef">if</span> rising_edge(clk) <span style="color:#66d9ef">then</span>
+      <span style="color:#66d9ef">case</span> conv_integer(state) <span style="color:#75715e">-- 変数「state」によって状態の場合分けをする</span>
+        <span style="color:#66d9ef">when</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">=&gt;</span>
+          <span style="color:#960050;background-color:#1e0010">鍋に水をいれる</span>
+          state <span style="color:#f92672">&lt;=</span> conv_std_logic_vector(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>);
+        <span style="color:#66d9ef">when</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">=&gt;</span>
+          <span style="color:#960050;background-color:#1e0010">鍋を火をかける</span>
+          state <span style="color:#f92672">&lt;=</span> conv_std_logic_vector(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>);
+        <span style="color:#66d9ef">when</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">=&gt;</span>
+          <span style="color:#66d9ef">if</span> <span style="color:#960050;background-color:#1e0010">水が湧いたか？</span> <span style="color:#f92672">=</span> true <span style="color:#66d9ef">then</span>
+            state <span style="color:#f92672">&lt;=</span> conv_std_logic_vector(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>);
+          <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+        <span style="color:#66d9ef">when</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">=&gt;</span>
+          <span style="color:#960050;background-color:#1e0010">そうめんをいれる</span>
+          state <span style="color:#f92672">&lt;=</span> conv_std_logic_vector(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3</span>);
+        <span style="color:#66d9ef">when</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">=&gt;</span>
+          <span style="color:#66d9ef">if</span> <span style="color:#960050;background-color:#1e0010">時間</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">分</span> <span style="color:#66d9ef">then</span>
+            state <span style="color:#f92672">&lt;=</span> conv_std_logic_vector(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">3</span>);
+          <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+        <span style="color:#66d9ef">when</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">=&gt;</span>
+          <span style="color:#66d9ef">if</span> <span style="color:#960050;background-color:#1e0010">やわらかさが十分か？</span> <span style="color:#f92672">=</span> true <span style="color:#66d9ef">then</span>
+            state <span style="color:#f92672">&lt;=</span> conv_std_logic_vector(<span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">3</span>);
+          <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+        <span style="color:#66d9ef">when</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">=&gt;</span>
+          <span style="color:#75715e">-- おしまい</span>
+        <span style="color:#66d9ef">when</span> <span style="color:#66d9ef">others</span> <span style="color:#f92672">=&gt;</span> <span style="color:#75715e">-- 「上記以外のその他」に相当．これで，全条件を列挙できた．</span>
+          <span style="color:#66d9ef">null</span>;
+      <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">case</span>; 
+    <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
 
-<p>architecture RTL of somen</p>
-
-<p>signal state : std_logic_vector(2 downto 0) := (others =&gt; &lsquo;0&rsquo;);</p>
-
-<p>process(clk)
-  begin
-    if rising_edge(clk) then
-      case conv_integer(state) &ndash; 変数「state」によって状態の場合分けをする
-        when 0 =&gt;
-          鍋に水をいれる
-          state &lt;= conv_std_logic_vector(1, 3);
-        when 1 =&gt;
-          鍋を火をかける
-          state &lt;= conv_std_logic_vector(2, 3);
-        when 2 =&gt;
-          if 水が湧いたか？ = true then
-            state &lt;= conv_std_logic_vector(3, 3);
-          end if;
-        when 3 =&gt;
-          そうめんをいれる
-          state &lt;= conv_std_logic_vector(4, 3);
-        when 4 =&gt;
-          if 時間 = 1分 then
-            state &lt;= conv_std_logic_vector(5, 3);
-          end if;
-        when 5 =&gt;
-          if やわらかさが十分か？ = true then
-            state &lt;= conv_std_logic_vector(6, 3);
-          end if;
-        when 6 =&gt;
-          &ndash; おしまい
-        when others =&gt; &ndash; 「上記以外のその他」に相当．これで，全条件を列挙できた．
-          null;
-      end case;
-    end if;
-  end process;</p>
-
-<p>end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div>
 
 <p>ところで，リスト1のコードには，0，1，2，&hellip;という状態を識別するための番号が振られています．これらの値に意味はなく，単にほかと区別するために便宜的に付けられたマジック・ナンバです．マジック・ナンバはコードの可読性を下げ，後の変更を加えづらくします．ソフトウェアでもマジック・ナンバは忌み嫌われるように，ハードウェア・プログラミングでもできれば避けたいものです．</p>
 
 <p>VHDLでは自分で型を定義することで，Verilogではdefineやlocalparamを使って値に名前を付けることで，ソース・コードからマジック・ナンバを取り除くことができます．VHDLで状態を表す型を定義して，マジック・ナンバをなくした例が次の通りです．</p>
 
-<p>\begin{figure}[H]
-\begin{quote}</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#75715e">---------------------------------------------------------</span>
+<span style="color:#75715e">-- そうめんをゆでるステートマシンの擬似コード</span>
+<span style="color:#75715e">-- 状態変数のための型を定義しマジックナンバをなくしたバージョン</span>
+<span style="color:#75715e">---------------------------------------------------------</span>
+<span style="color:#66d9ef">architecture</span> RTL <span style="color:#66d9ef">of</span> somen
 
-<h2 id="begin-verbatim-frame-single-numbers-left-baselinestretch-0-8-1">\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]</h2>
+  <span style="color:#75715e">-- 状態を表わす型を定義する．これは，enumのような列挙型に相当．</span>
+  <span style="color:#66d9ef">type</span> StateType <span style="color:#66d9ef">is</span> (WATER, FIRE, HOT_WATER, PUT_SOMEN, WAIT_A_MIN, BOIL, FIN)
+  <span style="color:#66d9ef">signal</span> state <span style="color:#f92672">:</span> StateType <span style="color:#f92672">:=</span> WATER;
 
-<p>&ndash; そうめんをゆでるステートマシンの擬似コード</p>
+  <span style="color:#66d9ef">process</span>(clk)
+  <span style="color:#66d9ef">begin</span>
+    <span style="color:#66d9ef">if</span> rising_edge(clk) <span style="color:#66d9ef">then</span>
+      <span style="color:#66d9ef">case</span> conv_integer(state)
+        <span style="color:#66d9ef">when</span> WATER <span style="color:#f92672">=&gt;</span>
+          <span style="color:#960050;background-color:#1e0010">鍋に水をいれる</span>
+          state <span style="color:#f92672">&lt;=</span> FIRE;
+        <span style="color:#66d9ef">when</span> FIRE <span style="color:#f92672">=&gt;</span>
+          <span style="color:#960050;background-color:#1e0010">鍋を火をかける</span>
+          state <span style="color:#f92672">&lt;=</span> HOT_WATER;
+        <span style="color:#66d9ef">when</span> HOT_WATER <span style="color:#f92672">=&gt;</span>
+          <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;水が湧いたか？ = true&#34;</span> <span style="color:#66d9ef">then</span>
+            state <span style="color:#f92672">&lt;=</span> PUT_SOMEN;
+          <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+        <span style="color:#66d9ef">when</span> PUT_SOMEN <span style="color:#f92672">=&gt;</span>
+          <span style="color:#960050;background-color:#1e0010">そうめんをいれる</span>
+          state <span style="color:#f92672">&lt;=</span> WAIT_A_MIN;
+        <span style="color:#66d9ef">when</span> WAIT_A_MIN <span style="color:#f92672">=&gt;</span>
+          <span style="color:#66d9ef">if</span> <span style="color:#960050;background-color:#1e0010">時間</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">分</span> <span style="color:#66d9ef">then</span>
+            state <span style="color:#f92672">&lt;=</span> BOIL
+          <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+        <span style="color:#66d9ef">when</span> BOIL <span style="color:#f92672">=&gt;</span>
+          <span style="color:#66d9ef">if</span> <span style="color:#960050;background-color:#1e0010">やわらかさが十分か？</span> <span style="color:#f92672">=</span> true <span style="color:#66d9ef">then</span>
+            state <span style="color:#f92672">&lt;=</span> conv_std_logic_vector(<span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">3</span>);
+          <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+        <span style="color:#66d9ef">when</span> FIN <span style="color:#f92672">=&gt;</span>
+          <span style="color:#75715e">-- おしまい</span>
+        <span style="color:#66d9ef">when</span> <span style="color:#66d9ef">others</span> <span style="color:#f92672">=&gt;</span>
+          <span style="color:#66d9ef">null</span>;
+      <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">case</span>; 
+    <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
 
-<h2 id="状態変数のための型を定義しマジックナンバをなくしたバージョン">&ndash; 状態変数のための型を定義しマジックナンバをなくしたバージョン</h2>
-
-<p>architecture RTL of somen</p>
-
-<p>&ndash; 状態を表わす型を定義する．これは，enumのような列挙型に相当．
-  type StateType is (WATER, FIRE, HOT_WATER, PUT_SOMEN, WAIT_A_MIN, BOIL, FIN)
-  signal state : StateType := WATER;</p>
-
-<p>process(clk)
-  begin
-    if rising_edge(clk) then
-      case conv_integer(state)
-        when WATER =&gt;
-          鍋に水をいれる
-          state &lt;= FIRE;
-        when FIRE =&gt;
-          鍋を火をかける
-          state &lt;= HOT_WATER;
-        when HOT_WATER =&gt;
-          if &ldquo;水が湧いたか？ = true&rdquo; then
-            state &lt;= PUT_SOMEN;
-          end if;
-        when PUT_SOMEN =&gt;
-          そうめんをいれる
-          state &lt;= WAIT_A_MIN;
-        when WAIT_A_MIN =&gt;
-          if 時間 = 1分 then
-            state &lt;= BOIL
-          end if;
-        when BOIL =&gt;
-          if やわらかさが十分か？ = true then
-            state &lt;= conv_std_logic_vector(6, 3);
-          end if;
-        when FIN =&gt;
-          &ndash; おしまい
-        when others =&gt;
-          null;
-      end case;
-    end if;
-  end process;</p>
-
-<p>end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div>
 
 <p>次のリストを参考に，ステートマシンを利用したハードウェアを設計し，動作をシミュレーションとILAで確認してみてください．</p>
 
-<p>\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.6]
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> ieee;
+<span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+<span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
 
-<p>entity stmt_test is
-  port ( clk : in std_logic;
-         a,b : in std_logic;
-         led : out std_logic_vector(2 downto 0)
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">stmt_test</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">port</span> ( clk <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+         a,b <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+         led <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">2</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>)
        );
-end stmt_test;</p>
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">stmt_test</span>;
 
-<p>architecture RTL of stmt_test is
-  attribute mark_debug : string;</p>
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">stmt_test</span> <span style="color:#66d9ef">is</span>
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>;
 
-<p>signal led_i : std_logic_vector(2 downto 0) := (others =&gt; &lsquo;0&rsquo;);
-  attribute mark_debug of led_i : signal is &ldquo;true&rdquo;;</p>
+  <span style="color:#66d9ef">signal</span> led_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">2</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">:=</span> (<span style="color:#66d9ef">others</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;0&#39;</span>);
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> led_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
 
-<p>type StateType is (BLACK, RED, GREEN, BLUE);
-  signal state : StateType := BLACK;</p>
+  <span style="color:#66d9ef">type</span> StateType <span style="color:#66d9ef">is</span> (BLACK, RED, GREEN, BLUE);
+  <span style="color:#66d9ef">signal</span> state <span style="color:#f92672">:</span> StateType <span style="color:#f92672">:=</span> BLACK;
 
-<p>signal a_d, b_d : std_logic := &lsquo;0&rsquo;;
-  signal a_rising, b_rising : std_logic := &lsquo;0&rsquo;;</p>
+  <span style="color:#66d9ef">signal</span> a_d, b_d <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#39;0&#39;</span>;
+  <span style="color:#66d9ef">signal</span> a_rising, b_rising <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#39;0&#39;</span>;
 
-<p>begin</p>
+<span style="color:#66d9ef">begin</span>
 
-<p>led &lt;= led_i;
-  a_rising &lt;= &lsquo;1&rsquo; when a_d = &lsquo;0&rsquo; and a = &lsquo;1&rsquo; else &lsquo;0&rsquo;;
-  b_rising &lt;= &lsquo;1&rsquo; when b_d = &lsquo;0&rsquo; and b = &lsquo;1&rsquo; else &lsquo;0&rsquo;;</p>
+  led <span style="color:#f92672">&lt;=</span> led_i;
+  a_rising <span style="color:#f92672">&lt;=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">when</span> a_d <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#66d9ef">and</span> a <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#39;0&#39;</span>;
+  b_rising <span style="color:#f92672">&lt;=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">when</span> b_d <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#66d9ef">and</span> b <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#39;0&#39;</span>;
+  
+  <span style="color:#66d9ef">process</span>(clk)
+  <span style="color:#66d9ef">begin</span>
+    <span style="color:#66d9ef">if</span> rising_edge(clk) <span style="color:#66d9ef">then</span>
+      a_d <span style="color:#f92672">&lt;=</span> a;
+      b_d <span style="color:#f92672">&lt;=</span> b;
 
-<p>process(clk)
-  begin
-    if rising_edge(clk) then
-      a_d &lt;= a;
-      b_d &lt;= b;</p>
-
-<pre><code>  case state is
-  when BLACK =&gt;
-    led_i &lt;= &quot;000&quot;;
-    if a_rising = '1' then
-      state &lt;= RED;
-    elsif b_rising = '1' then
-      state &lt;= BLUE;
-    end if;
-  when RED =&gt;
-    led_i &lt;= &quot;001&quot;;
-    if a_rising = '1' then
-      state &lt;= GREEN;
-    elsif b_rising = '1' then
-      state &lt;= BLACK;
-    end if;
-  when GREEN =&gt;
-    led_i &lt;= &quot;010&quot;;
-    if a_rising = '1' then
-      state &lt;= BLUE;
-    elsif b_rising = '1' then
-      state &lt;= RED;
-    end if;
-  when BLUE =&gt;
-    led_i &lt;= &quot;100&quot;;
-    if a_rising = '1' then
-      state &lt;= BLACK;
-    elsif b_rising = '1' then
-      state &lt;= GREEN;
-    end if;
-  when others =&gt;
-    led_i &lt;= &quot;000&quot;;
-    state &lt;= BLACK;
- end case;
-end if;
-</code></pre>
-
-<p>end process;
-end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}</p>
+      <span style="color:#66d9ef">case</span> state <span style="color:#66d9ef">is</span>
+      <span style="color:#66d9ef">when</span> BLACK <span style="color:#f92672">=&gt;</span>
+        led_i <span style="color:#f92672">&lt;=</span> <span style="color:#e6db74">&#34;000&#34;</span>;
+        <span style="color:#66d9ef">if</span> a_rising <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">then</span>
+          state <span style="color:#f92672">&lt;=</span> RED;
+        <span style="color:#66d9ef">elsif</span> b_rising <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">then</span>
+          state <span style="color:#f92672">&lt;=</span> BLUE;
+        <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+      <span style="color:#66d9ef">when</span> RED <span style="color:#f92672">=&gt;</span>
+        led_i <span style="color:#f92672">&lt;=</span> <span style="color:#e6db74">&#34;001&#34;</span>;
+        <span style="color:#66d9ef">if</span> a_rising <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">then</span>
+          state <span style="color:#f92672">&lt;=</span> GREEN;
+        <span style="color:#66d9ef">elsif</span> b_rising <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">then</span>
+          state <span style="color:#f92672">&lt;=</span> BLACK;
+        <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+      <span style="color:#66d9ef">when</span> GREEN <span style="color:#f92672">=&gt;</span>
+        led_i <span style="color:#f92672">&lt;=</span> <span style="color:#e6db74">&#34;010&#34;</span>;
+        <span style="color:#66d9ef">if</span> a_rising <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">then</span>
+          state <span style="color:#f92672">&lt;=</span> BLUE;
+        <span style="color:#66d9ef">elsif</span> b_rising <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">then</span>
+          state <span style="color:#f92672">&lt;=</span> RED;
+        <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+      <span style="color:#66d9ef">when</span> BLUE <span style="color:#f92672">=&gt;</span>
+        led_i <span style="color:#f92672">&lt;=</span> <span style="color:#e6db74">&#34;100&#34;</span>;
+        <span style="color:#66d9ef">if</span> a_rising <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">then</span>
+          state <span style="color:#f92672">&lt;=</span> BLACK;
+        <span style="color:#66d9ef">elsif</span> b_rising <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">then</span>
+          state <span style="color:#f92672">&lt;=</span> GREEN;
+        <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+      <span style="color:#66d9ef">when</span> <span style="color:#66d9ef">others</span> <span style="color:#f92672">=&gt;</span>
+        led_i <span style="color:#f92672">&lt;=</span> <span style="color:#e6db74">&#34;000&#34;</span>;
+        state <span style="color:#f92672">&lt;=</span> BLACK;
+     <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">case</span>;
+    <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div>
 
 <h1 id="参考文献">参考文献</h1>
 
@@ -1454,10 +2138,6 @@ end RTL;
 <li><a href="#料理は逐次的な処理">料理は逐次的な処理</a></li>
 <li><a href="#ステート-マシンとは">ステート・マシンとは</a></li>
 <li><a href="#ハードウェア-プログラミングと相性の良いステート-マシン">ハードウェア・プログラミングと相性の良いステート・マシン</a></li>
-<li><a href="#begin-verbatim-frame-single-numbers-left-baselinestretch-0-8">\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]</a></li>
-<li><a href="#そうめんをゆでるステートマシンの擬似コード">&ndash; そうめんをゆでるステートマシンの擬似コード</a></li>
-<li><a href="#begin-verbatim-frame-single-numbers-left-baselinestretch-0-8-1">\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]</a></li>
-<li><a href="#状態変数のための型を定義しマジックナンバをなくしたバージョン">&ndash; 状態変数のための型を定義しマジックナンバをなくしたバージョン</a></li>
 </ul></li>
 <li><a href="#参考文献">参考文献</a></li>
 </ul>

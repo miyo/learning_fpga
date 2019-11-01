@@ -20,9 +20,7 @@ FPGAは，FPGAの中で回路がどのように動作しているのかを知る
 ## 準備
 ILAを使ってデバッグするために，topモジュールのソースコードを次のように書き変えてください．
 
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
  library ieee;
  use ieee.std_logic_1164.all;
  use ieee.numeric_std.all;
@@ -57,214 +55,71 @@ ILAを使ってデバッグするために，topモジュールのソースコ�
   end process;
 
  end RTL;
-\end{Verbatim}
-\end{quote}
-\caption{ILA実験用に変更したリストの例}
-\end{figure}
+{{< /highlight >}}
 
 (1)と(2)が追加ポイントです．(1)で\verb|mark_debug|というattributeを利用することを宣言し，(2)でcounterに\verb|mark_debug|というattributeを付与しています．attributeは，ツールに対する指示子です．Vivadoでは，\verb|mark_debug|を付与した信号はデバッグ対象の可能性があるとして特別扱いします．
 
 コードが準備できたら，一度合成してピン配置まで終わらせてしまいましょう．
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_13_59_41.png}
-  \end{center}
-  \caption{I/O Planningでclk，reset，ledのピン配置を決定する}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_13_59_41.png" class="center" caption="I/O Planningでclk，reset，ledのピン配置を決定する" >}}
 
 
 ## ILAのセットアップと利用方法
 準備ができたらILAを追加して，その動作の様子を確認してみましょう．
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_13_57_01.png}
-  \end{center}
-  \caption{一度合成する}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_13_57_01.png" class="center" caption="一度合成する" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_13_58_37.png}
-  \end{center}
-  \caption{合成が終わったらOpen Synthesized Designで合成結果を開く}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_13_58_37.png" class="center" caption="合成が終わったらOpen Synthesized Designで合成結果を開く" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_00_09.png}
-  \end{center}
-  \caption{LayoutメニューのDebugをクリックしてデバッグビューに変更する}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_00_09.png" class="center" caption="LayoutメニューのDebugをクリックしてデバッグビューに変更する" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_03_37.png}
-  \end{center}
-  \caption{ILA設定用の画面 \label{fig:debug_mode_view}}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_03_37.png" class="center" caption="ILA設定用の画面 \label{fig:debug_mode_view}" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_03_43.png}
-  \end{center}
-  \caption{下にある虫みたいなアイコンをクリックしてILA設定用のウィザードを開く}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_03_43.png" class="center" caption="下にある虫みたいなアイコンをクリックしてILA設定用のウィザードを開く" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_03_58.png}
-  \end{center}
-  \caption{ILA設定用ウィザードの開始}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_03_58.png" class="center" caption="ILA設定用ウィザードの開始" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_03.png}
-  \end{center}
-  \caption{mark\_debugを付与したcounterがリストに追加されているので，そのままNextですすむ．ここで新たにILAによる観測対象を追加したい場合には+アイコンをクリックすると信号を選ぶことができる．逆にリストにある信号を対象から取り除きたい場合には，取り除きたい信号を選択して-をクリックする}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_03.png" class="center" caption="mark\_debugを付与したcounterがリストに追加されているので，そのままNextですすむ．ここで新たにILAによる観測対象を追加したい場合には+アイコンをクリックすると信号を選ぶことができる．逆にリストにある信号を対象から取り除きたい場合には，取り除きたい信号を選択して-をクリックする" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_08.png}
-  \end{center}
-  \caption{ILAで取得するデータ数の設定など．今回はそのままにしてNextですすむ}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_08.png" class="center" caption="ILAで取得するデータ数の設定など．今回はそのままにしてNextですすむ" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_13.png}
-  \end{center}
-  \caption{サマリの表示．Finishで完了}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_13.png" class="center" caption="サマリの表示．Finishで完了" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_28.png}
-  \end{center}
-  \caption{ウィザードが閉じてILAの設定は完了．ILAが追加できていることがわかる．あとは，Generate Bitstreamでビットファイルを作成すればよい．}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_28.png" class="center" caption="ウィザードが閉じてILAの設定は完了．ILAが追加できていることがわかる．あとは，Generate Bitstreamでビットファイルを作成すればよい．" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_33.png}
-  \end{center}
-  \caption{ILAの設定情報をxdcファイルに保存してよいかの確認．Yesで次のステップにすすむ．}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_33.png" class="center" caption="ILAの設定情報をxdcファイルに保存してよいかの確認．Yesで次のステップにすすむ．" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_44.png}
-  \end{center}
-  \caption{Generate bitstreamの前に依存する他のタスクを実行します，という確認ダイアログ．Yesで次のステップへ}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_44.png" class="center" caption="Generate bitstreamの前に依存する他のタスクを実行します，という確認ダイアログ．Yesで次のステップへ" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_04_49.png}
-  \end{center}
-  \caption{合成と配置配線の開始}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_49.png" class="center" caption="合成と配置配線の開始" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_23_17.png}
-  \end{center}
-  \caption{無事に合成と配置配線が終了しビットファイルができあがったところ．Open Hardware Managerを選択してOKをクリックすることで，ハードウェアマネージャの起動の手間を省くことができる}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_23_17.png" class="center" caption="無事に合成と配置配線が終了しビットファイルができあがったところ．Open Hardware Managerを選択してOKをクリックすることで，ハードウェアマネージャの起動の手間を省くことができる" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_23_59.png}
-  \end{center}
-  \caption{FPGAとパソコンをUSBケーブルで接続してAuto connectで認識させた後，Program Deviceをクリック}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_23_59.png" class="center" caption="FPGAとパソコンをUSBケーブルで接続してAuto connectで認識させた後，Program Deviceをクリック" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_24_06.png}
-  \end{center}
-  \caption{bitファイルはFPGAに，ILAのパソコン側の定義ファイルであるilxはVivadoに読み込ませる．}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_24_06.png" class="center" caption="bitファイルはFPGAに，ILAのパソコン側の定義ファイルであるilxはVivadoに読み込ませる．" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_24_16.png}
-  \end{center}
-  \caption{書き込み中}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_24_16.png" class="center" caption="書き込み中" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_24_38.png}
-  \end{center}
-  \caption{FPGAへのダウンロードが終了した．また，ILAによる動作のモニタ画面が表示された}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_24_38.png" class="center" caption="FPGAへのダウンロードが終了した．また，ILAによる動作のモニタ画面が表示された" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_24_53.png}
-  \end{center}
-  \caption{二重矢印のアイコンをクリックすると，その時点での値をキャプチャしてくれる}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_24_53.png" class="center" caption="二重矢印のアイコンをクリックすると，その時点での値をキャプチャしてくれる" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_25_07.png}
-  \end{center}
-  \caption{虫眼鏡アイコンで拡大すると，値が1ずつ増えていることが確認できる}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_07.png" class="center" caption="虫眼鏡アイコンで拡大すると，値が1ずつ増えていることが確認できる" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_25_21.png}
-  \end{center}
-  \caption{実機デバッガでは値をキャプチャする条件(トリガ条件)を指定する}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_21.png" class="center" caption="実機デバッガでは値をキャプチャする条件(トリガ条件)を指定する" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_25_27.png}
-  \end{center}
-  \caption{counterの値をトリガ条件に使用することとする}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_27.png" class="center" caption="counterの値をトリガ条件に使用することとする" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_25_34.png}
-  \end{center}
-  \caption{counterの値がトリガ条件として登録された}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_34.png" class="center" caption="counterの値がトリガ条件として登録された" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_25_50.png}
-  \end{center}
-  \caption{counterが00001000になった時点でキャプチャするように設定．トリガ値を指定したら三角アイコンでキャプチャを開始する}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_50.png" class="center" caption="counterが00001000になった時点でキャプチャするように設定．トリガ値を指定したら三角アイコンでキャプチャを開始する" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_27_49.png}
-  \end{center}
-  \caption{counterが00001000になった時点のデータをキャプチャすることができた}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_27_49.png" class="center" caption="counterが00001000になった時点のデータをキャプチャすることができた" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_28_03.png}
-  \end{center}
-  \caption{トリガにはドントケア(X)を指定することも可能．ここでは下位16bitが3000になるデータを取得するように指定してみる}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_28_03.png" class="center" caption="トリガにはドントケア(X)を指定することも可能．ここでは下位16bitが3000になるデータを取得するように指定してみる" >}}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_28_15.png}
-  \end{center}
-  \caption{上位16bitは指定なく，下位16bitが3000の時点のデータがキャプチャできていることがわかる}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_28_15.png" class="center" caption="上位16bitは指定なく，下位16bitが3000の時点のデータがキャプチャできていることがわかる" >}}
 
 ## ILA挿入すると回路は変わる
 重要な点ですが，ILAを挿入すると，挿入前とは異なるハードウェアになることを理解しておく必要があります．ILA向けのリソース使用量が増えるのはもちろん，観測対象の信号の接続関係も変化します．また観測のために残すべきレジスタの都合で最適化の結果もかわってきます．
@@ -273,12 +128,7 @@ ILAを使ってデバッグするために，topモジュールのソースコ�
 
 しかし，mark\_debugアトリビュートを付与して合成した場合には，もちろん最適化するわけにはいかないため，図\ref{fig:debug_mode_view}のように要/不要にかかわらず32bit分すべてのレジスタが回路として生成されています．
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter05_figures/VirtualBox_Windows10_19_03_2018_14_00_24.png}
-  \end{center}
-  \caption{counterにmark\_debugがない場合 \label{fig:without_mark_debug}}
- \end{figure}
+{{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_00_24.png" class="center" caption="counterにmark\_debugがない場合 \label{fig:without_mark_debug}" >}}
 
 
 # 基本実験の準備
@@ -286,18 +136,11 @@ FPGAを使った実験をする前に，動作の様子を確認しながら実�
 ここで作るのは，図\ref{fig:experiment_template}のように4bitの入力と4bitの出力ポートで構成されるモジュールです．
 ZYBOのDIPスイッチSW0〜SW3を4bitの入力に，LED LD0〜LD3を4bitの出力にマッピングすることにします．
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.6\textwidth]{chapter05_figures/experiment_template.png}
-  \end{center}  
-  \caption{実験用の簡単なテンプレートモジュール \label{fig:experiment_template}}
- \end{figure}
+{{<figure src="../basics_figures/experiment_template.png" class="center" caption="n{実験用の簡単なテンプレートモジュール \label{fig:experiment_template}" >}}
 
 次のような内容のVHDLファイルを用意します．
 
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 
 use ieee.std_logic_1164.all;
@@ -329,14 +172,10 @@ begin
   end process;
   
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
 ピン定義も用意しましょう．第3章で紹介したようにGUIで設定することもできますが，スクリプトファイルでピン定義を決めることもできます．実験に使用するZYBO Z7-20の全てのI/O定義は\url{https://github.com/Digilent/digilent-xdc/blob/master/Zybo-Z7-Master.xdc}にまとまっています．URL先の情報に基づいて，使用するピンの定義をまとめると次のようになります．top.xdcなどと，拡張子を.xdcとしてファイルに保存します．
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 set_property -dict {PACKAGE_PIN K17 IOSTANDARD LVCMOS33 } [get_ports {CLK}];
 create_clock -add -name clk_pin -period 8.00 -waveform {0 4} [get_ports {CLK}];
 
@@ -349,9 +188,7 @@ set_property -dict {PACKAGE_PIN M14 IOSTANDARD LVCMOS33} [get_ports {LD[0]}];
 set_property -dict {PACKAGE_PIN M15 IOSTANDARD LVCMOS33} [get_ports {LD[1]}];
 set_property -dict {PACKAGE_PIN G14 IOSTANDARD LVCMOS33} [get_ports {LD[2]}];
 set_property -dict {PACKAGE_PIN D18 IOSTANDARD LVCMOS33} [get_ports {LD[3]}];
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
 作成したVHDLファイルと定義ファイルをプロジェクトに追加して合成し，できあがったbitファイルをZYBO Z7-20に書きこみましょう．DIPスイッチをオン・オフすることでLEDが点灯，消灯するはずです．
 
@@ -360,9 +197,7 @@ set_property -dict {PACKAGE_PIN D18 IOSTANDARD LVCMOS33} [get_ports {LD[3]}];
 
 AND/OR/XOR/NOTの動作を確認するためのモジュールとして次のようなモジュールを用意します．
 名前は\verb|logic_test.vhd|として保存することにします．
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 
 use ieee.std_logic_1164.all;
@@ -410,15 +245,11 @@ begin
   end process;
   
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
 先に用意したテンプレートに組み込んで，実機で動作を確認するために，\verb|top.vhd|を次のように変更します．
 
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 
 use ieee.std_logic_1164.all;
@@ -471,32 +302,26 @@ begin
     );
   
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
 # ランダムな振る舞いを実現する擬似乱数の生成
 ゲームなどで，ランダムな振る舞いをさせたいときに用いられるのが乱数です．本物の乱数を作るのは非常に難しいため，一般的には数式で導いた擬似乱数で代用します．ソフトウェアで乱数を作成する場合は，rand関数などを呼び出すことで乱数系列に従って生成された値を利用できます．
 
 乱数系列の作り方には，いろいろな方法があります．今回は，ビット操作の練習として，シフトとXOR演算のみで構成できるXORSHIFT法(参考文献1)に基づく乱数生成器を実装してみましょう．32ビットのXORSHIFT法による乱数生成をCで記述すると，
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+
+{{< highlight vhdl "linenos=table" >}}
  unsigned long xor() {
   static unsigned long y=2463534242;
   y ^= (y << 13);
   y ^= (y >> 17);
   return (y ^= (y<<5));
  }
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
+
 という関数になります．
 この関数と同等の操作をするハードウェア・モジュールを作成し，シミュレーションと実機で動作を確認してみましょう．
 
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 
 use ieee.std_logic_1164.all;
@@ -544,14 +369,10 @@ begin
   end process;
   
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
 
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 
 use ieee.std_logic_1164.all;
@@ -597,18 +418,14 @@ begin
       );
 
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
   
 
 # ビット加算器を作ってみよう
 ビット加算器，つまり足算の基本要素を作ってみましょう．ビット加算器では，足される数，足す数，および，繰り上がりの3bitの入力から，その桁の結果と繰り上がりの2bitを出力します．全加算器は半加算器2個とORで作ることができます．
 以下のリストを参考に，加算器が正しく動作することをシミュレータおよびILAを使って実機で確認してください．
 
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 -- 半加算器
 library ieee;
 use ieee.std_logic_1164.all;
@@ -644,13 +461,9 @@ begin
   end process;
 
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 -- 全加算器
 library ieee;
 use ieee.std_logic_1164.all;
@@ -697,18 +510,14 @@ begin
   co_i <= c0 or c1;
 
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
 
 # HDLの四則演算を試してみよう
 VHDLやVerilog HDLでは，加算器のレベルでハードウェアを設計する必要はなく，実際には定義されている算術演算を利用することができます．+/-/*の動作をシミュレータおよび実機で確認してみてください．
 
 たとえば，次のようなVHDLコードを書いて試すことができます．
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -749,9 +558,7 @@ begin
   end process;
   
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
 
 # 合計値の計算
@@ -760,9 +567,7 @@ end RTL;
 もちろん逐次的に，1クロックで1bitずつ'0'か'1'かを検査するという，ソフトウェア的な実装も考えられますが，ここでは，入力された値に対して即座に結果を返す組み合わせ回路として設計し，シミュレーションと実機で動作を確認してみてください．
 
 たとえば，次のようなVHDLコードを書いて試すことができます．
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -798,9 +603,7 @@ begin
   end process;
   
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
 
 # PWM
@@ -809,9 +612,7 @@ end RTL;
 ディジタルで簡単に信号の強度を変える方法としてもよく利用されます．
 
 次のVHDLコードは，PWMを実装してみた例です．
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -852,16 +653,12 @@ begin
   end process;
   
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
 
 次のようにスイッチをPWMの幅に，出力をLEDに割り当てて合成したときの動作を
 実機で確認してみましょう．
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -908,9 +705,7 @@ begin
   LD(2) <= pwm_q;
   LD(3) <= pwm_q;
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
   
 
 # ステートマシンの作り方と利用方法
@@ -933,12 +728,7 @@ end RTL;
 ## ステート・マシンとは
 図\ref{fig:statemachine_example}は，そうめんをゆでる手順をステート・マシン的に表現した例です．楕円は「状態」を矢印は「状態遷移」を示しています．矢印に条件が書かれている場合は，その条件が満たされたときだけ状態が遷移する，ということを意味します．
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.6\textwidth]{chapter05_figures/statemachine_example.png}
-  \end{center}  
-  \caption{そうめんを茹でる流れをステートマシン的に表現してみた例．\label{fig:statemachine_example}}
- \end{figure}
+{{<figure src="../basics_figures/statemachine_example.png" class="center" caption="n{そうめんを茹でる流れをステートマシン的に表現してみた例．\label{fig:statemachine_example}" >}}
 
 
 ステート・マシンとは，処理を「状態」と「状態遷移」で抽象化した概念です．列挙された状態を定義された状態遷移に従って順々にたどっていくことで所望の処理が実現できます．各状態での処理を定義することで，逐次的な処理をステート・マシンを使って記述できます．
@@ -947,9 +737,7 @@ end RTL;
 ステート・マシンをハードウェア・プログラミングで実装するのは意外と簡単です．そうめんを茹でる手順をハードウェア記述言語の一つであるVHDLで記述した擬似コードを示します．
 各状態を\verb|std_logic_vector|型の変数stateで管理しています．stateの値が各状態に対応しています．変数stateをクロックごとに参照し，その時点で実行すべき処理を判断します．各状態では，次の状態に遷移するための条件判断と，遷移のための状態変数の更新を行います．
 
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 ---------------------------------------------------------
 -- そうめんをゆでるステートマシンの擬似コード
 ---------------------------------------------------------
@@ -991,17 +779,13 @@ architecture RTL of somen
   end process;
 
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
 ところで，リスト1のコードには，0，1，2，...という状態を識別するための番号が振られています．これらの値に意味はなく，単にほかと区別するために便宜的に付けられたマジック・ナンバです．マジック・ナンバはコードの可読性を下げ，後の変更を加えづらくします．ソフトウェアでもマジック・ナンバは忌み嫌われるように，ハードウェア・プログラミングでもできれば避けたいものです．
 
 VHDLでは自分で型を定義することで，Verilogではdefineやlocalparamを使って値に名前を付けることで，ソース・コードからマジック・ナンバを取り除くことができます．VHDLで状態を表す型を定義して，マジック・ナンバをなくした例が次の通りです．
 
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.8]
+{{< highlight vhdl "linenos=table" >}}
 ---------------------------------------------------------
 -- そうめんをゆでるステートマシンの擬似コード
 -- 状態変数のための型を定義しマジックナンバをなくしたバージョン
@@ -1046,15 +830,11 @@ architecture RTL of somen
   end process;
 
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
 次のリストを参考に，ステートマシンを利用したハードウェアを設計し，動作をシミュレーションとILAで確認してみてください．
 
-\begin{figure}[H]
-\begin{quote}
-\begin{Verbatim}[frame=single, numbers=left, baselinestretch=0.6]
+{{< highlight vhdl "linenos=table" >}}
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -1126,9 +906,7 @@ begin
     end if;
   end process;
 end RTL;
-\end{Verbatim}
-\end{quote}
-\end{figure}
+{{< /highlight >}}
 
 # 参考文献
 
