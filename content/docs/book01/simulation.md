@@ -37,6 +37,7 @@ CPUを買ってきても，マザーボードがないとパソコンとして�
 
 たとえば，「10nsの時間を待つ」という動作はHDLで次のように記述します．この記述はビヘイビア・モデルの基本中の基本です．
 VHDLで記述する場合は，
+
 {{< highlight vhdl "linenos=table" >}}
 wait for 10ns;
 {{< /highlight >}}
@@ -48,9 +49,11 @@ Verilog HDLで記述する場合には，初めに ``timescale`を使って，
 {{< /highlight >}}
 
 と，シミュレーションの単位時間を指定して，時間を挿入したい個所で
+
 {{< highlight vhdl "linenos=table" >}}
 #10
 {{< /highlight >}}
+
 と記述すると，指定した単位時間分の時間(この例では10ns)を作ることができます．
 
 # テストベンチの書き方
