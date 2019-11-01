@@ -52,11 +52,11 @@ HDLは，Cプログラミングなどと同じように変数への加減算や�
 ソフトウェア・プログラミングで使用するCやJava，コミュニケーションで使用する英語についても，正しく使用するために文法の知識は欠かせません．同じようにHDLで設計する際も文法の知識が必要です．ここで，基本文法をしっかり押さえましょう．
 ハードウェア記述言語の基本概念 プログラミング言語に多くの種類があるように，ハードウェア記述言語(HDL)にもさまざまな種類があります．その中でもよく利用されるのが，VHDLとVerilog HDLです．VHDLとVerilog HDLは，どちらも，ハードウェアを表現するための似たような概念を取り扱うことができる言語です．
 ただし，似たような概念でもそれぞれの言語で使用する言葉が違うので注意が必要です．両方の言語に共通する概念と，言語の特徴について説明します．
-構造の基本 &amp;mdash; エンティティ/モジュール どの言語にも基本的な構造があります．たとえば，Cでは関数，Javaではクラスなどです．HDLでは，与えられた入力に対して出力を生成するブロックが基本的な単位です(図\ref{fig:design_unit})．このブロックをVHDLではエンティティ(\verb|entityt|)，Verilog HDLではモジュール(\verb|module|)と呼びます．ただし，この章では，特にVHDLやVerilog HDLに違いがない説明では，モジュールと呼ぶことにします．
+構造の基本 &amp;mdash; エンティティ/モジュール どの言語にも基本的な構造があります．たとえば，Cでは関数，Javaではクラスなどです．HDLでは，与えられた入力に対して出力を生成するブロックが基本的な単位です(図1)．このブロックをVHDLではエンティティ entity ，Verilog HDLではモジュール module と呼びます．ただし，この章では，特にVHDLやVerilog HDLに違いがない説明では，モジュールと呼ぶことにします．
  図1: ハードウェア・プログラミングの基本的な単位
-  通常のプログラミング言語とHDLの大きな違いは，エンティティ/モジュールは，最初から最後まで与えられた入力に対する出力を生成し続けるということです．Cなどで関数を呼び出す場合，mainプログラムからその関数内へ処理が移ります(\ref{fig:software_running_model})．処理を終えると戻り値を呼び出し元に返し，mainプログラムが再び動き始めます．つまり，mainプログラムは，呼び出した関数の処理が完了するまで待たされます．これは，プログラム・カウンタが，プログラムを順々に呼び出して実行するからです．
+  通常のプログラミング言語とHDLの大きな違いは，エンティティ/モジュールは，最初から最後まで与えられた入力に対する出力を生成し続けるということです．Cなどで関数を呼び出す場合，mainプログラムからその関数内へ処理が移ります(図2)．処理を終えると戻り値を呼び出し元に返し，mainプログラムが再び動き始めます．つまり，mainプログラムは，呼び出した関数の処理が完了するまで待たされます．これは，プログラム・カウンタが，プログラムを順々に呼び出して実行するからです．
  図2: Cで記述した一般的なソフトウェア・プログラムの実行の様子
-  一方，HDLで記述されたエンティティ/モジュールには，共通のプログラム・カウンタのような，複数の演算回路の動作を制御する仕組みはありません．(図\ref{fig:hardware_instances})．どのモジュールも常に存在し，独立して動作します．したがって，特定の入力を与えると出力を返すというよりも，入力されているデータに対して出力するデータを作り続けているというイメージになります．複数のモジュール間で制御が必要であれば自分で，そのように設計する必要があります．
+  一方，HDLで記述されたエンティティ/モジュールには，共通のプログラム・カウンタのような，複数の演算回路の動作を制御する仕組みはありません．(図3)．どのモジュールも常に存在し，独立して動作します．したがって，特定の入力を与えると出力を返すというよりも，入力されているデータに対して出力するデータを作り続けているというイメージになります．複数のモジュール間で制御が必要であれば自分で，そのように設計する必要があります．
  図3: ハードウェアは常に存在し，演算回路の動作が制御されることはない(制御が必要なら自分で記述する必要がある)
   2種類の基本処理方法 &amp;mdash; 同時処理文と順次処理文 繰り返しになりますが，ハードウェア・プログラミングでは，独立して動作するモジュールを扱う必要があります．すなわちハードウェアを記述するための言語では，独立して動作する同時並行的な処理を記述できる必要があります．とはいえ，実現したい処理によっては，条件分岐のような依存関係のある処理の記述が望まれます．これらの要求を満たすため，VHDLとVerilog HDLのどちらも，同時処理文と順次処理文と呼ばれる二種類の記述方式をサポートしています．具体的な記述方法は後で説明しますが，それぞれの考え方を頭に入れておいてください．
 同時処理文 同時処理文とは，周りの処理に依存せず独立して動作する処理です．複数の同時処理文は，ある特定の時点で一斉に処理されます．そのため，記述順や各処理文の間には，構文的な順序が存在せず，「ある時点」で入力された値に従って出力が生成されます．出力が確定するまでの時間は，物理的にデバイスの中を電気が流れる速さや信号遅延に依存します．
@@ -65,10 +65,8 @@ HDLは，Cプログラミングなどと同じように変数への加減算や�
 変数は，英数字からなる名前を付けることができます．変数名の先頭は英字または「_」で始める必要があり，末尾を「_」にしてはいけません．Verilog HDLでは，大文字と小文字は区別されます．
 演算の基本 &amp;mdash; 算術/論理減算，比較，代入 VHDLおよびVerilog HDLでは加減算や論理演算，比較などの演算子を利用することができます．ソフトウェア・プログラミングの場合は演算子を使って記述された処理はプロセッサに与える命令に変換されますが，HDLの場合は，その演算に相当するハードウェア・ロジックとしてLUTやFFなどの組み合わせに合成されます．FPGAの中には，小さなディジタルシグナルプロセッサや乗算器を持つものがあり，条件にうまく合致すると，それらが使用されます．
 HDLでもソフトウェア・プログラミング同様に，演算した結果を代入演算を利用して，ほかの(あるいは同じ)変数に代入することができます．HDLの代入には，ブロッキング代入とノンブロッキング代入の2種類があります．ブロッキング代入は，その時点で値を代入して次に進む代入です．一方，ノンブロッキング代入は，複数の代入文において，それらの代入の同時実行を規定します．Cなどで記述した単一スレッドのソフトウェア・プログラムの代入は，HDLでいうところのブロッキング代入に相当します．
-値の基本 &amp;mdash; &amp;lsquo;0&amp;rsquo;，&amp;rsquo;1&amp;rsquo;，&amp;rsquo;Z&amp;rsquo;，&amp;rsquo;X&amp;rsquo; ハードウェアの値は&amp;rsquo;0&amp;rsquo;と&amp;rsquo;1&amp;rsquo;の値をとります．加えて，ハードウェアにはハイ・インピーダンスという，「抵抗が無限大」を意味する状態が存在します．VHDLやVerilog HDLでは&amp;rsquo;Z&amp;rsquo;で表されます．値として「抵抗が無限大」というのは，少しわかりにくいかもしれません．物理的には，図\ref{fig:high_imp_image}のようにスイッチを切った状態をイメージしてください．複数の信号が一つにまとめられるとき，&amp;rsquo;Z&amp;rsquo;は，「ほかの値に影響を与えない」ということを意味します．
- 図4: HDLではハイ・インピーダンスでスイッチオフを記述できる．
-  また，&amp;rsquo;0&amp;rsquo;でも&amp;rsquo;1&amp;rsquo;のどちらでもいい値として不定値という概念があります．これは，&amp;rsquo;X&amp;rsquo;と表現されます．
-ソフトウェア・プログラミングでは，通常，&amp;rsquo;0&amp;rsquo;と&amp;rsquo;1&amp;rsquo;の2値をとる値をビットと呼びますが，&amp;rsquo;Z&amp;rsquo;と&amp;rsquo;X&amp;rsquo;も加えた4つの値をとる信号が便宜上ビットと呼ばれることが多くあります．</description>
+値の基本 &amp;mdash; &amp;lsquo;0&amp;rsquo;，&amp;rsquo;1&amp;rsquo;，&amp;rsquo;Z&amp;rsquo;，&amp;rsquo;X&amp;rsquo; ハードウェアの値は&amp;rsquo;0&amp;rsquo;と&amp;rsquo;1&amp;rsquo;の値をとります．加えて，ハードウェアにはハイ・インピーダンスという，「抵抗が無限大」を意味する状態が存在します．VHDLやVerilog HDLでは&amp;rsquo;Z&amp;rsquo;で表されます．値として「抵抗が無限大」というのは，少しわかりにくいかもしれません．物理的には，図4のようにスイッチを切った状態をイメージしてください．複数の信号が一つにまとめられるとき，&amp;rsquo;Z&amp;rsquo;は，「ほかの値に影響を与えない」ということを意味します．
+ 図4: HDLではハイ・インピーダンスでスイッチオフを記述できる．</description>
     </item>
     
     <item>
@@ -80,15 +78,18 @@ HDLでもソフトウェア・プログラミング同様に，演算した結�
       <description>FPGA開発におけるHello World Lチカ を通して，開発の手順に慣れよう
 はじめに この章では，FPGA開発におけるHello World，すなわち最初に試してみるサンプルとして Lチカ を題材に，開発の手順に慣れてみましょう． Lチカ とは，「LEDをチカチカさせる」の略です．
 単にLEDとチカチカさせるだけ，なのですが，開発の手順を身につけるには十分です．また，実際多くの信号制御は何かしらの規則にしたがって信号をON/OFFしていることですから，すべての信号制御はLチカの応用にあるとも言えます．簡単ですが大事ですよ．
-実習 プロジェクトの用意 \begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_24.png} \end{center} \caption{VivadoのFileメニューから，New Project&amp;hellip;を選択する} \end{figure}
-\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_32.png} \end{center} \caption{プロジェクト作成ダイアログが開くので，Next$\gt$で次へ} \end{figure}
-プロジェクト名と格納先を決めます．ここでは，ホームディレクトリの下のVivadoというフォルダの下にプロジェクトを格納することとし，名前をproject_1としています． \begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_37.png} \end{center} \caption{プロジェクト名と格納先を決めます} \end{figure}
-\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_01_43.png} \end{center} \caption{プロジェクトタイプの指定です．RTLプロジェクトを指定します} \end{figure}
-\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_24.png} \end{center} \caption{すでにソースコードがある場合にはここで追加できます．今回はないのでNext$\gt$で，そのまま次へ} \end{figure}
-\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_30.png} \end{center} \caption{すでに制約ファイルがある場合にはここで追加できます．今回はないのでNext$\gt$で，そのまま次へ} \end{figure}
-\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_49.png} \end{center} \caption{ターゲットとするFPGAの選択画面です．BoardタブをクリックしZybo Z7-20を選択して$\gt$で次へ} \end{figure}
-\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_02_55.png} \end{center} \caption{確認画面です．Finishをクリックするとプロジェクトの作成は完了です} \end{figure}
-\begin{figure}[H] \begin{center} \includegraphics[width=.8\textwidth]{chapter03_figures/VirtualBox_Windows10_19_03_2018_00_03_06.png} \end{center} \caption{プロジェクト作成には少し時間がかかります} \end{figure}</description>
+実習 プロジェクトの用意  図1: VivadoのFileメニューから，New Project&amp;hellip;を選択する
+   図2: プロジェクト作成ダイアログが開くので，Next&amp;gt;で次へ
+  プロジェクト名と格納先を決めます．ここでは，ホームディレクトリの下のVivadoというフォルダの下にプロジェクトを格納することとし，名前をproject_1としています．
+ 図3: プロジェクト名と格納先を決めます
+   図4: プロジェクトタイプの指定です．RTLプロジェクトを指定します
+   図5: すでにソースコードがある場合にはここで追加できます．今回はないのでNext&amp;gt;で，そのまま次へ
+   図6: すでに制約ファイルがある場合にはここで追加できます．今回はないのでNext&amp;gt;で，そのまま次へ
+   図7: ターゲットとするFPGAの選択画面です．BoardタブをクリックしZybo Z7-20を選択してNext&amp;gt;で次へ
+   図8: 確認画面です．Finishをクリックするとプロジェクトの作成は完了です
+   図9: プロジェクト作成には少し時間がかかります
+  これでプロジェクトの完成です．Product FamilyがZynq-7000に，Project Summaryの表示を見ると，Project partがZybo Z7-20と，Z7-20向けのプロジェクトができていることがわかります．
+ 図10: プロジェクトができあがりました．</description>
     </item>
     
     <item>

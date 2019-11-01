@@ -20,15 +20,15 @@ weight: -1800
 
 ## 構造の基本 --- エンティティ/モジュール
 
-どの言語にも基本的な構造があります．たとえば，Cでは関数，Javaではクラスなどです．HDLでは，与えられた入力に対して出力を生成するブロックが基本的な単位です(図\ref{fig:design_unit})．このブロックをVHDLではエンティティ(\verb|entityt|)，Verilog HDLではモジュール(\verb|module|)と呼びます．ただし，この章では，特にVHDLやVerilog HDLに違いがない説明では，モジュールと呼ぶことにします．
+どの言語にも基本的な構造があります．たとえば，Cでは関数，Javaではクラスなどです．HDLでは，与えられた入力に対して出力を生成するブロックが基本的な単位です(図1)．このブロックをVHDLではエンティティ `entity` ，Verilog HDLではモジュール `module` と呼びます．ただし，この章では，特にVHDLやVerilog HDLに違いがない説明では，モジュールと呼ぶことにします．
 
 {{<figure src="../languages_figures/design_unit.png" class="center" caption="図1: ハードウェア・プログラミングの基本的な単位">}}
 
-通常のプログラミング言語とHDLの大きな違いは，エンティティ/モジュールは，最初から最後まで与えられた入力に対する出力を生成し続けるということです．Cなどで関数を呼び出す場合，mainプログラムからその関数内へ処理が移ります(\ref{fig:software_running_model})．処理を終えると戻り値を呼び出し元に返し，mainプログラムが再び動き始めます．つまり，mainプログラムは，呼び出した関数の処理が完了するまで待たされます．これは，プログラム・カウンタが，プログラムを順々に呼び出して実行するからです．
+通常のプログラミング言語とHDLの大きな違いは，エンティティ/モジュールは，最初から最後まで与えられた入力に対する出力を生成し続けるということです．Cなどで関数を呼び出す場合，mainプログラムからその関数内へ処理が移ります(図2)．処理を終えると戻り値を呼び出し元に返し，mainプログラムが再び動き始めます．つまり，mainプログラムは，呼び出した関数の処理が完了するまで待たされます．これは，プログラム・カウンタが，プログラムを順々に呼び出して実行するからです．
 
 {{<figure src="../languages_figures/software_running_model.png" class="center" caption="図2: Cで記述した一般的なソフトウェア・プログラムの実行の様子">}}
 
-一方，HDLで記述されたエンティティ/モジュールには，共通のプログラム・カウンタのような，複数の演算回路の動作を制御する仕組みはありません．(図\ref{fig:hardware_instances})．どのモジュールも常に存在し，独立して動作します．したがって，特定の入力を与えると出力を返すというよりも，入力されているデータに対して出力するデータを作り続けているというイメージになります．複数のモジュール間で制御が必要であれば自分で，そのように設計する必要があります．
+一方，HDLで記述されたエンティティ/モジュールには，共通のプログラム・カウンタのような，複数の演算回路の動作を制御する仕組みはありません．(図3)．どのモジュールも常に存在し，独立して動作します．したがって，特定の入力を与えると出力を返すというよりも，入力されているデータに対して出力するデータを作り続けているというイメージになります．複数のモジュール間で制御が必要であれば自分で，そのように設計する必要があります．
 
 {{<figure src="../languages_figures/hardware_instances.png" class="center" caption="図3: ハードウェアは常に存在し，演算回路の動作が制御されることはない(制御が必要なら自分で記述する必要がある)">}}
 
@@ -52,7 +52,7 @@ VHDLおよびVerilog HDLでは加減算や論理演算，比較などの演算�
 HDLでもソフトウェア・プログラミング同様に，演算した結果を代入演算を利用して，ほかの(あるいは同じ)変数に代入することができます．HDLの代入には，ブロッキング代入とノンブロッキング代入の2種類があります．ブロッキング代入は，その時点で値を代入して次に進む代入です．一方，ノンブロッキング代入は，複数の代入文において，それらの代入の同時実行を規定します．Cなどで記述した単一スレッドのソフトウェア・プログラムの代入は，HDLでいうところのブロッキング代入に相当します．
 
 ## 値の基本 --- '0'，'1'，'Z'，'X'
-ハードウェアの値は'0'と'1'の値をとります．加えて，ハードウェアにはハイ・インピーダンスという，「抵抗が無限大」を意味する状態が存在します．VHDLやVerilog HDLでは'Z'で表されます．値として「抵抗が無限大」というのは，少しわかりにくいかもしれません．物理的には，図\ref{fig:high_imp_image}のようにスイッチを切った状態をイメージしてください．複数の信号が一つにまとめられるとき，'Z'は，「ほかの値に影響を与えない」ということを意味します．
+ハードウェアの値は'0'と'1'の値をとります．加えて，ハードウェアにはハイ・インピーダンスという，「抵抗が無限大」を意味する状態が存在します．VHDLやVerilog HDLでは'Z'で表されます．値として「抵抗が無限大」というのは，少しわかりにくいかもしれません．物理的には，図4のようにスイッチを切った状態をイメージしてください．複数の信号が一つにまとめられるとき，'Z'は，「ほかの値に影響を与えない」ということを意味します．
 
 {{<figure src="../languages_figures/high_imp_image.png" class="center" caption="図4: HDLではハイ・インピーダンスでスイッチオフを記述できる．">}}
 
@@ -68,15 +68,15 @@ VHDLもVerilog HDLも，演算処理や変数定義などの文の終わりに�
 VHDLの基本的な文法を説明します．
 
 ## コメント
-多くのソフトウェア・プログラミング言語と同様に，VHDLでもソースコード中にコメントを書くことができます．VHDLでは，「\verb|--|」から行末までがコメントになります．
+多くのソフトウェア・プログラミング言語と同様に，VHDLでもソースコード中にコメントを書くことができます．VHDLでは，「 `--` 」から行末までがコメントになります．
 
 ## モジュールの構成
-図\ref{fig:vhdl_module_overview}に，VHDLで記述するモジュールの概要を示します．VHDLでは，対象とするモジュールを大きく\verb|entity|と\verb|architecture|に分けて記述します．\verb|entity|には外部に接続される入出力ポートの宣言などの回路の外枠を，\verb|architecture|には使用する関数の定義や処理内容など，回路の内部を定義します．
+図5に，VHDLで記述するモジュールの概要を示します．VHDLでは，対象とするモジュールを大きく `entity` と `architecture` に分けて記述します． `entity` には外部に接続される入出力ポートの宣言などの回路の外枠を， `architecture` には使用する関数の定義や処理内容など，回路の内部を定義します．
 
 {{<figure src="../languages_figures/vhdl_module_overview.png" class="center" caption="図5: VHDLのモジュール定義はentityとarchitectureから構成される">}}
 
 ## 即値の表現方法
-VHDLでは，ソース・コードの中に定数の値を記述できます(表1)．複数の信号線を束ねた値は，信号線の本数分だけ各信号に相当する値を並べて表現します(たとえば4bitなら\verb|"0000"|など)．また，「\verb|X"01"|」と記述することで16進数で数を表記できます．よく用いられる代表的な定数表現には，表\ref{tbl:vhdl_constants}のようなものがあります．
+VHDLでは，ソース・コードの中に定数の値を記述できます(表1)．複数の信号線を束ねた値は，信号線の本数分だけ各信号に相当する値を並べて表現します(たとえば4bitなら `"0000"` など)．また，「 `X"01"`」と記述することで16進数で数を表記できます．よく用いられる代表的な定数表現には，表1のようなものがあります．
 
 表1. VHDLで記述できる定数の例
 
@@ -89,32 +89,27 @@ VHDLでは，ソース・コードの中に定数の値を記述できます(表
 
 
 ## 型
-VHDLの変数はすべて型を持ちます．たくさんの型が定義されており，また，独自の型も定義できます．よく使用される5つの型を表\ref{tbl:vhdl_types}に示します．基本的には，\verb|std_logic|，\verb|std_logic_vector|はハードウェアの信号に相当する型，\verb|signed|や\verb|unsigned|は加減算などの算術演算ができる値を表現するために用いる型，一般的な数値を表現できる\verb|integer|です．
+VHDLの変数はすべて型を持ちます．たくさんの型が定義されており，また，独自の型も定義できます．よく使用される5つの型を表2に示します．基本的には，`std_logic`，`std_logic_vector`はハードウェアの信号に相当する型，`signed`や`unsigned`は加減算などの算術演算ができる値を表現するために用いる型，一般的な数値を表現できる`integer`です．
 
-\begin{table}[H]
-\begin{center}
- \begin{tabular}{l|l}
- \hline
-  型名                                  & 説明 \\\hline\hline
-  \verb|std_logic|                      & 1bitの信号線     \\\hline
-  \verb|std_logic_vector(n-1 downto 0)| & n-bitの信号線    \\\hline
-  \verb|unsigned(n-1 downto 0)|         & n-bitの符号なしの算術演算可能な値 \\\hline
-  \verb|signed(n-1 downto 0)|           & n-bitの符号ありの算術演算可能な値 \\\hline
-  \verb|integer n to m|                 & nからmまでの整数 \\\hline
- \end{tabular}
-\end{center}
-\caption{VHDLで用いられる型の例\label{tbl:vhdl_types}}
-\end{table}
+  型名                                    |説明
+----------------------------------------|---------------------
+  `std_logic`                           | 1bitの信号線
+  `std_logic_vector(n-1 downto 0)` | n-bitの信号線
+  `unsigned(n-1 downto 0)`           | n-bitの符号なしの算術演算可能な値
+  `signed(n-1 downto 0)`             | n-bitの符号ありの算術演算可能な値
+  `integer n to m`                     | nからmまでの整数
+  
+VHDLで用いられる型の例
 
 ### 1-bitの信号
-\verb|std_logic|は，VHDLの基本となる1bitの信号に相当する型です．'0'，'1'のほかに，ハイ・インピーダンスを示す'Z'，不定値を示す'X'を値としてとれます．これらの値は，ハードウェアにそのまま対応します．
+`std_logic` は，VHDLの基本となる1bitの信号に相当する型です．`'0'`，`'1'`のほかに，ハイ・インピーダンスを示す`'Z'`，不定値を示す`'X'`を値としてとれます．これらの値は，ハードウェアにそのまま対応します．
 
 ### n-bitの信号
-\verb|std_logic_vector(n downto 0)|は，\verb|std_logic|がn個並んだn-bitの信号線に相当する型です．「n-bitの\verb|std_logi_vector|型」と呼びます．\verb|std_logic_vector|型の変数aの中の要素を，a(3)，a(4 downto 2)などとして取り出せます．前者は\verb|std_logic|型，後者は3bitの\verb|std_logic_vector|型です．「\verb|downto|」は\verb|std_logic|の並びに，MSBから降順で番号を付けることを意味します．つまり，\verb|std_logic_vector(n-1 downto 0)|のビット列の場合，MSBが\verb|std_logic_vector(n-1)|で，LSBが\verb|std_logic_vector(0)|です．\verb|to|を使うことで逆順に並べることもできます．その場合は，\verb|std_logic_vector(n upto 0)|のように書きます．
+`std_logic_vector(n downto 0)`は，`std_logic`がn個並んだn-bitの信号線に相当する型です．n-bitの`std_logi_vector`型」と呼びます．`std_logic_vector`型の変数`a`の中の要素を，`a(3)`，`a(4 downto 2)`などとして取り出せます．前者は`std_logic`型，後者は3bitの`std_logic_vector`型です．「`downto`」は`std_logic`の並びに，MSBから降順で番号を付けることを意味します．つまり，`std_logic_vector(n-1 downto 0)`のビット列の場合，MSBが`std_logic_vector(n-1)`で，LSBが`std_logic_vector(0)`です．`to`を使うことで逆順に並べることもできます．その場合は，`std_logic_vector(n to 0)`のように書きます．
 
 ## モジュールの外枠の記述 --- entity
-\verb|entity|は，モジュールの外枠に相当し，モジュールの名前と入出力の信号で定義されます．たとえば，
-次の記述は，入力信号にpClkとpReset，出力信号にQを持つtestという名前のモジュールの外枠の定義に相当します．
+`entity`は，モジュールの外枠に相当し，モジュールの名前と入出力の信号で定義されます．たとえば，
+次の記述は，入力信号にpClkとpReset，出力信号にQを持つ`test`という名前のモジュールの外枠の定義に相当します．
 
 {{< highlight vhdl "linenos=table" >}}
 entity test is
@@ -127,22 +122,22 @@ end entity;
 {{< /highlight >}}
 
 ### ポートを定義する
-ポートは，ハードウェア・モジュールの入出力です．\verb|entity|の中の\verb|port( 〜 );|の中に信号を方向と型を指定して定義します．信号の方向には\verb|in|(入力)と\verb|out|(出力)，\verb|inout|(入出力)の3種類があります．各ポートは「名前 : 方向 型」で定義されます．たとえば，
+ポートは，ハードウェア・モジュールの入出力です．`entity`の中の`port( 〜 );`の中に信号を方向と型を指定して定義します．信号の方向には`in`(入力)と`out`(出力)，`inout`(入出力)の3種類があります．各ポートは「名前 : 方向 型」で定義されます．たとえば，
 
 {{< highlight vhdl "linenos=table" >}}
 pClk : in std_logic
 {{< /highlight >}}
 
-という記述は，\verb|pClk|という名前の型が\verb|std_logic|の入力ポート(\verb|in|)の定義に相当します．同じ方向，型の複数のポート名は「,」で並べて定義することもできます．たとえば，
+という記述は，`pClk`という名前の型が`std_logic`の入力ポート(`in`)の定義に相当します．同じ方向，型の複数のポート名は「,」で並べて定義することもできます．たとえば，
 
 {{< highlight vhdl "linenos=table" >}}
 pR, pG, pB : in std_logic
 {{< /highlight >}}
 
-として，3つの入力信号\verb|pR|，\verb|pG|，\verb|pB|をまとめて定義できます．
+として，3つの入力信号`pR`，`pG`，`pB`をまとめて定義できます．
 
 ### 定数を定義する
-\verb|entity|の中にモジュールの中で使用する定数を定義できます．
+`entity`の中にモジュールの中で使用する定数を定義できます．
 
 {{< highlight vhdl "linenos=table" >}}
 entity test is
@@ -158,11 +153,11 @@ entity test is
 end test;
 {{< /highlight >}}
 
-ここでは，\verb|width|という名前で値が640の\verb|integer|型，すなわち整数の定数を定義しています．この定数は\verb|entity|内部，および内部処理を記述する\verb|architecture|の中で使用できます．
+ここでは，`width`という名前で値が640の`integer`型，すなわち整数の定数を定義しています．この定数は `entity` 内部，および内部処理を記述する `architecture` の中で使用できます．
 
 ## 内部処理の記述 --- architecture
 
-VHDLでは，\verb|architecture|にモジュールの処理内容を記述します．記述の基本的な流れは次の通りです．
+VHDLでは， `architecture` にモジュールの処理内容を記述します．記述の基本的な流れは次の通りです．
 
 {{< highlight vhdl "linenos=table" >}}
 architecture RTL of test is
@@ -172,7 +167,7 @@ begin
 end RTL;
 {{< /highlight >}}
 
-上記は，\verb|test|という名前のモジュールの中身を記述するためのブロックです．
+上記は， `test` という名前のモジュールの中身を記述するためのブロックです．
 
 ## 変数の定義
 
@@ -186,42 +181,35 @@ signal 名前 : 型 := 初期値;
 signal counter : std_logic_vector(9 downto 0);
 {{< /highlight >}}
 
-また，\verb|generic|で定義した値である\verb|width|を使用して，幅widthの\verb|std_logic_vector|型の信号を次のように定義できます．ここで「\verb|width−1|」の値は合成時に決定されます．
+また， `generic` で定義した値である `width` を使用して，幅widthの `std_logic_vector` 型の信号を次のように定義できます．ここで「 `width−1` 」の値は合成時に決定されます．
 
 {{< highlight vhdl "linenos=table" >}}
 signal counter : std_logic_vector(width-1 downto 0);
 {{< /highlight >}}
 
 ## 演算子と演算
-代表的な演算子を表\ref{tbl:vhdl_operator}にまとめます．論理演算子を\verb|std_logic_vector|型に定義した場合は，対応する各ビットの値同士に論理演算を適用した結果を返します．たとえば，「\verb|"10" and "11"|」は「\verb|"10"|」になり，「\verb|"10" or "11"|」は「\verb|"11"|」になります．比較演算の結果は，\verb|true|か\verb|false|の真偽値になります．よくあるプログラミング言語に備わっている演算が備わっていることがわかります．ただし，表\ref{tbl:vhdl_operator}の説明に(*1)をつけている，算術演算や数値の大小を比較する演算では\verb|unsigned|型，\verb|signed|型あるいは\verb|integer|の変数や定数，あるいは数値に相当する即値にしか利用できません．
+代表的な演算子を表3にまとめます．論理演算子を `std_logic_vector` 型に定義した場合は，対応する各ビットの値同士に論理演算を適用した結果を返します．たとえば，「 `"10" and "11"` 」は「 `"10"` 」になり，「 `"10" or "11"` 」は「 `"11"` 」になります．比較演算の結果は， `true` か `false` の真偽値になります．よくあるプログラミング言語に備わっている演算が備わっていることがわかります．ただし，表3の説明に(*1)をつけている，算術演算や数値の大小を比較する演算では `unsigned` 型， `signed` 型あるいは `integer` の変数や定数，あるいは数値に相当する即値にしか利用できません．
 
-\begin{table}[H]
-\begin{center}
- \begin{tabular}{l|l|l}
- \hline
-  種類      & 演算子         & 説明 \\\hline\hline
-  論理演算  & \verb|a and b| & 論理積．aとbが\verb|'1'|なら\verb|'1'|．さもなければ\verb|'0'|．\\\cline{2-3}
-            & \verb|a or b|  & 論理和．aとbのどちらか又は両方が\verb|'1'|なら\verb|'1'|．さもなければ\verb|'0'|．\\\cline{2-3}
-            & \verb|a xor b| & 排他的論理積．aとbの一方だけが\verb|'1'|なら\verb|'1'|．さもなければ\verb|'0'|．\\\cline{2-3}
-            & \verb|not a|   & 否定．aが\verb|'0'|なら\verb|'1'|．\verb|'1'|ならverb|'0'|\\\hline
-  比較演算  & \verb|a = b|   & aとbが等しい場合\verb|true|．さもなければ\verb|false|\\\cline{2-3}
-            & \verb|a /= b|  & aとbが等しくなければ場合\verb|true|．さもなければ\verb|false|\\\cline{2-3}
-            & \verb|a > b|   & aがbがより大きいなら\verb|true|．さもなければ\verb|false|．(*1)\\\cline{2-3}
-            & \verb|a < b|   & aとbがより小さいなら\verb|true|．さもなければ\verb|false|．(*1)\\\cline{2-3}
-            & \verb|a >= b|  & aとb以上なら\verb|true|．さもなければ\verb|false|．(*1)\\\cline{2-3}
-            & \verb|a <= b|  & aとb以下なら\verb|true|．さもなければ\verb|false|．(*1)\\\hline
-  算術演算  & \verb|a + b|   & aとbの足し算 (*1)\\\cline{2-3}
-            & \verb|a - b|   & aとbの引き算 (*1)\\\cline{2-3}
-            & \verb|a * b|   & aとbの引き算 (*1)\\\cline{2-3}
-            & \verb|a / b|   & aとbの割り算 (*1)\\\cline{2-3}
-            & \verb|a ** b|  & aのb乗 (*1)\\\hline
-   配列操作 & \verb|a & b|   & aとbをこの順に並べた信号線の束を作る \\\cline{2-3}
-            & \verb|a(b) |   & aのb番目の信号を取り出す \\\cline{2-3}
-            & \verb|a(b downto c) | & aのb番目からc番目の信号線の束を取り出す \\\hline
- \end{tabular}
-\end{center}
-\caption{VHDLで用いられる演算の例\label{tbl:vhdl_operator}}
-\end{table}
+  種類      | 演算子         | 説明
+  ----------|---------------|--------
+  論理演算  |  `a and b`  | 論理積．aとbが `'1'` なら `'1'` ．さもなければ `'0'` ．
+            |  `a or b`   | 論理和．aとbのどちらか又は両方が `'1'` なら `'1'` ．さもなければ `'0'` ．
+            |  `a xor b`  | 排他的論理積．aとbの一方だけが `'1'` なら `'1'` ．さもなければ `'0'` ．
+            |  `not a`    | 否定．aが `'0'` なら `'1'` ． `'1'` なら`'0'`
+  比較演算  |  `a = b`    | aとbが等しい場合 `true` ．さもなければ `false` 
+            |  `a /= b`   | aとbが等しくなければ場合 `true` ．さもなければ `false`
+            |  `a > b`    | aがbがより大きいなら `true` ．さもなければ `false` ．(*1)
+         |  `a < b`    | aとbがより小さいなら `true` ．さもなければ `false` ．(*1)
+         |  `a >= b`   | aとb以上なら `true` ．さもなければ `false` ．(*1)
+         |  `a <= b`   | aとb以下なら `true` ．さもなければ `false` ．(*1)
+  算術演算  |  `a + b`    | aとbの足し算 (*1)
+            |  `a - b`    | aとbの引き算 (*1)
+            |  `a * b`    | aとbの引き算 (*1)
+            |  `a / b`    | aとbの割り算 (*1)
+            |  `a ** b`   | aのb乗 (*1)
+   配列操作 |  `a & b`    | aとbをこの順に並べた信号線の束を作る
+            |  `a(b) `    | aのb番目の信号を取り出す
+            |  `a(b downto c) `  | aのb番目からc番目の信号線の束を取り出す
 
 ### 演算結果の代入
 
@@ -238,10 +226,10 @@ signal counter : std_logic_vector(width-1 downto 0);
 Q <= counter(width-1);
 {{< /highlight >}}
 
-という記述は，\verb|std_logic_vector|型の変数\verb|counter|の\verb|(width-1)|番目を取り出し，\verb|Q|に代入するハードウェアの記述に相当します．VHDLでは，\verb|signal|変数には，初期化時以外でブロッキング代入を使用することはできません．
+という記述は， `std_logic_vector` 型の変数 `counter` の `(width-1)` 番目を取り出し， `Q` に代入するハードウェアの記述に相当します．VHDLでは， `signal` 変数には，初期化時以外でブロッキング代入を使用することはできません．
 
 ### 型の変換
-VHDLは型の制約が強い言語で．代入は同じ型の変数同士でしか認められません．また演算子も適用可能な型があらかじめ決められています．そのため，幅の違う\verb|std_logic_vector|同士で値を定義する場合には，ビット幅を削る/足すなどして同じ幅にしなければいけません．たとえば，aとbが，それぞれ幅16-bit，8-bitの\verb|std_logic_vector|型であれば，
+VHDLは型の制約が強い言語で．代入は同じ型の変数同士でしか認められません．また演算子も適用可能な型があらかじめ決められています．そのため，幅の違う `std_logic_vector` 同士で値を定義する場合には，ビット幅を削る/足すなどして同じ幅にしなければいけません．たとえば，aとbが，それぞれ幅16-bit，8-bitの `std_logic_vector` 型であれば，
 
 {{< highlight vhdl "linenos=table" >}}
 a <= "00000000" & b; -- 足りない8bitを8bitの0(="00000000")で埋めている
@@ -250,23 +238,23 @@ b <= a(7 downto 0); -- aの下位8bitだけをbに代入している
 
 などとする必要があります．
 
-型の変換には専用の関数を利用します．たとえば，\verb|std_logic_vector|を\verb|unsigned|型あるいは\verb|signed|型に変換するためには，それぞれ\verb|unsigned|関数あるいは\verb|signed|を用います．
+型の変換には専用の関数を利用します．たとえば， `std_logic_vector` を `unsigned` 型あるいは `signed` 型に変換するためには，それぞれ `unsigned` 関数あるいは `signed` を用います．
 
 {{< highlight vhdl "linenos=table" >}}
 unsigned(c);
 {{< /highlight >}}
 
-と記述すると\verb|std_logic_vector|型の変数\verb|c|を\verb|unsigned|型に変換できます．
+と記述すると `std_logic_vector` 型の変数 `c` を `unsigned` 型に変換できます．
 
-逆に，\verb|unsigned|型や\verb|singed|型の変数を\verb|std_logic_vector|型に変換する場合には，\verb|std_logic_vector|関数を用います．
+逆に， `unsigned` 型や `singed` 型の変数を `std_logic_vector` 型に変換する場合には， `std_logic_vector` 関数を用います．
 
 {{< highlight vhdl "linenos=table" >}}
 std_logic_vector(d);
 {{< /highlight >}}
 
-と記述すると\verb|unsigned|型の変数\verb|d|を\verb|std_logic_vector|型に変換できます．
+と記述すると `unsigned` 型の変数 `d` を `std_logic_vector` 型に変換できます．
 
-\verb|integer|型の変数を\verb|unsigned|型や\verb|signed|型に変換する場合には，\verb|to_unsigned|あるいは\verb|to_signed|を使います．たとえば，\verb|integer|型の変数\verb|k|をn-bitの\verb|unsigned|型に変換する場合は，2番目の引数にビット数\verb|n|を指定して，
+ `integer` 型の変数を `unsigned` 型や `signed` 型に変換する場合には， `to_unsigned` あるいは `to_signed` を使います．たとえば， `integer` 型の変数 `k` をn-bitの `unsigned` 型に変換する場合は，2番目の引数にビット数 `n` を指定して，
 
 {{< highlight vhdl "linenos=table" >}}
 to_unsigned(k, n);
@@ -274,14 +262,14 @@ to_unsigned(k, n);
 
 と記述します．
 
-一般に，VHDLでは，\verb|std_logic_vector|型の変数に対して算術演算は記述できません．そのため，\verb|std_logic_vector|と定数の加減算や比較演算する場合には，一度\verb|unsigned|型に変換して演算する必要があります．たとえば，幅nの\verb|std_logic_vector|の変数counterに定数\verb|1|を加算する場合には，次のように，一度\verb|unsigned|型に変換して演算した後で\verb|std_logic_vector|型に戻す必要があります．
+一般に，VHDLでは， `std_logic_vector` 型の変数に対して算術演算は記述できません．そのため， `std_logic_vector` と定数の加減算や比較演算する場合には，一度 `unsigned` 型に変換して演算する必要があります．たとえば，幅nの `std_logic_vector` の変数counterに定数 `1` を加算する場合には，次のように，一度 `unsigned` 型に変換して演算した後で `std_logic_vector` 型に戻す必要があります．
 
 {{< highlight vhdl "linenos=table" >}}
 counter <= std_logic_vector(unsigned(counter) + 1);
 {{< /highlight >}}
 
 ### シフト演算
-VHDLには，ソフトウェア・プログラミング言語で一般的なシフト演算子に相当する演算子がありません．VHDLでは配列操作の演算を用いて似たような操作ができます．たとえば，幅n-bitの\verb|std_logic_vector|型の変数counterを右に1つシフトしたい場合には，次のように記述します．
+VHDLには，ソフトウェア・プログラミング言語で一般的なシフト演算子に相当する演算子がありません．VHDLでは配列操作の演算を用いて似たような操作ができます．たとえば，幅n-bitの `std_logic_vector` 型の変数counterを右に1つシフトしたい場合には，次のように記述します．
 
 {{< highlight vhdl "linenos=table" >}}
 counter <= '0' & counter(n-1 downto 1);
@@ -309,12 +297,12 @@ e <= c and d;
 c <= a and b;
 {{< /highlight >}}
 
-と書いても，同じように図\ref{fig:parallel_vhdl}の回路が合成されます．
+と書いても，同じように図6の回路が合成されます．
 
-{{<figure src="../languages_figures/parallel_vhdl.png" class="center" caption="図5: 同時処理文は，記述順によらず解析・合成される">}}
+{{<figure src="../languages_figures/parallel_vhdl.png" class="center" caption="図6: 同時処理文は，記述順によらず解析・合成される">}}
 
 ## 順次処理文 --- process文
-順次処理文では記述された順序に従って意味が解析され，回路が合成されます．そのため，複雑な制御構文を使用できます．VHDLでは，\verb|architecture|中で\verb|process|を使って順次処理文を記述するためのブロックを作ることができます．\verb|process|文の基本的な構文を次に示します．
+順次処理文では記述された順序に従って意味が解析され，回路が合成されます．そのため，複雑な制御構文を使用できます．VHDLでは， `architecture` 中で `process` を使って順次処理文を記述するためのブロックを作ることができます． `process` 文の基本的な構文を次に示します．
 
 {{< highlight vhdl "linenos=table" >}}
 process(a, b)
@@ -324,11 +312,11 @@ begin
 end process;
 {{< /highlight >}}
 
-ここで，\verb|process()|の「\verb|()|」内の変数のリストをセンシティビティ・リストといいます．このリストに列挙した変数の信号が変化すると\verb|process|の中の回路が動作し出力値が変更されます．ノンブロッキング代入は，process内の記述が順に解釈された後で，同時に信号が確定します．このprocess文は，図\ref{fig:process_example}のような回路を生成します．あくまで文が順に解釈されるだけで，順に処理される回路が生成できるわけではない，ことに注意する必要があります．
+ここで， `process()` の「 `()` 」内の変数のリストをセンシティビティ・リストといいます．このリストに列挙した変数の信号が変化すると `process` の中の回路が動作し出力値が変更されます．ノンブロッキング代入は，process内の記述が順に解釈された後で，同時に信号が確定します．このprocess文は，図7のような回路を生成します．あくまで文が順に解釈されるだけで，順に処理される回路が生成できるわけではない，ことに注意する必要があります．
 
-{{<figure src="../languages_figures/process_example.png" class="center" caption="図5: 順次処理文中の複数のノンブロッキング文は順に解釈され，最後に値が同時に確定する">}}
+{{<figure src="../languages_figures/process_example.png" class="center" caption="図7: 順次処理文中の複数のノンブロッキング文は順に解釈され，最後に値が同時に確定する">}}
 
-\verb|process|文の中にでてくる入力変数(式の右辺にでてくる変数)がすべてセンシティビティ・リストに列挙されている場合，入力が変化する度に回路が動作し，出力変数(式の左辺)の値が変更されます．つまり，その\verb|process|文から生成される回路では，何も状態を保存する必要がありません．そのため，図\ref{fig:process_example}のような記憶素子を必要としない組み合わせ回路として構成されます．
+ `process` 文の中にでてくる入力変数(式の右辺にでてくる変数)がすべてセンシティビティ・リストに列挙されている場合，入力が変化する度に回路が動作し，出力変数(式の左辺)の値が変更されます．つまり，その `process` 文から生成される回路では，何も状態を保存する必要がありません．そのため，図8のような記憶素子を必要としない組み合わせ回路として構成されます．
 
 センシティビティ・リストにない変数が右辺に使われる．次のようなprocess文を考えてみます．
 
@@ -340,9 +328,9 @@ begin
 end process;
 {{< /highlight >}}
 
-ここでは，センシティビティ・リストに「b」がなく，入力変数が全部列挙されていません．この回路では，bの値が変化しても出力先であるcとdの値は変化しません．つまり，図\ref{fig:process_example}のように，入力であるaとbを出力のcとdに直接接続することができず，cとdの値を保存する機構，記憶素子が必要となり，組み合わせ回路として合成されません．「同じように記述したつもりでも違う回路になるかもしれない」ということを覚えておいてください．
+ここでは，センシティビティ・リストに「b」がなく，入力変数が全部列挙されていません．この回路では，bの値が変化しても出力先であるcとdの値は変化しません．つまり，図8のように，入力であるaとbを出力のcとdに直接接続することができず，cとdの値を保存する機構，記憶素子が必要となり，組み合わせ回路として合成されません．「同じように記述したつもりでも違う回路になるかもしれない」ということを覚えておいてください．
 
-VHDLの\verb|process|文では，ブロッキング代入可能な\verb|variable|変数を利用できます．\verb|variable|変数は，順次処理文において便宜的に一時的な値を格納しておくためのものです．長く複雑な演算を行う場合に，ソース・コードの見通しをよくできます．
+VHDLの `process` 文では，ブロッキング代入可能な `variable` 変数を利用できます． `variable` 変数は，順次処理文において便宜的に一時的な値を格納しておくためのものです．長く複雑な演算を行う場合に，ソース・コードの見通しをよくできます．
 たとえば，次のように使います．
 
 {{< highlight vhdl "linenos=table" >}}
@@ -356,23 +344,23 @@ begin
 end process;
 {{< /highlight >}}
 
-ここでは，tmp0とtmp1がvariable変数です．ブロッキング代入における演算の結果がそれぞれ代入されています．ブロッキング代入のため，合成ツールがこの構文に出会ったところで，tmp0の値は(a and b)に，tmp1の値は(a or b)にすぐさま置き換わります．つまり，これは，\verb|c <= (a and b) xor (a or b)|という回路として合成されます．
+ここでは，tmp0とtmp1がvariable変数です．ブロッキング代入における演算の結果がそれぞれ代入されています．ブロッキング代入のため，合成ツールがこの構文に出会ったところで，tmp0の値は(a and b)に，tmp1の値は(a or b)にすぐさま置き換わります．つまり，これは， `c <= (a and b) xor (a or b)` という回路として合成されます．
 
 ## 制御構文
-VHDLでは，まるでソフトウェアを記述するように，条件分岐やCの\verb|switch|文のような制御構文が使えます．多くの制御構文は，\verb|process|文の中でのみ使用ができます．代表的なものを紹介します．
+VHDLでは，まるでソフトウェアを記述するように，条件分岐やCの `switch` 文のような制御構文が使えます．多くの制御構文は， `process` 文の中でのみ使用ができます．代表的なものを紹介します．
 
 ### when 〜 else
-同時処理文中で記述可能な制御構文です．条件に従って出力する値を選択できます．下記は，\verb|a|と\verb|b|の値が等しい場合は\verb|X|を，等しくない場合には\verb|Y|を\verb|c|に代入する例です．
+同時処理文中で記述可能な制御構文です．条件に従って出力する値を選択できます．下記は， `a` と `b` の値が等しい場合は `X` を，等しくない場合には `Y` を `c` に代入する例です．
 
 {{< highlight vhdl "linenos=table" >}}
 c <= X when a = b else Y;
 {{< /highlight >}}
 
-制御構文というよりは，Cなどで，\verb|c = (a==b) ? X : Y|と書く3項演算子に近いイメージですね．
+制御構文というよりは，Cなどで， `c = (a==b) ? X : Y` と書く3項演算子に近いイメージですね．
 
 ### if 〜 then 〜 elsif 〜 else 〜 end if --- 条件分岐構文
-\verb|process|文の中でのみ使用できる条件分岐構文です．
-次は，\verb|a|より\verb|b|が大きい場合は処理文Xが，それ以外の場合は処理文Yが有効になります．また，処理文の中で\verb|if|をネスト(入れ子に)することもできます．
+ `process` 文の中でのみ使用できる条件分岐構文です．
+次は， `a` より `b` が大きい場合は処理文Xが，それ以外の場合は処理文Yが有効になります．また，処理文の中で `if` をネスト(入れ子に)することもできます．
 
 {{< highlight vhdl "linenos=table" >}}
 if a > b then
@@ -382,7 +370,7 @@ else
 end if;
 {{< /highlight >}}
 
-また，\verb|elsif|を使うと，\verb|else|節に重ねて次の条件を記述できます．
+また， `elsif` を使うと， `else` 節に重ねて次の条件を記述できます．
 
 {{< highlight vhdl "linenos=table" >}}
 if a > b then
@@ -405,7 +393,7 @@ end if;
 
 のような条件文を作ることができます．この例では，「clkが変化し，かつ，clkが1」のときに処理文が実行されます．ハードウェアとしては，clk信号が立ち上がった瞬間に相当します．それ意外のタイミングでは，処理文は動作せず，値が保存し続けられます．これは，決まったタイミングで処理を実行する順序同期回路の設計に欠かせない表現です．
 
-ただし，2018年現在では，多くの場合，直接「クロックの立ち上がり」を表す，\verb|rising_edge|という関数を使って，
+ただし，2018年現在では，多くの場合，直接「クロックの立ち上がり」を表す， `rising_edge` という関数を使って，
 
 {{< highlight vhdl "linenos=table" >}}
 if rising_edge(clk) then
@@ -416,7 +404,7 @@ end if;
 という記述が好まれます．
 
 ### case〜when --- 選択
-CやJavaでいうところの\verb|switch|構文です．次に示す例では，\verb|std_logic_vector|型の変数aの値によって処理文X，Y，Zのどれかが実行されます．0，1，2という整数と一致させられるように，\verb|to_integer|を使って\verb|a|を\verb|integer|型に変換しています．ここで，VHDLの\verb|case ~ when|構文では，どれかの\verb|when|に必ず該当するように記述する必要があることに注意しなければいけません．すべての\verb|when|を列挙する代わりに「\verb|others|」で残りすべての条件にマッチする場合を表現できます．
+CやJavaでいうところの `switch` 構文です．次に示す例では， `std_logic_vector` 型の変数aの値によって処理文X，Y，Zのどれかが実行されます．0，1，2という整数と一致させられるように， `to_integer` を使って `a` を `integer` 型に変換しています．ここで，VHDLの `case ~ when` 構文では，どれかの `when` に必ず該当するように記述する必要があることに注意しなければいけません．すべての `when` を列挙する代わりに「 `others` 」で残りすべての条件にマッチする場合を表現できます．
 
 {{< highlight vhdl "linenos=table" >}}
 case to_integer(unsigned(a))
@@ -434,7 +422,7 @@ end case;
 ### for 〜 in 〜 loop --- 繰り返し
 VHDLにおける繰り返し処理は，単に似たような処理を繰り返して記述する代わりに簡単に書けるようにするための構文です．実際には，合成時に繰り返し回数分のハードウェア回路が生成されます．
 
-たとえば，下記に示す処理は，5bitの\verb|std_logic_vector|型の変数\verb|a|と\verb|std_logic|型の変数\verb|b|が定義されているときに，
+たとえば，下記に示す処理は，5bitの `std_logic_vector` 型の変数 `a` と `std_logic` 型の変数 `b` が定義されているときに，
 
 {{< highlight vhdl "linenos=table" >}}
 process
@@ -469,7 +457,7 @@ end process;
 作成した回路が動作する時ではなく，回路を作成する時点で繰り返し処理が解釈されることに注意してください．
 
 ## 組み合わせ回路のサブモジュール
-VHDLでは，複雑な組み合わせ回路を生成するために，\verb|function|というサブモジュールを記述できます．\verb|function|は順次処理文で，\verb|if|や\verb|case|などの条件文を記述できますが，ノンブロッキング代入を用いることはできません．\verb|function|は，次のように定義します．
+VHDLでは，複雑な組み合わせ回路を生成するために， `function` というサブモジュールを記述できます． `function` は順次処理文で， `if` や `case` などの条件文を記述できますが，ノンブロッキング代入を用いることはできません． `function` は，次のように定義します．
 
 {{< highlight vhdl "linenos=table" >}}
 function f (a : in std_logic; b : in std_logic)
@@ -485,7 +473,7 @@ begin
 end f;
 {{< /highlight >}}
 
-これは，1ビットの変数である\verb|a|と\verb|b|を入力とする名前\verb|f|の\verb|function|の定義です．入力された二つの値が等しいときに1を，異なるときに0を出力する関数です．
+これは，1ビットの変数である `a` と `b` を入力とする名前 `f` の `function` の定義です．入力された二つの値が等しいときに1を，異なるときに0を出力する関数です．
 
 呼び出し側では，
 
@@ -512,7 +500,7 @@ Cなどのソフトウェア・プログラミング言語の関数とは違い�
 複雑な組み合わせ回路を見通しよく記述できる書き方です．
 
 ## おまじない
-実は，ここまで説明してきた\verb|std_logic|などを利用するには，これらの機能が実装されたライブラリなどを読み込む必要があります．
+実は，ここまで説明してきた `std_logic` などを利用するには，これらの機能が実装されたライブラリなどを読み込む必要があります．
 VHDLソース・コードの先頭に以下を記述します．
 
 {{< highlight vhdl "linenos=table" >}}
@@ -525,55 +513,41 @@ use ieee.numeric_std.all;
 Verilog HDLの基本的な文法を説明します．
 
 ## コメント
-多くのソフトウェア・プログラミング言語と同様に，Verilog HDLでもソースコード中にコメントを書くことができます．Verilog HDLでは，C++と同じように \verb|/* 〜 */| で囲んだ部分や \verb|//| から行末までがコメントになります．
+多くのソフトウェア・プログラミング言語と同様に，Verilog HDLでもソースコード中にコメントを書くことができます．Verilog HDLでは，C++と同じように  `/* 〜 */`  で囲んだ部分や  `//`  から行末までがコメントになります．
 
 ## モジュールの構成
-図\ref{fig:verilog_module_overview}に，Verlog HDLで記述するモジュールの概要を示します．VHDLでは，外枠の定義\verb|entity|と内部の定義\verb|architecture|が区別されていたのに対し，Verilog HDLにはそのような区別はありません．\verb|module|の中に，外部と接続されるポートや関数内で使用する変数の宣言，処理内容などを記述します．
+図9に，Verlog HDLで記述するモジュールの概要を示します．VHDLでは，外枠の定義 `entity` と内部の定義 `architecture` が区別されていたのに対し，Verilog HDLにはそのような区別はありません． `module` の中に，外部と接続されるポートや関数内で使用する変数の宣言，処理内容などを記述します．
 
-{{<figure src="../languages_figures/verilog_module_overview.png" class="center" caption="図5: Verilog HDLのモジュール定義の概要">}}
+{{<figure src="../languages_figures/verilog_module_overview.png" class="center" caption="図9: Verilog HDLのモジュール定義の概要">}}
 
 ## 値の表現方法
-Verilog HDLでは，必要とするビット幅(\verb|w|)と基数(\verb|f|)を付けて「\verb|w'f値|」という形式で即値を記述します．ビット幅は10進数で記述します．ビット幅と基数を省略すると10進数，32bitの値になります．表\ref{tbl:verilog_value}に，基数と記号と表現される数の関係を示します．
+Verilog HDLでは，必要とするビット幅( `w` )と基数( `f` )を付けて「 `w'f値` 」という形式で即値を記述します．ビット幅は10進数で記述します．ビット幅と基数を省略すると10進数，32bitの値になります．表\ref{tbl:verilog_value}に，基数と記号と表現される数の関係を示します．
 
-\begin{table}[H]
-\begin{center}
- \begin{tabular}{l|l|l|l}
- \hline
-  基数(w) & 基数記号(f) & 例            & 10進数表記での値 \\\hline\hline
-  2       & \verb|b|    & \verb|8'b10|  & 2 \\\hline
-  10      & \verb|d|    & \verb|10'd10| & 10 \\\hline
-          &             & \verb|10|     & 10 \\\hline
-  16      & \verb|h|    & \verb|8'h10|  & 16 \\\hline
- \end{tabular}
-\end{center}
-\caption{Verilog HDLにおける値の表記例\label{tbl:verilog_value}}
-\end{table}
+  基数(w) | 基数記号(f) | 例            | 10進数表記での値
+  --------|-----------|-------------|------------------
+  2       |  `b`     |  `8'b10`   | 2
+  10      |  `d`     |  `10'd10`  | 10
+          |             |  `10`      | 10
+  16      |  `h`     |  `8'h10`   | 16
 
 ## 型 --- ネット型変数とレジスタ変数
 Verilog HDLの変数には，ネット変数とレジスタ変数があります．どちらも1bitの信号に相当する変数と，複数bitの信号を束にした配列変数を作れます．ネット変数とレジスタ変数の違いは，ハードウェアに則したワイヤ(配線)とレジスタ(記憶素子)を想起させるものですが，後で説明するように使える場面と使い方に違いがあります．表\ref{tbl:verilog_types}に，変数の型を示します．
 
-\begin{table}[H]
-\begin{center}
- \begin{tabular}{l|l}
- \hline
-  型名               & 説明 \\\hline\hline
-  \verb|wire|        & 1-bitのネット変数 \\\hline
-  \verb|wire[n-1:0]| & n-bitのネット変数 \\\hline
-  \verb|reg|         & n-bitのレジスタ変数 \\\hline
-  \verb|reg[n-1:0]|  & n-bitのレジスタ変数 \\\hline
- \end{tabular}
-\end{center}
-\caption{Verilog HDLにおける型の例\label{tbl:verilog_types}}
-\end{table}
+  型名               | 説明
+  ----------------|---------------------
+   `wire`         | 1-bitのネット変数
+   `wire[n-1:0]`  | n-bitのネット変数
+   `reg`          | n-bitのレジスタ変数
+   `reg[n-1:0]`   | n-bitのレジスタ変数
 
 ### ネット変数 --- wire
-モジュールやゲート同士を接続する配線に名前を付けた変数が，ネット変数\verb|wire|です．ネット変数自身は値を保持することはできず，他から代入された値を次に伝達する役目を担う変数です．ハードウェアの配線そのものに相当します．
+モジュールやゲート同士を接続する配線に名前を付けた変数が，ネット変数 `wire` です．ネット変数自身は値を保持することはできず，他から代入された値を次に伝達する役目を担う変数です．ハードウェアの配線そのものに相当します．
 
 ### レジスタ変数 --- reg
-レジスタ変数\verb|reg|は，値を保存する記憶素子になることができ，変数自身が値を保持できます．組み合わせ回路も順序回路も構成できます．
+レジスタ変数 `reg` は，値を保存する記憶素子になることができ，変数自身が値を保持できます．組み合わせ回路も順序回路も構成できます．
 
 ### 配列変数
-配列変数\verb|wire[n-1:0]|，\verb|reg[n-1:0]|は，それぞれ\verb|wire|あるいは\verb|reg|からなるn-bitの変数に相当します．幅\verb|n|のネット変数
+配列変数 `wire[n-1:0]` ， `reg[n-1:0]` は，それぞれ `wire` あるいは `reg` からなるn-bitの変数に相当します．幅 `n` のネット変数
 
 {{< highlight verilog "linenos=table" >}}
 wire[n-1:0] a;
@@ -583,14 +557,14 @@ reg[n-1:0] b;
 と定義された変数aの各要素をa[0]，a[2:0]などとして取り出すことができます．前者はwire，後者はwire[2:0]の変数です．
 
 ## モジュールの外枠の記述 --- module
-Verilog HDLでは，\verb|module|でハードウェア・モジュールの外枠を定義します．モジュールの名前と入出力の信号名を定義します．
+Verilog HDLでは， `module` でハードウェア・モジュールの外枠を定義します．モジュールの名前と入出力の信号名を定義します．
 
 {{< highlight verilog "linenos=table" >}}
 module test(pClk, pReset, Q);
 {{< /highlight >}}
 
-この文では，\verb|pClk|，\verb|pReset|，\verb|Q|という名前の入出力信号を持つ\verb|test|という名前のモジュールを定義しています．
-Verilog HDLでは，この\verb|module|文から
+この文では， `pClk` ， `pReset` ， `Q` という名前の入出力信号を持つ `test` という名前のモジュールを定義しています．
+Verilog HDLでは，この `module` 文から
 
 {{< highlight verilog "linenos=table" >}}
 endmodule
@@ -610,9 +584,9 @@ module test(pClk, pReset, Q);
 ### ポートの定義
 ポートとは，モジュールの入出力信号のことです．ポートの名前は，モジュール名に続く()の中に記述します．
 それぞれのポートの入出力は，モジュールの中で，「方向 型 変数名;」で宣言します．
-方向には，\verb|input|(入力)と\verb|output|(出力)，\verb|inout|(入出力)の3種類があります．
-\verb|module|文の\verb|()|内に与えた信号線の型と入出力方向はモジュールの内部で定義します．
-たとえば，\verb|pClk|と\verb|pReset|が1bitの入力，\verb|Q|が1bitの出力信号であれば，
+方向には， `input` (入力)と `output` (出力)， `inout` (入出力)の3種類があります．
+ `module` 文の `()` 内に与えた信号線の型と入出力方向はモジュールの内部で定義します．
+たとえば， `pClk` と `pReset` が1bitの入力， `Q` が1bitの出力信号であれば，
 
 {{< highlight verilog "linenos=table" >}}
 module test(pClk, pReset, Q);
@@ -676,9 +650,9 @@ wire a;
 reg[15:0] b;
 {{< /highlight >}}
 
-これは，ネット変数\verb|a|と幅16ビットのレジスタ変数\verb|b|を定義しています．
+これは，ネット変数 `a` と幅16ビットのレジスタ変数 `b` を定義しています．
 
-また，\verb|parameter|で定義した定数\verb|width|を用いて，次のように変数を定義することもできます．
+また， `parameter` で定義した定数 `width` を用いて，次のように変数を定義することもできます．
 
 {{< highlight verilog "linenos=table" >}}
 reg[width-1:0] c;
@@ -686,46 +660,40 @@ reg[width-1:0] c;
 
 ## 演算子と演算
 代表的な演算子を表\ref{tbl:verilog_operator}にまとめました．
-論理演算における真と偽は，ネット変数やレジスタ変数の場合は\verb|'1'|と\verb|'0'|に対応します．
-n-bitの配列変数\verb|wire[n-1:0]|あるいは\verb|reg[n-1:0]|の場合には，配列中に一つでも\verb|'1'|である要素があれば真，さもなければ偽として判定されます．ビット論理演算子を配列変数に適用する場合は，対応する各要素同士について演算が適用されます．
+論理演算における真と偽は，ネット変数やレジスタ変数の場合は `'1'` と `'0'` に対応します．
+n-bitの配列変数 `wire[n-1:0]` あるいは `reg[n-1:0]` の場合には，配列中に一つでも `'1'` である要素があれば真，さもなければ偽として判定されます．ビット論理演算子を配列変数に適用する場合は，対応する各要素同士について演算が適用されます．
 
-\begin{table}[H]
-\begin{center}
- \begin{tabular}{l|l|l}
- \hline
-  種類           & 演算子           & 説明 \\\hline\hline
-  論理演算       & \verb|a && b|    & 論理積．aとbが共に真なら真．さもなければ偽．\\\cline{2-3}
-                 & \verb|a || b|    & 論理和．aとbのどちらか又は両方が真なら真．さもなければ偽．\\\cline{2-3}
-                 & \verb|!a|        & 否定．aが真なら偽．偽なら真\\\hline
-  ビット論理演算 & \verb|a & b|     & 論理積．aとbが共に'1'なら'1'．さもなければ'0'．\\\cline{2-3}
-                 & \verb|a | b|     & 論理和．aとbのどちらか又は両方が'1'なら'1'．さもなければ'0'．\\\cline{2-3}
-                 & \verb|a ^ b|     & 排他的論理和．aとbのどちらか一方が'1'なら'1'．さもなければ'0'．\\\cline{2-3}
-                 & \verb|~a|        & 論理否定．aが'1'なら'0'．さもなければ'1'．\\\hline
-  比較演算       & \verb|a == b|    & aとbが等しい場合\verb|true|．さもなければ\verb|false|\\\cline{2-3}
-                 & \verb|a != b|    & aとbが等しくなければ場合\verb|true|．さもなければ\verb|false|\\\cline{2-3}
-                 & \verb|a > b|     & aがbがより大きいなら\verb|true|．さもなければ\verb|false|．(*1)\\\cline{2-3}
-                 & \verb|a < b|     & aとbがより小さいなら\verb|true|．さもなければ\verb|false|．(*1)\\\cline{2-3}
-                 & \verb|a >= b|    & aとb以上なら\verb|true|．さもなければ\verb|false|．(*1)\\\cline{2-3}
-                 & \verb|a <= b|    & aとb以下なら\verb|true|．さもなければ\verb|false|．(*1)\\\hline
-  算術演算       & \verb|a + b|     & aとbの足し算\\\cline{2-3}
-                 & \verb|a - b|     & aとbの引き算\\\cline{2-3}
-                 & \verb|a * b|     & aとbの引き算\\\cline{2-3}
-                 & \verb|a / b|     & aとbの割り算\\\cline{2-3}
-                 & \verb|a % b|     & aとbの割り算の余り\\\hline
-   シフト演算    & \verb|a >> b|    & aとbビット，右にシフト \\\cline{2-3}
-                 & \verb|a << b|    & aをbビット，左にシフト \\\hline
-   条件演算      & \verb|a ? b : c| & aが真の時b，偽のときc \\\hline
-   配列操作      & \verb|{a,b,c}|   & aとbとcをこの順に並べた信号線の束を作る \\\cline{2-3}
-                 & \verb|a[b] |     & aのb番目の信号を取り出す \\\cline{2-3}
-                 & \verb|a[b:c]|    & aのb番目からc番目の信号線の束を取り出す \\\hline
- \end{tabular}
-\end{center}
-\caption{Verilog HDLで用いられる演算の例\label{tbl:verilog_operator}}
-\end{table}
+  種類           | 演算子           | 説明
+  --------------|-------------------|--------------------
+  論理演算       |  `a && b`     | 論理積．aとbが共に真なら真．さもなければ偽．
+                 |  `a || b`    | 論理和．aとbのどちらか又は両方が真なら真．さもなければ偽．
+                 |  `!a`         | 否定．aが真なら偽．偽なら真
+  ビット論理演算 |  `a & b`      | 論理積．aとbが共に'1'なら'1'．さもなければ'0'．
+                 |  `a |  b`     | 論理和．aとbのどちらか又は両方が'1'なら'1'．さもなければ'0'．
+                 |  `a ^ b`      | 排他的論理和．aとbのどちらか一方が'1'なら'1'．さもなければ'0'．
+                 |  `~a`         | 論理否定．aが'1'なら'0'．さもなければ'1'．
+  比較演算       |  `a == b`     | aとbが等しい場合 `true` ．さもなければ `false`
+                 |  `a != b`     | aとbが等しくなければ場合 `true` ．さもなければ `false`
+                 |  `a > b`      | aがbがより大きいなら `true` ．さもなければ `false` ．(*1)
+                 |  `a < b`      | aとbがより小さいなら `true` ．さもなければ `false` ．(*1)
+                 |  `a >= b`     | aとb以上なら `true` ．さもなければ `false` ．(*1)
+                 |  `a <= b`     | aとb以下なら `true` ．さもなければ `false` ．(*1)
+  算術演算       |  `a + b`      | aとbの足し算
+                 |  `a - b`      | aとbの引き算
+                 |  `a * b`      | aとbの引き算
+                 |  `a / b`      | aとbの割り算
+                 |  `a % b`      | aとbの割り算の余り
+   シフト演算    |  `a >> b`     | aとbビット，右にシフト 
+                 |  `a << b`     | aをbビット，左にシフト 
+   条件演算      |  `a ? b : c`  | aが真の時b，偽のときc 
+   配列操作      |  `{a,b,c}`    | aとbとcをこの順に並べた信号線の束を作る 
+              |  `a[b] `      | aのb番目の信号を取り出す
+              |  `a[b:c]`     | aのb番目からc番目の信号線の束を取り出す
+Verilog HDLで用いられる演算の例
 
 ### 演算結果の代入
 演算の結果をネット変数あるいはレジスタ変数に代入できます．
-ネット型変数への代入には\verb|assign|命令を使用して，下記のように記述します．
+ネット型変数への代入には `assign` 命令を使用して，下記のように記述します．
 
 {{< highlight verilog "linenos=table" >}}
 assign c = a & b;
@@ -742,7 +710,7 @@ Verilog HDLでは，それぞれ下記のように記述します．
 <= // ノンブロッキング代入
 {{< /highlight >}}
 
-たとえば，\verb|a + b|の演算結果をノンブロッキング代入する場合には，
+たとえば， `a + b` の演算結果をノンブロッキング代入する場合には，
 
 {{< highlight verilog "linenos=table" >}}
 c <= a + b;
@@ -793,9 +761,9 @@ assign c = a & b;
 の列も，同じように図8の回路が合成されます．
 
 ## 順次処理文〜always文
-\verb|always|文は，順次処理文を記述するためのブロックを作るものです．順次処理文では，記述された順序に従って意味が解析され，
+ `always` 文は，順次処理文を記述するためのブロックを作るものです．順次処理文では，記述された順序に従って意味が解析され，
 回路が合成されます．そのため，複雑な制御構文を使用できます．
-基本的な構文を下記に示します．変数\verb|c|，\verb|d|は\verb|reg|変数です．
+基本的な構文を下記に示します．変数 `c` ， `d` は `reg` 変数です．
 
 {{< highlight verilog "linenos=table" >}}
 always @(a, b) begin
@@ -804,19 +772,19 @@ always @(a, b) begin
 end
 {{< /highlight >}}
 
-ここで，\verb|always @()|の「\verb|()|」内の変数のリストをセンシティビティ・リストといいます．
+ここで， `always @()` の「 `()` 」内の変数のリストをセンシティビティ・リストといいます．
 このリストに列挙した変数が変化すると，プロセス文の中の回路の値が変更されます．
 ノンブロッキング代入は，always内の処理の解釈がすべて完了したタイミングで，同時更新されることに注意してください．
-このalways文は，図\ref{fig:process_example}のような回路になります．
+このalways文は，図10のような回路になります．
 
-\verb|always|文の中にある入力変数(式の右辺にでてくる変数)がすべてセンシティビティ・リストに列挙されている場合，
+ `always` 文の中にある入力変数(式の右辺にでてくる変数)がすべてセンシティビティ・リストに列挙されている場合，
 入力が変化する度に回路が動作し，出力変数(式の左辺)の値が変更されます．
-つまり，その\verb|always|文は，何も状態を保存する必要がありません．
+つまり，その `always` 文は，何も状態を保存する必要がありません．
 そのため，記憶素子を必要としない組み合わせ回路として構成されます．
 ここで，入力に対して常に出力が生成されない場合とは，条件分岐などによって，
 入力信号の値によって値の代入が発生しない出力信号がある場合です．
 
-次のような\verb|always|文を考えてみます．
+次のような `always` 文を考えてみます．
 
 {{< highlight verilog "linenos=table" >}}
 always @(a) begin
@@ -825,15 +793,15 @@ always @(a) begin
 end
 {{< /highlight >}}
 
-ここでは，センシティビティ・リストに「\verb|b|」がなく，入力変数が全部列挙されていません．
+ここでは，センシティビティ・リストに「 `b` 」がなく，入力変数が全部列挙されていません．
 この回路では，bの値が変化しても出力先であるcとdの値は変化しません．
-つまり，図\ref{fig:process_example}のように，入力であるaとbを出力のcとdに直接接続することができず，
-\verb|c|と\verb|d|の値を保存する機構，記憶素子が必要となり，組み合わせ回路としては合成されません．
+つまり，図10のように，入力であるaとbを出力のcとdに直接接続することができず，
+ `c` と `d` の値を保存する機構，記憶素子が必要となり，組み合わせ回路としては合成されません．
 「同じように記述したつもりでも違う回路になるかもしれない」ということを覚えておいてください．
 
-\verb|always|の中では，\verb|reg|変数にブロッキング代入することもできます．
-ブロッキング代入では，\verb|always|中のほかの代入に関係なく，その時点で代入が発生し値が置き換わります．
-たとえば，次のような\verb|always|文を考えます．ここで，\verb|tmp0|，\verb|tmp1|，\verb|c|はすべて\verb|reg|変数とします．
+ `always` の中では， `reg` 変数にブロッキング代入することもできます．
+ブロッキング代入では， `always` 中のほかの代入に関係なく，その時点で代入が発生し値が置き換わります．
+たとえば，次のような `always` 文を考えます．ここで， `tmp0` ， `tmp1` ， `c` はすべて `reg` 変数とします．
 
 {{< highlight verilog "linenos=table" >}}
 always @(a,b) begin
@@ -843,12 +811,12 @@ always @(a,b) begin
 end
 {{< /highlight >}}
 
-この場合，\verb|tmp0|と\verb|tmp1|ともに，ブロッキング代入で演算の結果が代入されています．
-ブロッキング代入なので，合成ツールがこの構文に出会ったところで，\verb|tmp0|は\verb|(a & b)|に，
-\verb|tmp1|は\verb|(a \| b)|にすぐさま置き換わます．つまり，これは単に\verb|c <= (a & b) ^ (a \| b)|という回路に合成されます．
+この場合， `tmp0` と `tmp1` ともに，ブロッキング代入で演算の結果が代入されています．
+ブロッキング代入なので，合成ツールがこの構文に出会ったところで， `tmp0` は `(a & b)` に，
+ `tmp1` は `(a \`  b)|にすぐさま置き換わます．つまり，これは単に `c <= (a & b) ^ (a \`  b)|という回路に合成されます．
 
-センシティビティ・リストには，\verb|@(a and b)|という条件式が記述できます．
-これはaとbのどちらかが変化した場合ではなく，\verb|(a and b)|が変化した場合に\verb|always|の中の処理を実行できるようにします．
+センシティビティ・リストには， `@(a and b)` という条件式が記述できます．
+これはaとbのどちらかが変化した場合ではなく， `(a and b)` が変化した場合に `always` の中の処理を実行できるようにします．
 条件式には，信号の立ち上がり，あるいは立ち下がり条件を使用することもできます．
 立ち上がりは「posedge」，立ち下がりは「negedge」というキーワードを使います．
 
@@ -863,12 +831,12 @@ end
 これは，決まったタイミングで処理を実行する順序同期回路の設計に欠かせない表現です．
 
 ## 制御構文
-ソフトウェア・プログミングのように，条件分岐のifやCでいう\verb|switch|構文のような制御構文が使えます．
-多くの制御構文は，\verb|always|文の中でのみ使用することができます．代表的なものを次に説明します．
+ソフトウェア・プログミングのように，条件分岐のifやCでいう `switch` 構文のような制御構文が使えます．
+多くの制御構文は， `always` 文の中でのみ使用することができます．代表的なものを次に説明します．
 
 ### if 〜 begin 〜 end else begin 〜 end --- 条件分岐構文
-\verb|always|文の中でのみ使用できる条件分岐構文です．
-次に示す例では，\verb|a|が\verb|b|より大きければ処理文\verb|X|が，それ以外の場合は処理文\verb|Y|が実行されます．
+ `always` 文の中でのみ使用できる条件分岐構文です．
+次に示す例では， `a` が `b` より大きければ処理文 `X` が，それ以外の場合は処理文 `Y` が実行されます．
 また，処理文の中で，ifをネスト(入れ子)にすることもできます．
 
 {{< highlight verilog "linenos=table" >}}
@@ -881,9 +849,9 @@ end
 
 ### case --- 選択
 CやJavaでいうところのswitch構文です．
-次に示す例では，変数\verb|a|の値によって処理文X，Y，Zに分岐しています．
-\verb|case|構文では，どれかのケースに該当するように記述しましょう．
-もちろん，すべての条件を列挙してもよいのですが，「\verb|default|」でどんな値にもマッチする場合を記述できます．
+次に示す例では，変数 `a` の値によって処理文X，Y，Zに分岐しています．
+ `case` 構文では，どれかのケースに該当するように記述しましょう．
+もちろん，すべての条件を列挙してもよいのですが，「 `default` 」でどんな値にもマッチする場合を記述できます．
 
 {{< highlight verilog "linenos=table" >}}
 case(a)
@@ -924,9 +892,9 @@ b <= tmp;
 {{< /highlight >}}
 
 ## 組み合わせ回路のサブモジュール
-Verilog HDLでは，複雑な組み合わせ回路を生成するために，\verb|function|というサブモジュールを記述できます．
-\verb|function|は順次処理文で，\verb|if|や\verb|case|などの条件文を記述できますが，
-ノンブロッキング代入を用いることはできません．\verb|function|は，次のように定義します．
+Verilog HDLでは，複雑な組み合わせ回路を生成するために， `function` というサブモジュールを記述できます．
+ `function` は順次処理文で， `if` や `case` などの条件文を記述できますが，
+ノンブロッキング代入を用いることはできません． `function` は，次のように定義します．
 
 {{< highlight verilog "linenos=table" >}}
 function f;
@@ -942,8 +910,8 @@ function f;
 endfunction
 {{< /highlight >}}
 
-これは，1ビットのネット型信号である\verb|a|と\verb|b|を入力とする名前\verb|f|の\verb|function|の定義です．
-\verb|function|の中で\verb|f|に値を代入すると，関数の返り値としてセットされます．
+これは，1ビットのネット型信号である `a` と `b` を入力とする名前 `f` の `function` の定義です．
+ `function` の中で `f` に値を代入すると，関数の返り値としてセットされます．
 この例は，入力された二つの値が等しいときに'1'を，異なるときに'0'を出力する関数です．
 
 呼び出し側では，
@@ -972,7 +940,7 @@ function [1:0] g;
 endfunction
 {{< /highlight >}}
 
-ここで定義した\verb|function|は，Cの関数とは違い，関数の計算が終了するまで呼び出し側の処理が待たされるような制御を伴うことはなく，
+ここで定義した `function` は，Cの関数とは違い，関数の計算が終了するまで呼び出し側の処理が待たされるような制御を伴うことはなく，
 複雑な組み合わせ回路を見通し良く記述するための書き方です．
 
 # まとめ
@@ -999,3 +967,4 @@ endfunction
  1. 長谷川 裕恭；VHDLによるハードウェア設計入門—言語入力によるロジック回路設計手法を身につけよう，2004年4月，CQ出版社．
  1. 小林 優；入門Verilog HDL記述—ハードウェア記述言語の速習\&実践 改訂，2004年5月，CQ出版社．
  1. 井倉 将実；FPGAボードで学ぶVerilog HDL，2007年2月，CQ出版社．
+ 
