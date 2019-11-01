@@ -146,21 +146,11 @@ end RTL;
 ## シリアル通信のしくみ
 シリアル通信では，受信と送信で独立したポートを持ちます．機器を直結する場合には，お互いの送受信ポートをクロスして結線します(図\ref{fig:serial_comm})．
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.6\textwidth]{chapter06_figures/serial_comm.eps}
-  \end{center}  
-  \caption{シリアル通信の結線\label{fig:serial_comm}}
- \end{figure}
+{{<figure src="../experiments_figures/serial_comm.png" class="center" caption="図l: シリアル通信の結線">}}
 
 RS-232-Cでは，図\ref{fig:serial_comm_format}のように，8ビットのデータにスタート・ビット（'0'）とストップ・ビット（'1'）を付加してデータを通信します．接続した機器同士であらかじめ決めた速度(たとえば19200bpsなど)で信号を送受信することで，共通したクロックを持つことなくデータの送受信ができます．
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.6\textwidth]{chapter06_figures/serial_comm_format.eps}
-  \end{center}  
-  \caption{シリアル通信の信号の伝送方式\label{fig:serial_comm_format}}
- \end{figure}
+{{<figure src="../experiments_figures/serial_comm_format.png" class="center" caption="図2: シリアル通信の信号の伝送方式">}}
 
 ## 送信モジュール
 決められた速度で信号をパタパタと変化させるだけです．ただし，一般に，シリアル通信の速度は回路の動作クロックに対して，とても遅いので，データを送信している途中に送るべき信号を更新してしまわないようにブロックする仕組みが必要です．VHDLによる実装例を示します．
@@ -432,26 +422,16 @@ end RTL;
 ## 実機で動作確認
 シリアル通信を実機で動作確認してみましょう．入出力にPMODコネクタJEの1ピンと7ピンを割当て，物理的に両者をジャンパピンで接続すれば，通信ができるはずです．動作をILAを使って確認してみましょう．{\bf 注意: PMODコネクタの6ピンと12ピンは3.3V，5ピンと11ピンはGNDです．間違って6ピンと5ピンなどのように3.3VとGNDを直結しないようにしましょう．}
 
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.6\textwidth]{chapter06_figures/IMG_0007.JPG}
-  \end{center}
-  \label{fig:serial_comm_test}
-  \caption{PMODコネクタのJEの1ピンと7ピンをジャンパケーブルで接続した様子}
- \end{figure}
+{{<figure src="../experiments_figures/IMG_0007.JPG" class="center" caption="図3: PMODコネクタのJEの1ピンと7ピンをジャンパケーブルで接続した様子">}}
 
 # 音声信号を観測してみよう
 
 ZYBO Z7-20には音声入出力用のジャックが備わっています．これを利用すると外部からの音声信号を取り込みFPGAで処理することができます．信号は，SSM2603というICでA/D変換されます．SSM2603とFPGAはI2Sで音声データをやりとりすることができます．
 
 SSM2603とやりとりするI2S信号は図\ref{fig:ssm2603_protocol}の通りです．
- \begin{figure}[H]
-  \begin{center}
-   \includegraphics[width=.8\textwidth]{chapter06_figures/zybo-z7-audio.png}
-  \end{center}
-  \label{fig:ssm2603_protocol}
-  \caption{SSM2603との通信インターフェース}
- \end{figure}
+
+{{<figure src="../experiments_figures/zybo-z7-audio.png" class="center" caption="図4: SSM2603との通信インターフェース">}}
+
 これを送受信するモジュールを実装して音声信号の入出力をやってみましょう．
 でてくる信号が少し増えて複雑にみえるかもしれませんが，方針はRS-232-Cの送受信と同じです．
 
