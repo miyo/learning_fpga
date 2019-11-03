@@ -34,7 +34,7 @@ HDLでもソフトウェア・プログラミング同様に，演算した結�
 <link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
 
 
-<script defer src="/learning_fpga/search.min.83a86b258ff8da4c7f40b54a5cbe315b43ae138c2bfe03a05a98fda5e296e454.js" integrity="sha256-g6hrJY/42kx/QLVKXL4xW0OuE4wr/gOgWpj9peKW5FQ="></script>
+<script defer src="/learning_fpga/search.min.431de68ae73daaa1e72319914f918035c9fb6938698072b15278916071098257.js" integrity="sha256-Qx3miuc9qqHnIxmRT5GANcn7aThpgHKxUniRYHEJglc="></script>
 
 <!--
 Made with Book Theme
@@ -632,109 +632,109 @@ https://github.com/alex-shpak/hugo-book
 <tbody>
 <tr>
 <td>論理演算</td>
-<td><code>a and b</code></td>
+<td>a and b</td>
 <td>論理積．aとbが <code>'1'</code> なら <code>'1'</code> ．さもなければ <code>'0'</code> ．</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a or b</code></td>
+<td>a or b</td>
 <td>論理和．aとbのどちらか又は両方が <code>'1'</code> なら <code>'1'</code> ．さもなければ <code>'0'</code> ．</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a xor b</code></td>
+<td>a xor b</td>
 <td>排他的論理積．aとbの一方だけが <code>'1'</code> なら <code>'1'</code> ．さもなければ <code>'0'</code> ．</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>not a</code></td>
+<td>not a</td>
 <td>否定．aが <code>'0'</code> なら <code>'1'</code> ． <code>'1'</code> なら<code>'0'</code></td>
 </tr>
 
 <tr>
 <td>比較演算</td>
-<td><code>a = b</code></td>
+<td>a = b</td>
 <td>aとbが等しい場合 <code>true</code> ．さもなければ <code>false</code></td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a /= b</code></td>
+<td>a /= b</td>
 <td>aとbが等しくなければ場合 <code>true</code> ．さもなければ <code>false</code></td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a &gt; b</code></td>
+<td>a &gt; b</td>
 <td>aがbがより大きいなら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a &lt; b</code></td>
+<td>a &lt; b</td>
 <td>aとbがより小さいなら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a &gt;= b</code></td>
+<td>a &gt;= b</td>
 <td>aとb以上なら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a &lt;= b</code></td>
+<td>a &lt;= b</td>
 <td>aとb以下なら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
 </tr>
 
 <tr>
 <td>算術演算</td>
-<td><code>a + b</code></td>
+<td>a + b</td>
 <td>aとbの足し算 (*1)</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a - b</code></td>
+<td>a - b</td>
 <td>aとbの引き算 (*1)</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a * b</code></td>
+<td>a * b</td>
 <td>aとbの引き算 (*1)</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a / b</code></td>
+<td>a / b</td>
 <td>aとbの割り算 (*1)</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a ** b</code></td>
+<td>a ** b</td>
 <td>aのb乗 (*1)</td>
 </tr>
 
 <tr>
 <td>配列操作</td>
-<td><code>a &amp; b</code></td>
+<td>a &amp; b</td>
 <td>aとbをこの順に並べた信号線の束を作る</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a(b)</code></td>
+<td>a(b)</td>
 <td>aのb番目の信号を取り出す</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a(b downto c)</code></td>
+<td>a(b downto c)</td>
 <td>aのb番目からc番目の信号線の束を取り出す</td>
 </tr>
 </tbody>
@@ -1591,145 +1591,145 @@ n-bitの配列変数 <code>wire[n-1:0]</code> あるいは <code>reg[n-1:0]</cod
 <tbody>
 <tr>
 <td>論理演算</td>
-<td><code>a &amp;&amp; b</code></td>
+<td>a &amp;&amp; b</td>
 <td>論理積．aとbが共に真なら真．さもなければ偽．</td>
 </tr>
 
 <tr>
 <td></td>
-<td>`a</td>
-<td></td>
+<td>a || b</td>
+<td>論理和．aとbのどちらか又は両方が真なら真．さもなければ偽．</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>!a</code></td>
+<td>!a</td>
 <td>否定．aが真なら偽．偽なら真</td>
 </tr>
 
 <tr>
 <td>ビット論理演算</td>
-<td><code>a &amp; b</code></td>
+<td>a &amp; b</td>
 <td>論理積．aとbが共に&rsquo;1&rsquo;なら&rsquo;1&rsquo;．さもなければ&rsquo;0&rsquo;．</td>
 </tr>
 
 <tr>
 <td></td>
-<td>`a</td>
-<td>b`</td>
+<td>a |  b</td>
+<td>論理和．aとbのどちらか又は両方が&rsquo;1&rsquo;なら&rsquo;1&rsquo;．さもなければ&rsquo;0&rsquo;．</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a ^ b</code></td>
+<td>a ^ b</td>
 <td>排他的論理和．aとbのどちらか一方が&rsquo;1&rsquo;なら&rsquo;1&rsquo;．さもなければ&rsquo;0&rsquo;．</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>~a</code></td>
+<td>~a</td>
 <td>論理否定．aが&rsquo;1&rsquo;なら&rsquo;0&rsquo;．さもなければ&rsquo;1&rsquo;．</td>
 </tr>
 
 <tr>
 <td>比較演算</td>
-<td><code>a == b</code></td>
+<td>a == b</td>
 <td>aとbが等しい場合 <code>true</code> ．さもなければ <code>false</code></td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a != b</code></td>
+<td>a != b</td>
 <td>aとbが等しくなければ場合 <code>true</code> ．さもなければ <code>false</code></td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a &gt; b</code></td>
+<td>a &gt; b</td>
 <td>aがbがより大きいなら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a &lt; b</code></td>
+<td>a &lt; b</td>
 <td>aとbがより小さいなら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a &gt;= b</code></td>
+<td>a &gt;= b</td>
 <td>aとb以上なら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a &lt;= b</code></td>
+<td>a &lt;= b</td>
 <td>aとb以下なら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
 </tr>
 
 <tr>
 <td>算術演算</td>
-<td><code>a + b</code></td>
+<td>a + b</td>
 <td>aとbの足し算</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a - b</code></td>
+<td>a - b</td>
 <td>aとbの引き算</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a * b</code></td>
+<td>a * b</td>
 <td>aとbの引き算</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a / b</code></td>
+<td>a / b</td>
 <td>aとbの割り算</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a % b</code></td>
+<td>a % b</td>
 <td>aとbの割り算の余り</td>
 </tr>
 
 <tr>
 <td>シフト演算</td>
-<td><code>a &gt;&gt; b</code></td>
+<td>a &gt;&gt; b</td>
 <td>aとbビット，右にシフト</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a &lt;&lt; b</code></td>
+<td>a &lt;&lt; b</td>
 <td>aをbビット，左にシフト</td>
 </tr>
 
 <tr>
 <td>条件演算</td>
-<td><code>a ? b : c</code></td>
+<td>a ? b : c</td>
 <td>aが真の時b，偽のときc</td>
 </tr>
 
 <tr>
 <td>配列操作</td>
-<td><code>{a,b,c}</code></td>
+<td>{a,b,c}</td>
 <td>aとbとcをこの順に並べた信号線の束を作る</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a[b]</code></td>
+<td>a[b]</td>
 <td>aのb番目の信号を取り出す</td>
 </tr>
 
 <tr>
 <td></td>
-<td><code>a[b:c]</code></td>
+<td>a[b:c]</td>
 <td>aのb番目からc番目の信号線の束を取り出す</td>
 </tr>
 </tbody>
