@@ -21,7 +21,7 @@ LチカでILAの動作を学ぶ 三度目の登場ですが，LチカでILAの�
 <link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
 
 
-<script defer src="/learning_fpga/search.min.fa220cd62816adf71c6a4b3893a43a7efbf1bac151f770d0bea7ce9065f350ab.js" integrity="sha256-&#43;iIM1igWrfccaks4k6Q6fvvxusFR93DQvqfOkGXzUKs="></script>
+<script defer src="/learning_fpga/search.min.5d9427eb5d4e77184e726111c3915317e44616d4ab1bc2afec5ff05f25c7e233.js" integrity="sha256-XZQn611OdxhOcmERw5FTF&#43;RGFtSrG8Kv7F/wXyXH4jM="></script>
 
 <!--
 Made with Book Theme
@@ -191,32 +191,6 @@ https://github.com/alex-shpak/hugo-book
 
   <li >
     
-      <span>Intel活用編</span>
-    
-
-    
-
-
-
-
-  
-  <ul>
-    
-  </ul>
-  
-
-
-
-  </li>
-
-
-      
-    
-      
-        
-
-  <li >
-    
       <span>Xilinx活用編</span>
     
 
@@ -237,6 +211,32 @@ https://github.com/alex-shpak/hugo-book
 
 </li>
       
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      <span>Intel活用編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
     
   </ul>
   
@@ -586,7 +586,153 @@ https://github.com/alex-shpak/hugo-book
 
 <h2 id="vio使ってfpga内部の信号を制御する">VIO使ってFPGA内部の信号を制御する</h2>
 <p>ILAに加えて，もう一つ便利なIPコアであるVIO(Virtual Input/Output)を紹介します．VIOを使うとFPGA内部のレジスタの値を読み書きすることができます．</p>
-<h3 id="heading"></h3>
+<h3 id="ipコアの準備">IPコアの準備</h3>
+<p>IPコアは，次の手順で利用します．</p>
+<ol>
+<li>IP Catalogから使いたいIPを選び，パラメタを設定してモジュールを生成する</li>
+<li>生成したモジュールのインスタンスをRTLコード内で生成する</li>
+<li>必要な接続を設定する</li>
+</ol>
+<p>順を追ってやってみましょう．</p>
+<h3 id="vioモジュールの準備">VIOモジュールの準備</h3>
+<p>IP Catalogをクリックします．メインウィンドウにIPのリストが表示されます．</p>
+<p>Searchのテキストボックスにvioと入力すると，VIOが表示されるのでダブルクリックします．</p>
+<p>パラメタを設定するダイアログが表示されます．VIOで読み書きしたいポートの数をセットすることができます．ここでは，デフォルトの1bitの入力と1bitの出力がある状態のまま OK でダイアログを閉じます．モジュールの名前もここで決めることができます．今回はデフォルトの <code>vio_0</code> のまますすめます．</p>
+<p>IPコアを合成してしまうか質問されるダイアログが表示されます．Generateをクリックして合成しておきます．</p>
+<p>SourcesペインのHierarcyタブに，<code>vio_0</code> が出現しました．これでVIOをデザインで利用する準備が整いました．</p>
+<h3 id="vioモジュールのインスタンス生成">VIOモジュールのインスタンス生成</h3>
+<p>生成したVIOモジュールは，モジュールとして用意されただけでデザインには組み込めていません．デザインに組み込むためには，HDLコードの中でインスタンス生成する必要があります．</p>
+<p>IP Sourcesタブを開き，IPというツリーをたどると，vio_0.vhoというエントリがあります．ここにインスタンス生成するためのテンプレートがあります．VHDLの場合 <code>component</code> のブロックと <code>your_instance_name :...</code> のブロックの二つが必要なので，これをコピーします．</p>
+<p><code>component</code>ブロックの方は<code>architecture</code>の<code>begin</code>の前に，<code>your_instance_name :...</code> のブロックは<code>begin</code>の後に張り付けます．</p>
+<p><code>your_instance_name</code>はインスタンスを識別する名前で，設計者が自由につけることができます．たとえば，<code>vio_0_i</code> としておきます．</p>
+<p>ここまででVIOモジュールをデザインに組み込むことができました．インスタンス名を変えれば，FPGAのリソースが許すかぎり，何個でもモジュールのインスタンスを作ることができます．</p>
+<h3 id="vioモジュールとの接続の追加">VIOモジュールとの接続の追加．</h3>
+<p>また，<code>probe_in0</code>と<code>probe_out0</code>に相当する信号を追加し，観測したい信号を <code>probe_in0</code> に，制御したい信号を <code>probe_out0</code> に接続します．</p>
+<p>たとえば<code>probe_in0</code>にLEDへの出力と同じ<code>counter(0)</code>を接続すればLEDへの出力と同じ信号を仮想的に観測することができます．また，あらたに<code>vio_btn</code>という信号を用意して，この信号に<code>probe_out0</code>を接続してみます．カウントアップの動作条件に<code>vio_btn</code>を追加すれば仮想的なボタンで，カウンタの動作を制御できるようになります．</p>
+<p>最終的なソースコードは，次の通りです．</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> ieee;
+<span style="color:#66d9ef">use</span> ieee.std_logic_1164.<span style="color:#66d9ef">all</span>;
+<span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;
+
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+   <span style="color:#66d9ef">Port</span> ( clk   <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+          reset <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+          led   <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>
+        );
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">top</span>;
+    
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">RTL</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+ 
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>; <span style="color:#75715e">-- (1) 追加</span>
+  <span style="color:#66d9ef">signal</span> counter <span style="color:#f92672">:</span> <span style="color:#66d9ef">unsigned</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">:=</span> (<span style="color:#66d9ef">others</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;0&#39;</span>);
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> counter <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>; <span style="color:#75715e">-- (2) 追加</span>
+    
+  <span style="color:#66d9ef">COMPONENT</span> <span style="color:#a6e22e">vio_0</span>
+  <span style="color:#66d9ef">PORT</span> (
+    clk <span style="color:#f92672">:</span> <span style="color:#66d9ef">IN</span> <span style="color:#66d9ef">STD_LOGIC</span>;
+    probe_in0 <span style="color:#f92672">:</span> <span style="color:#66d9ef">IN</span> <span style="color:#66d9ef">STD_LOGIC_VECTOR</span>(<span style="color:#ae81ff">0</span> <span style="color:#66d9ef">DOWNTO</span> <span style="color:#ae81ff">0</span>);
+    probe_out0 <span style="color:#f92672">:</span> <span style="color:#66d9ef">OUT</span> <span style="color:#66d9ef">STD_LOGIC_VECTOR</span>(<span style="color:#ae81ff">0</span> <span style="color:#66d9ef">DOWNTO</span> <span style="color:#ae81ff">0</span>)
+  );
+  <span style="color:#66d9ef">END</span> <span style="color:#66d9ef">COMPONENT</span>;
+    
+  <span style="color:#66d9ef">signal</span> probe_in0 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">0</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">signal</span> probe_out0 <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">0</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  
+  <span style="color:#66d9ef">signal</span> vio_btn <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
+    
+<span style="color:#66d9ef">begin</span>
+    
+  vio_0_i <span style="color:#f92672">:</span> vio_0
+  <span style="color:#66d9ef">PORT</span> <span style="color:#66d9ef">MAP</span> (
+    clk <span style="color:#f92672">=&gt;</span> clk,
+    probe_in0 <span style="color:#f92672">=&gt;</span> probe_in0,
+    probe_out0 <span style="color:#f92672">=&gt;</span> probe_out0
+  );
+
+  probe_in0(<span style="color:#ae81ff">0</span>) <span style="color:#f92672">&lt;=</span> counter(<span style="color:#ae81ff">3</span>);
+  vio_btn <span style="color:#f92672">&lt;=</span> probe_out0(<span style="color:#ae81ff">0</span>);
+    
+  <span style="color:#75715e">-- カウンタの3bit目をledに接続(実機では23bit目を使った)</span>
+  led <span style="color:#f92672">&lt;=</span> <span style="color:#66d9ef">std_logic</span>(counter(<span style="color:#ae81ff">3</span>));
+
+  <span style="color:#66d9ef">process</span>(clk) <span style="color:#75715e">-- クロックの変化で動作するプロセス</span>
+  <span style="color:#66d9ef">begin</span>
+    <span style="color:#66d9ef">if</span> rising_edge(clk) <span style="color:#66d9ef">then</span> <span style="color:#75715e">-- クロックの立ち上がりであれば</span>
+      <span style="color:#66d9ef">if</span> reset <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">or</span> vio_btn <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">then</span>
+        counter <span style="color:#f92672">&lt;=</span> (<span style="color:#66d9ef">others</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;0&#39;</span>);
+      <span style="color:#66d9ef">else</span>
+        counter <span style="color:#f92672">&lt;=</span> counter <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">-- カウンタをインクリメント</span>
+      <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+    <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
+
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="hardware-managerで操作する">Hardware Managerで操作する</h3>
+<p>VIOをデザインに組み込むと，Vivado Hardware Managerから操作することができます．</p>
+<p>値を<code>'1'</code>，<code>'0'</code>と変化させることで，カウンタを止めたり走らせたりするとができます．</p>
 <h2 id="基本実験の準備">基本実験の準備</h2>
 <p>FPGAを使った実験をする前に，動作の様子を確認しながら実験できるように簡単なテンプレートモジュールを用意しておくことにします．
 ここで作るのは，図\ref{fig:experiment_template}のように4bitの入力と4bitの出力ポートで構成されるモジュールです．
@@ -2057,7 +2203,11 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
     </li>
     <li><a href="#vio使ってfpga内部の信号を制御する">VIO使ってFPGA内部の信号を制御する</a>
       <ul>
-        <li><a href="#heading"></a></li>
+        <li><a href="#ipコアの準備">IPコアの準備</a></li>
+        <li><a href="#vioモジュールの準備">VIOモジュールの準備</a></li>
+        <li><a href="#vioモジュールのインスタンス生成">VIOモジュールのインスタンス生成</a></li>
+        <li><a href="#vioモジュールとの接続の追加">VIOモジュールとの接続の追加．</a></li>
+        <li><a href="#hardware-managerで操作する">Hardware Managerで操作する</a></li>
       </ul>
     </li>
     <li><a href="#基本実験の準備">基本実験の準備</a></li>

@@ -9,7 +9,7 @@
 ストップウォッチを作ってみよう ここでは，
  アクションボタンを押すとミリ秒毎のカウントアップを開始する カウント中に，アクションボタンを押すとカウントを一時停止する 一時停止中に，アクションボタンを押すとカウントを再開する リセットボタンを押すとカウントを0にクリアする  という機能をもったストップウォッチを作ってみましょう．
 残念ながら，ZYBO Z7-20には，7セグメントLEDのような数字を表示する分かりやすい表示器はありませんので，4つのLEDと2つの3色LEDを使って数を表現するとよいでしょう．
-次のリストはストップウォッチを実装するためのトップモジュールの例です．3色LEDの明るさを適当に調節するために，PWMモジュールを使って出力を変調しています．PWMモジュールによって，たとえば\verb|&#39;1&#39;|を出力する場合でも，適当なタイミングで&#39;1&rsquo;と&#39;0&rsquo;がまぜられることで明るさを抑えることができます．
+次のリストはストップウォッチを実装するためのトップモジュールの例です．3色LEDの明るさを適当に調節するために，PWMモジュールを使って出力を変調しています．PWMモジュールによって，たとえば&#39;1&#39;を出力する場合でも，適当なタイミングで&#39;1&#39;と&#39;0&#39;がまぜられることで明るさを抑えることができます．
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107  library ieee; use ieee." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://miyo.github.io/learning_fpga/docs/book01/experiments/" />
@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
 
 
-<script defer src="/learning_fpga/search.min.fa220cd62816adf71c6a4b3893a43a7efbf1bac151f770d0bea7ce9065f350ab.js" integrity="sha256-&#43;iIM1igWrfccaks4k6Q6fvvxusFR93DQvqfOkGXzUKs="></script>
+<script defer src="/learning_fpga/search.min.5d9427eb5d4e77184e726111c3915317e44616d4ab1bc2afec5ff05f25c7e233.js" integrity="sha256-XZQn611OdxhOcmERw5FTF&#43;RGFtSrG8Kv7F/wXyXH4jM="></script>
 
 <!--
 Made with Book Theme
@@ -192,32 +192,6 @@ https://github.com/alex-shpak/hugo-book
 
   <li >
     
-      <span>Intel活用編</span>
-    
-
-    
-
-
-
-
-  
-  <ul>
-    
-  </ul>
-  
-
-
-
-  </li>
-
-
-      
-    
-      
-        
-
-  <li >
-    
       <span>Xilinx活用編</span>
     
 
@@ -238,6 +212,32 @@ https://github.com/alex-shpak/hugo-book
 
 </li>
       
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      <span>Intel活用編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
     
   </ul>
   
@@ -304,7 +304,7 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 <p>という機能をもったストップウォッチを作ってみましょう．</p>
 <p>残念ながら，ZYBO Z7-20には，7セグメントLEDのような数字を表示する分かりやすい表示器はありませんので，4つのLEDと2つの3色LEDを使って数を表現するとよいでしょう．</p>
-<p>次のリストはストップウォッチを実装するためのトップモジュールの例です．3色LEDの明るさを適当に調節するために，PWMモジュールを使って出力を変調しています．PWMモジュールによって，たとえば\verb|'1'|を出力する場合でも，適当なタイミングで'1&rsquo;と'0&rsquo;がまぜられることで明るさを抑えることができます．</p>
+<p>次のリストはストップウォッチを実装するためのトップモジュールの例です．3色LEDの明るさを適当に調節するために，PWMモジュールを使って出力を変調しています．PWMモジュールによって，たとえば<code>'1'</code>を出力する場合でも，適当なタイミングで<code>'1'</code>と<code>'0'</code>がまぜられることで明るさを抑えることができます．</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1
