@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta property="og:title" content="基本実験" />
-<meta property="og:description" content="かんたんな実験を通じてFPGAでのハードウェア作りの基礎力を手に入れましょう．
+<meta property="og:description" content="基本実験 かんたんな実験を通じてFPGAでのハードウェア作りの基礎力を手に入れましょう．
 はじめに いくつかの簡単なHDLコードを書いて，FPGAでのハードウェア作りの基礎力を手に入れましょう．実際にHDLコードを書き，シミュレーションして，実機動作を確認することは，より複雑なハードウェアを設計するための第一歩です．
 ILAを使ってFPGA内部の信号を観測する FPGAは，FPGAの中で回路がどのように動作しているのかを知るためのILA(Internal Logic Analyzer)という仕組みを持っています．実験コードを書きはじめる前に，このILAの使い方を学んでみましょう．
 LチカでILAの動作を学ぶ 三度目の登場ですが，LチカでILAの動作を学びましょう．第4章で利用した\verb|project_2|を使用します．
@@ -21,7 +21,7 @@ LチカでILAの動作を学ぶ 三度目の登場ですが，LチカでILAの�
 <link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
 
 
-<script defer src="/learning_fpga/search.min.8c84631aa6c883d5e6ae1d4496813354cba457a09ad7582f7ca81e6ac75f76e0.js" integrity="sha256-jIRjGqbIg9Xmrh1EloEzVMukV6Ca11gvfKgeasdfduA="></script>
+<script defer src="/learning_fpga/search.min.89122d2501d7083445762252b97cc3707a19f7902bede5bcf9fba9469a798aaa.js" integrity="sha256-iRItJQHXCDRFdiJSuXzDcHoZ95Ar7eW8&#43;fupRpp5iqo="></script>
 
 <!--
 Made with Book Theme
@@ -289,14 +289,15 @@ https://github.com/alex-shpak/hugo-book
 </header>
 
       
-<article class="markdown"><p>かんたんな実験を通じてFPGAでのハードウェア作りの基礎力を手に入れましょう．</p>
-<h1 id="はじめに">はじめに</h1>
+<article class="markdown"><h1 id="基本実験">基本実験</h1>
+<p>かんたんな実験を通じてFPGAでのハードウェア作りの基礎力を手に入れましょう．</p>
+<h2 id="はじめに">はじめに</h2>
 <p>いくつかの簡単なHDLコードを書いて，FPGAでのハードウェア作りの基礎力を手に入れましょう．実際にHDLコードを書き，シミュレーションして，実機動作を確認することは，より複雑なハードウェアを設計するための第一歩です．</p>
-<h1 id="ilaを使ってfpga内部の信号を観測する">ILAを使ってFPGA内部の信号を観測する</h1>
+<h2 id="ilaを使ってfpga内部の信号を観測する">ILAを使ってFPGA内部の信号を観測する</h2>
 <p>FPGAは，FPGAの中で回路がどのように動作しているのかを知るためのILA(Internal Logic Analyzer)という仕組みを持っています．実験コードを書きはじめる前に，このILAの使い方を学んでみましょう．</p>
-<h2 id="lチカでilaの動作を学ぶ">LチカでILAの動作を学ぶ</h2>
+<h3 id="lチカでilaの動作を学ぶ">LチカでILAの動作を学ぶ</h3>
 <p>三度目の登場ですが，LチカでILAの動作を学びましょう．第4章で利用した\verb|project_2|を使用します．</p>
-<h2 id="準備">準備</h2>
+<h3 id="準備">準備</h3>
 <p>ILAを使ってデバッグするために，topモジュールのソースコードを次のように書き変えてください．</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -381,7 +382,7 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-<h2 id="ilaのセットアップと利用方法">ILAのセットアップと利用方法</h2>
+<h3 id="ilaのセットアップと利用方法">ILAのセットアップと利用方法</h3>
 <p>準備ができたらILAを追加して，その動作の様子を確認してみましょう．</p>
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_13_57_01.png"
@@ -572,7 +573,7 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-<h2 id="ila挿入すると回路は変わる">ILA挿入すると回路は変わる</h2>
+<h3 id="ila挿入すると回路は変わる">ILA挿入すると回路は変わる</h3>
 <p>重要な点ですが，ILAを挿入すると，挿入前とは異なるハードウェアになることを理解しておく必要があります．ILA向けのリソース使用量が増えるのはもちろん，観測対象の信号の接続関係も変化します．また観測のために残すべきレジスタの都合で最適化の結果もかわってきます．</p>
 <p>たとえば，図\ref{fig:without_mark_debug}は，counterにmark_debugアトリビュートを付与せずに合成した場合のデバッグビューです．3bit目をledに接続し，それ以上のbit数の値は利用さていないため，ばっさりと回路が小さくなっていることがわかります．</p>
 <p>しかし，mark_debugアトリビュートを付与して合成した場合には，もちろん最適化するわけにはいかないため，図\ref{fig:debug_mode_view}のように要/不要にかかわらず32bit分すべてのレジスタが回路として生成されています．</p>
@@ -583,7 +584,9 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-<h1 id="基本実験の準備">基本実験の準備</h1>
+<h2 id="vio使ってfpga内部の信号を制御する">VIO使ってFPGA内部の信号を制御する</h2>
+<p>ILAに加えて，もう一つ便利なIPコアであるVIO(Virtual Input/Output)を紹介します．VIOを使うとFPGA内部のレジスタの値を読み書きできます．</p>
+<h2 id="基本実験の準備">基本実験の準備</h2>
 <p>FPGAを使った実験をする前に，動作の様子を確認しながら実験できるように簡単なテンプレートモジュールを用意しておくことにします．
 ここで作るのは，図\ref{fig:experiment_template}のように4bitの入力と4bitの出力ポートで構成されるモジュールです．
 ZYBOのDIPスイッチSW0〜SW3を4bitの入力に，LED LD0〜LD3を4bitの出力にマッピングすることにします．</p>
@@ -695,7 +698,7 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 </div>
 </div></p>
 <p>作成したVHDLファイルと定義ファイルをプロジェクトに追加して合成し，できあがったbitファイルをZYBO Z7-20に書きこみましょう．DIPスイッチをオン・オフすることでLEDが点灯，消灯するはずです．</p>
-<h1 id="基本演算の動作を確認してみよう">基本演算の動作を確認してみよう</h1>
+<h2 id="基本演算の動作を確認してみよう">基本演算の動作を確認してみよう</h2>
 <p>基本的な論理演算である，AND/OR/XORの動作を実機のILAを使って確認してみましょう．</p>
 <p>AND/OR/XOR/NOTの動作を確認するためのモジュールとして次のようなモジュールを用意します．
 名前は\verb|logic_test.vhd|として保存することにします．
@@ -910,7 +913,7 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-<h1 id="ランダムな振る舞いを実現する擬似乱数の生成">ランダムな振る舞いを実現する擬似乱数の生成</h1>
+<h2 id="ランダムな振る舞いを実現する擬似乱数の生成">ランダムな振る舞いを実現する擬似乱数の生成</h2>
 <p>ゲームなどで，ランダムな振る舞いをさせたいときに用いられるのが乱数です．本物の乱数を作るのは非常に難しいため，一般的には数式で導いた擬似乱数で代用します．ソフトウェアで乱数を作成する場合は，rand関数などを呼び出すことで乱数系列に従って生成された値を利用できます．</p>
 <p>乱数系列の作り方には，いろいろな方法があります．今回は，ビット操作の練習として，シフトとXOR演算のみで構成できるXORSHIFT法(参考文献1)に基づく乱数生成器を実装してみましょう．32ビットのXORSHIFT法による乱数生成をCで記述すると，</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
@@ -1129,7 +1132,7 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-<h1 id="ビット加算器を作ってみよう">ビット加算器を作ってみよう</h1>
+<h2 id="ビット加算器を作ってみよう">ビット加算器を作ってみよう</h2>
 <p>ビット加算器，つまり足算の基本要素を作ってみましょう．ビット加算器では，足される数，足す数，および，繰り上がりの3bitの入力から，その桁の結果と繰り上がりの2bitを出力します．全加算器は半加算器2個とORで作ることができます．
 以下のリストを参考に，加算器が正しく動作することをシミュレータおよびILAを使って実機で確認してください．</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
@@ -1306,7 +1309,7 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-<h1 id="hdlの四則演算を試してみよう">HDLの四則演算を試してみよう</h1>
+<h2 id="hdlの四則演算を試してみよう">HDLの四則演算を試してみよう</h2>
 <p>VHDLやVerilog HDLでは，加算器のレベルでハードウェアを設計する必要はなく，実際には定義されている算術演算を利用することができます．+/-/*の動作をシミュレータおよび実機で確認してみてください．</p>
 <p>たとえば，次のようなVHDLコードを書いて試すことができます．
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
@@ -1395,7 +1398,7 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div></p>
-<h1 id="合計値の計算">合計値の計算</h1>
+<h2 id="合計値の計算">合計値の計算</h2>
 <p>算術演算の応用問題として，与えられたデータ(たとえば32ビットのビット列)の中に，1がいくつあるかを数えて値を返すというモジュールを作成してみましょう．たとえば，0x00000001の場合はビット列の中に1は1個，0xAAAAAAAAの場合は16個という値を出力する，モジュールです．</p>
 <p>もちろん逐次的に，1クロックで1bitずつ'0&rsquo;か'1&rsquo;かを検査するという，ソフトウェア的な実装も考えられますが，ここでは，入力された値に対して即座に結果を返す組み合わせ回路として設計し，シミュレーションと実機で動作を確認してみてください．</p>
 <p>たとえば，次のようなVHDLコードを書いて試すことができます．
@@ -1475,7 +1478,7 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div></p>
-<h1 id="pwm">PWM</h1>
+<h2 id="pwm">PWM</h2>
 <p>ある値を，1bitの信号の'1&rsquo;と'0&rsquo;の幅で表現するPWMという変調方式があります．
 ディジタルで簡単に信号の強度を変える方法としてもよく利用されます．</p>
 <p>次のVHDLコードは，PWMを実装してみた例です．
@@ -1665,9 +1668,9 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div></p>
-<h1 id="ステートマシンの作り方と利用方法">ステートマシンの作り方と利用方法</h1>
+<h2 id="ステートマシンの作り方と利用方法">ステートマシンの作り方と利用方法</h2>
 <p>基本実験の最後に，ハードウェア・プログラミングで逐次的に処理するために必要不可欠な概念であるステート・マシンと，その実装方法を学びましょう．ハードウェアでは処理を並列に実行できますが，世の中には順番にしか実行できない物事もたくさんあります．たとえば，そうめんを茹でるとき，鍋の水がまだ湯になる前に並行してそうめんを鍋に入れても，とても食べられるものはできあがりません．何事でも順序を守ることが大事なときもありますよね．</p>
-<h2 id="料理は逐次的な処理">料理は逐次的な処理</h2>
+<h3 id="ときには逐次的な処理何かをしてから何かをするが必要">ときには逐次的な処理(=何かをしてから何かをする)が必要</h3>
 <p>何かを実行し，その次に何かを実行し，その次に&hellip;，という決まった手順に従った処理の実装は，ソフトウェアによく見られます．たとえば，そうめんをゆでるときには，</p>
 <ul>
 <li>鍋に水を入れる</li>
@@ -1679,7 +1682,7 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <li>やわらかくなったら取り出して，できあがり</li>
 </ul>
 <p>という手順が必要となります．ソフトウェアであれば，このような手順をそのままプログラミング言語で記述して実装できます．しかし，ハードウェア・プログラミングでは逐次的な処理をそのまま記述できません．逐次的に処理を進めることそのものを自分で記述する必要があります．これを簡単に扱う道具がステート・マシン(状態遷移機械)です．</p>
-<h2 id="ステートマシンとは">ステート・マシンとは</h2>
+<h3 id="ステートマシンとは">ステート・マシンとは</h3>
 <p>図\ref{fig:statemachine_example}は，そうめんをゆでる手順をステート・マシン的に表現した例です．楕円は「状態」を矢印は「状態遷移」を示しています．矢印に条件が書かれている場合は，その条件が満たされたときだけ状態が遷移する，ということを意味します．</p>
 <figure class="center">
     <img src="../basics_figures/statemachine_example.png"
@@ -1689,7 +1692,7 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 </figure>
 
 <p>ステート・マシンとは，処理を「状態」と「状態遷移」で抽象化した概念です．列挙された状態を定義された状態遷移に従って順々にたどっていくことで所望の処理が実現できます．各状態での処理を定義することで，逐次的な処理をステート・マシンを使って記述できます．</p>
-<h2 id="ハードウェアプログラミングと相性の良いステートマシン">ハードウェア・プログラミングと相性の良いステート・マシン</h2>
+<h3 id="ハードウェアプログラミングと相性の良いステートマシン">ハードウェア・プログラミングと相性の良いステート・マシン</h3>
 <p>ステート・マシンをハードウェア・プログラミングで実装するのは意外と簡単です．そうめんを茹でる手順をハードウェア記述言語の一つであるVHDLで記述した擬似コードを示します．
 各状態を\verb|std_logic_vector|型の変数stateで管理しています．stateの値が各状態に対応しています．変数stateをクロックごとに参照し，その時点で実行すべき処理を判断します．各状態では，次の状態に遷移するための条件判断と，遷移のための状態変数の更新を行います．</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
@@ -2025,7 +2028,7 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-<h1 id="参考文献">参考文献</h1>
+<h2 id="参考文献">参考文献</h2>
 <ol>
 <li>George Marsaglia, &ldquo;Xorshift RNGs&rdquo;, The Florida State University, \url{http://www.jstatsoft.org/v08/i14}</li>
 </ol>
@@ -2042,16 +2045,31 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
   <aside class="book-toc levels-6 fixed">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#lチカでilaの動作を学ぶ">LチカでILAの動作を学ぶ</a></li>
-    <li><a href="#準備">準備</a></li>
-    <li><a href="#ilaのセットアップと利用方法">ILAのセットアップと利用方法</a></li>
-    <li><a href="#ila挿入すると回路は変わる">ILA挿入すると回路は変わる</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#料理は逐次的な処理">料理は逐次的な処理</a></li>
-    <li><a href="#ステートマシンとは">ステート・マシンとは</a></li>
-    <li><a href="#ハードウェアプログラミングと相性の良いステートマシン">ハードウェア・プログラミングと相性の良いステート・マシン</a></li>
+    <li><a href="#はじめに">はじめに</a></li>
+    <li><a href="#ilaを使ってfpga内部の信号を観測する">ILAを使ってFPGA内部の信号を観測する</a>
+      <ul>
+        <li><a href="#lチカでilaの動作を学ぶ">LチカでILAの動作を学ぶ</a></li>
+        <li><a href="#準備">準備</a></li>
+        <li><a href="#ilaのセットアップと利用方法">ILAのセットアップと利用方法</a></li>
+        <li><a href="#ila挿入すると回路は変わる">ILA挿入すると回路は変わる</a></li>
+      </ul>
+    </li>
+    <li><a href="#vio使ってfpga内部の信号を制御する">VIO使ってFPGA内部の信号を制御する</a></li>
+    <li><a href="#基本実験の準備">基本実験の準備</a></li>
+    <li><a href="#基本演算の動作を確認してみよう">基本演算の動作を確認してみよう</a></li>
+    <li><a href="#ランダムな振る舞いを実現する擬似乱数の生成">ランダムな振る舞いを実現する擬似乱数の生成</a></li>
+    <li><a href="#ビット加算器を作ってみよう">ビット加算器を作ってみよう</a></li>
+    <li><a href="#hdlの四則演算を試してみよう">HDLの四則演算を試してみよう</a></li>
+    <li><a href="#合計値の計算">合計値の計算</a></li>
+    <li><a href="#pwm">PWM</a></li>
+    <li><a href="#ステートマシンの作り方と利用方法">ステートマシンの作り方と利用方法</a>
+      <ul>
+        <li><a href="#ときには逐次的な処理何かをしてから何かをするが必要">ときには逐次的な処理(=何かをしてから何かをする)が必要</a></li>
+        <li><a href="#ステートマシンとは">ステート・マシンとは</a></li>
+        <li><a href="#ハードウェアプログラミングと相性の良いステートマシン">ハードウェア・プログラミングと相性の良いステート・マシン</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考文献">参考文献</a></li>
   </ul>
 </nav>
   </aside>

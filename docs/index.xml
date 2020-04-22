@@ -128,7 +128,7 @@ LEDに出力するbitを変更 実機ではカウンタの23bit目をledに接�
       <pubDate>Wed, 30 Oct 2019 19:15:46 +0900</pubDate>
       
       <guid>https://miyo.github.io/learning_fpga/docs/book01/basics/</guid>
-      <description>かんたんな実験を通じてFPGAでのハードウェア作りの基礎力を手に入れましょう．
+      <description>基本実験 かんたんな実験を通じてFPGAでのハードウェア作りの基礎力を手に入れましょう．
 はじめに いくつかの簡単なHDLコードを書いて，FPGAでのハードウェア作りの基礎力を手に入れましょう．実際にHDLコードを書き，シミュレーションして，実機動作を確認することは，より複雑なハードウェアを設計するための第一歩です．
 ILAを使ってFPGA内部の信号を観測する FPGAは，FPGAの中で回路がどのように動作しているのかを知るためのILA(Internal Logic Analyzer)という仕組みを持っています．実験コードを書きはじめる前に，このILAの使い方を学んでみましょう．
 LチカでILAの動作を学ぶ 三度目の登場ですが，LチカでILAの動作を学びましょう．第4章で利用した\verb|project_2|を使用します．
