@@ -134,6 +134,8 @@ LEDチカチカの，``チカチカ''というタイミングを制御するた�
 
 {{<figure src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_45_27.png" class="center" caption="図25: I/Oのピン割り当てを決める">}}
 
+割り当て結果の保存先ファイルを指定/作成するダイアログが表示されますのでtopと入力してOKをクリックします．top.xdcというファイルに割り当て情報が保存されます．
+
 ## 合成・配置配線
 ピン配置がおわったので，FPGA向けの書き込みファイルを作成します．Flow Navigatorの中にあるGenerate bitstreamをクリックするだけです．
 

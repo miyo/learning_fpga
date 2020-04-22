@@ -135,8 +135,113 @@ ILAを使ってデバッグするために，topモジュールのソースコ�
 ## VIO使ってFPGA内部の信号を制御する
 ILAに加えて，もう一つ便利なIPコアであるVIO(Virtual Input/Output)を紹介します．VIOを使うとFPGA内部のレジスタの値を読み書きすることができます．
 
-### 
+### IPコアの準備
 
+IPコアは，次の手順で利用します．
+
+1. IP Catalogから使いたいIPを選び，パラメタを設定してモジュールを生成する
+1. 生成したモジュールのインスタンスをRTLコード内で生成する
+1. 必要な接続を設定する
+
+順を追ってやってみましょう．
+
+### VIOモジュールの準備
+
+IP Catalogをクリックします．メインウィンドウにIPのリストが表示されます．
+
+Searchのテキストボックスにvioと入力すると，VIOが表示されるのでダブルクリックします．
+
+パラメタを設定するダイアログが表示されます．VIOで読み書きしたいポートの数をセットすることができます．ここでは，デフォルトの1bitの入力と1bitの出力がある状態のまま OK でダイアログを閉じます．モジュールの名前もここで決めることができます．今回はデフォルトの `vio_0` のまますすめます．
+
+IPコアを合成してしまうか質問されるダイアログが表示されます．Generateをクリックして合成しておきます．
+
+SourcesペインのHierarcyタブに，`vio_0` が出現しました．これでVIOをデザインで利用する準備が整いました．
+
+### VIOモジュールのインスタンス生成
+
+生成したVIOモジュールは，モジュールとして用意されただけでデザインには組み込めていません．デザインに組み込むためには，HDLコードの中でインスタンス生成する必要があります．
+
+IP Sourcesタブを開き，IPというツリーをたどると，vio_0.vhoというエントリがあります．ここにインスタンス生成するためのテンプレートがあります．VHDLの場合 `component` のブロックと `your_instance_name :...` のブロックの二つが必要なので，これをコピーします．
+
+`component`ブロックの方は`architecture`の`begin`の前に，`your_instance_name :...` のブロックは`begin`の後に張り付けます．
+
+`your_instance_name`はインスタンスを識別する名前で，設計者が自由につけることができます．たとえば，`vio_0_i` としておきます．
+
+ここまででVIOモジュールをデザインに組み込むことができました．インスタンス名を変えれば，FPGAのリソースが許すかぎり，何個でもモジュールのインスタンスを作ることができます．
+
+### VIOモジュールとの接続の追加．
+
+また，`probe_in0`と`probe_out0`に相当する信号を追加し，観測したい信号を `probe_in0` に，制御したい信号を `probe_out0` に接続します．
+
+たとえば`probe_in0`にLEDへの出力と同じ`counter(0)`を接続すればLEDへの出力と同じ信号を仮想的に観測することができます．また，あらたに`vio_btn`という信号を用意して，この信号に`probe_out0`を接続してみます．カウントアップの動作条件に`vio_btn`を追加すれば仮想的なボタンで，カウンタの動作を制御できるようになります．
+
+最終的なソースコードは，次の通りです．
+
+{{< highlight vhdl "linenos=table" >}}
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity top is
+   Port ( clk   : in std_logic;
+          reset : in std_logic;
+          led   : out std_logic
+        );
+end top;
+    
+architecture RTL of top is
+ 
+  attribute mark_debug : string; -- (1) 追加
+  signal counter : unsigned(31 downto 0) := (others => '0');
+  attribute mark_debug of counter : signal is "true"; -- (2) 追加
+    
+  COMPONENT vio_0
+  PORT (
+    clk : IN STD_LOGIC;
+    probe_in0 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    probe_out0 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
+  );
+  END COMPONENT;
+    
+  signal probe_in0 : std_logic_vector(0 downto 0);
+  signal probe_out0 : std_logic_vector(0 downto 0);
+  
+  signal vio_btn : std_logic;
+    
+begin
+    
+  vio_0_i : vio_0
+  PORT MAP (
+    clk => clk,
+    probe_in0 => probe_in0,
+    probe_out0 => probe_out0
+  );
+
+  probe_in0(0) <= counter(3);
+  vio_btn <= probe_out0(0);
+    
+  -- カウンタの3bit目をledに接続(実機では23bit目を使った)
+  led <= std_logic(counter(3));
+
+  process(clk) -- クロックの変化で動作するプロセス
+  begin
+    if rising_edge(clk) then -- クロックの立ち上がりであれば
+      if reset = '1' or vio_btn = '1' then
+        counter <= (others => '0');
+      else
+        counter <= counter + 1; -- カウンタをインクリメント
+      end if;
+    end if;
+  end process;
+
+end RTL;
+{{< /highlight >}}
+
+### Hardware Managerで操作する
+
+VIOをデザインに組み込むと，Vivado Hardware Managerから操作することができます．
+
+値を`'1'`，`'0'`と変化させることで，カウンタを止めたり走らせたりするとができます．
 
 ## 基本実験の準備
 FPGAを使った実験をする前に，動作の様子を確認しながら実験できるように簡単なテンプレートモジュールを用意しておくことにします．
