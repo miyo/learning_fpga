@@ -11,7 +11,8 @@ ZYBO Z7-20を活用，あるいはZYNQを活用するためのガイドではあ
 ZYNQを活用したい，のであれば，http://www.zynqbook.com/ などがおすすすめです．
 
 ## LICENSE
-[CC BY-NC-SA](https://github.com/miyo/learning_fpga/blob/master/LICENSE)
+[![Creative Commons License](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
+This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 ## ビルド
 - TeXからPDFを作成する場合は `make.sh` を実行してください
