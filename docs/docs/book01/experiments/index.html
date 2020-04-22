@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta property="og:title" content="実験" />
-<meta property="og:description" content="HDLのいろいろな記述方法を使って，少し複雑なモジュールの設計に取り組んでみましょう．
+<meta property="og:description" content="実験 HDLのいろいろな記述方法を使って，少し複雑なモジュールの設計に取り組んでみましょう．
 はじめに これまでに学んできた内容を利用して，少し応用的な実験に取り組んでみましょう．
 ストップウォッチを作ってみよう ここでは，
  アクションボタンを押すとミリ秒毎のカウントアップを開始する カウント中に，アクションボタンを押すとカウントを一時停止する 一時停止中に，アクションボタンを押すとカウントを再開する リセットボタンを押すとカウントを0にクリアする  という機能をもったストップウォッチを作ってみましょう．
@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
 
 
-<script defer src="/learning_fpga/search.min.89122d2501d7083445762252b97cc3707a19f7902bede5bcf9fba9469a798aaa.js" integrity="sha256-iRItJQHXCDRFdiJSuXzDcHoZ95Ar7eW8&#43;fupRpp5iqo="></script>
+<script defer src="/learning_fpga/search.min.e3c12ffe98daefccf377cf8dc1a19401bf4e5d209839c163b48ebdf238712f84.js" integrity="sha256-48Ev/pja78zzd8&#43;NwaGUAb9OXSCYOcFjtI698jhxL4Q="></script>
 
 <!--
 Made with Book Theme
@@ -290,10 +290,11 @@ https://github.com/alex-shpak/hugo-book
 </header>
 
       
-<article class="markdown"><p>HDLのいろいろな記述方法を使って，少し複雑なモジュールの設計に取り組んでみましょう．</p>
-<h1 id="はじめに">はじめに</h1>
+<article class="markdown"><h1 id="実験">実験</h1>
+<p>HDLのいろいろな記述方法を使って，少し複雑なモジュールの設計に取り組んでみましょう．</p>
+<h2 id="はじめに">はじめに</h2>
 <p>これまでに学んできた内容を利用して，少し応用的な実験に取り組んでみましょう．</p>
-<h1 id="ストップウォッチを作ってみよう">ストップウォッチを作ってみよう</h1>
+<h2 id="ストップウォッチを作ってみよう">ストップウォッチを作ってみよう</h2>
 <p>ここでは，</p>
 <ul>
 <li>アクションボタンを押すとミリ秒毎のカウントアップを開始する</li>
@@ -525,10 +526,10 @@ https://github.com/alex-shpak/hugo-book
 </div>
 </div>
 <p><code>stopwatch</code>モジュールを実装して，完成させてみましょう．</p>
-<h1 id="シリアル通信に挑戦してみよう">シリアル通信に挑戦してみよう</h1>
+<h2 id="シリアル通信に挑戦してみよう">シリアル通信に挑戦してみよう</h2>
 <p>最近のパソコンの外部機器のI/OのほとんどはUSBです．ノート・パソコンは勿論，省スペースのデスクトップ・パソコンにさえ，RS-232-Cのシリアル通信のポートが搭載されなくなってきました．それでも，送信と受信の2本で通信可能なRS-232-Cは，パソコンとFPGAの間やFPGAとFPGAの間でデータを手軽にやりとりする手段として基本的かつ必要不可欠な存在です．</p>
 <p>シリアル・ポートのないノート・パソコンでも，市販のUSB-シリアル変換ケーブルやBluetooth-シリアル変換モジュールを使って簡単に接続できます．</p>
-<h2 id="シリアル通信のしくみ">シリアル通信のしくみ</h2>
+<h3 id="シリアル通信のしくみ">シリアル通信のしくみ</h3>
 <p>シリアル通信では，受信と送信で独立したポートを持ちます．機器を直結する場合には，お互いの送受信ポートをクロスして結線します(図\ref{fig:serial_comm})．</p>
 <figure class="center">
     <img src="../experiments_figures/serial_comm.png"
@@ -545,7 +546,7 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-<h2 id="送信モジュール">送信モジュール</h2>
+<h3 id="送信モジュール">送信モジュール</h3>
 <p>決められた速度で信号をパタパタと変化させるだけです．ただし，一般に，シリアル通信の速度は回路の動作クロックに対して，とても遅いので，データを送信している途中に送るべき信号を更新してしまわないようにブロックする仕組みが必要です．VHDLによる実装例を示します．</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -863,7 +864,7 @@ https://github.com/alex-shpak/hugo-book
 <p><code>clk_div</code>モジュールで生成した，シリアル送信用の信号にあわせて，送信すべきデータを1bitずつ出力します．
 また，出力中はready信号を<code>'0'</code>にすることで，送信モジュールが動作中であることを上位のモジュールに伝えられるようになっています．</p>
 <p>このモジュールの動作をシミュレーションで確認してみましょう．</p>
-<h2 id="受信モジュール">受信モジュール</h2>
+<h3 id="受信モジュール">受信モジュール</h3>
 <p>受信モジュールは送信モジュールに比べて少し複雑になります．送信側は自分のタイミングで信号を送ればいいのに対し，受信側ではスタート・ビットを頼りにデータの開始を検出し，以降の信号を正しい間隔でビットに分割しなければならないからです．また，データにはノイズが乗っている可能性もあるので，データを正しく取得する仕組みも必要です．
 VHDLとVerilog HDLによる実装の例が次のリストです．この例では，通信速度の16倍のクロックでデータをサンプリング（一定間隔で読み込む）することで，データを受信しています．</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
@@ -1054,7 +1055,7 @@ VHDLとVerilog HDLによる実装の例が次のリストです．この例で�
 </div>
 <p>通信速度の16倍でデータをサンプリングしているので，スタート・ビットは16サイクル分が取得できるはずです．スタートビットのはじまりと思われる'0&rsquo;というデータを確認してから6サイクル目のデータをもう一度取得し，そのデータがやっぱり'0&rsquo;であれば，データ送信が開始されたと解釈します（ソース・コード中の状態1）．データが送信されていることを確認した後は，16サイクル毎にデータを取得します（ソース・コード中の状態2）．8bit分データを取得したら完了です．</p>
 <p>送信モジュールと同じように，テストベンチを書いてシミュレーションで動作を確認してみましょう．</p>
-<h2 id="実機で動作確認">実機で動作確認</h2>
+<h3 id="実機で動作確認">実機で動作確認</h3>
 <p>シリアル通信を実機で動作確認してみましょう．入出力にPMODコネクタJEの1ピンと7ピンを割当て，物理的に両者をジャンパピンで接続すれば，通信ができるはずです．動作をILAを使って確認してみましょう．{\bf 注意: PMODコネクタの6ピンと12ピンは3.3V，5ピンと11ピンはGNDです．間違って6ピンと5ピンなどのように3.3VとGNDを直結しないようにしましょう．}</p>
 <figure class="center">
     <img src="../experiments_figures/IMG_0007.JPG"
@@ -1063,7 +1064,7 @@ VHDLとVerilog HDLによる実装の例が次のリストです．この例で�
         </figcaption>
 </figure>
 
-<h1 id="音声信号を観測してみよう">音声信号を観測してみよう</h1>
+<h2 id="音声信号を観測してみよう">音声信号を観測してみよう</h2>
 <p>ZYBO Z7-20には音声入出力用のジャックが備わっています．これを利用すると外部からの音声信号を取り込みFPGAで処理することができます．信号は，SSM2603というICでA/D変換されます．SSM2603とFPGAはI2Sで音声データをやりとりすることができます．</p>
 <p>SSM2603とやりとりするI2S信号は図\ref{fig:ssm2603_protocol}の通りです．</p>
 <figure class="center">
@@ -1075,7 +1076,7 @@ VHDLとVerilog HDLによる実装の例が次のリストです．この例で�
 
 <p>これを送受信するモジュールを実装して音声信号の入出力をやってみましょう．
 でてくる信号が少し増えて複雑にみえるかもしれませんが，方針はRS-232-Cの送受信と同じです．</p>
-<h2 id="i2sの送信">I2Sの送信</h2>
+<h3 id="i2sの送信">I2Sの送信</h3>
 <p>次のリストは，I2Sの送信モジュールの実装例です．シミュレーションによって，信号が図\ref{fig:ssm2603_protocol}に示したように出力されることを確認してみましょう．</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -1249,7 +1250,7 @@ VHDLとVerilog HDLによる実装の例が次のリストです．この例で�
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-<h2 id="i2sの受信">I2Sの受信</h2>
+<h3 id="i2sの受信">I2Sの受信</h3>
 <p>次は受信モジュールです．送信モジュールと組み合わせてシミュレーションすることで，入力した音声信号をI2Sフォーマットに変換し，それが復号される様を観測することができます．</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -1451,7 +1452,7 @@ VHDLとVerilog HDLによる実装の例が次のリストです．この例で�
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-<h1 id="発展">発展</h1>
+<h2 id="発展">発展</h2>
 <p>紹介したアプリケーション実験を応用して，次のような課題に挑戦してみましょう．</p>
 <ol>
 <li>ストップウォッチモジュールを改造して，カウントダウンできるようにしてみましょう．</li>
@@ -1471,15 +1472,23 @@ VHDLとVerilog HDLによる実装の例が次のリストです．この例で�
   <aside class="book-toc levels-6 fixed">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#シリアル通信のしくみ">シリアル通信のしくみ</a></li>
-    <li><a href="#送信モジュール">送信モジュール</a></li>
-    <li><a href="#受信モジュール">受信モジュール</a></li>
-    <li><a href="#実機で動作確認">実機で動作確認</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#i2sの送信">I2Sの送信</a></li>
-    <li><a href="#i2sの受信">I2Sの受信</a></li>
+    <li><a href="#はじめに">はじめに</a></li>
+    <li><a href="#ストップウォッチを作ってみよう">ストップウォッチを作ってみよう</a></li>
+    <li><a href="#シリアル通信に挑戦してみよう">シリアル通信に挑戦してみよう</a>
+      <ul>
+        <li><a href="#シリアル通信のしくみ">シリアル通信のしくみ</a></li>
+        <li><a href="#送信モジュール">送信モジュール</a></li>
+        <li><a href="#受信モジュール">受信モジュール</a></li>
+        <li><a href="#実機で動作確認">実機で動作確認</a></li>
+      </ul>
+    </li>
+    <li><a href="#音声信号を観測してみよう">音声信号を観測してみよう</a>
+      <ul>
+        <li><a href="#i2sの送信">I2Sの送信</a></li>
+        <li><a href="#i2sの受信">I2Sの受信</a></li>
+      </ul>
+    </li>
+    <li><a href="#発展">発展</a></li>
   </ul>
 </nav>
   </aside>

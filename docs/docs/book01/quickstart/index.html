@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta property="og:title" content="クイックスタート" />
-<meta property="og:description" content="FPGA開発におけるHello World Lチカ を通して，開発の手順に慣れよう
+<meta property="og:description" content="クイックスタート FPGA開発におけるHello World Lチカ を通して，開発の手順に慣れよう
 はじめに この章では，FPGA開発におけるHello World，すなわち最初に試してみるサンプルとして Lチカ を題材に，開発の手順に慣れてみましょう． Lチカ とは，「LEDをチカチカさせる」の略です．
 単にLEDとチカチカさせるだけ，なのですが，開発の手順を身につけるには十分です．また，実際多くの信号制御は何かしらの規則にしたがって信号をON/OFFしていることですから，すべての信号制御はLチカの応用にあるとも言えます．簡単ですが大事ですよ．
-実習 プロジェクトの用意  図1: VivadoのFileメニューから，New Project&hellip;を選択する
+プロジェクトの用意  図1: VivadoのFileメニューから，New Project&hellip;を選択する
    図2: プロジェクト作成ダイアログが開くので，Next&gt;で次へ
   プロジェクト名と格納先を決めます．ここでは，ホームディレクトリの下のVivadoというフォルダの下にプロジェクトを格納することとし，名前をproject_1としています．
  図3: プロジェクト名と格納先を決めます
@@ -30,7 +30,7 @@
 <link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
 
 
-<script defer src="/learning_fpga/search.min.89122d2501d7083445762252b97cc3707a19f7902bede5bcf9fba9469a798aaa.js" integrity="sha256-iRItJQHXCDRFdiJSuXzDcHoZ95Ar7eW8&#43;fupRpp5iqo="></script>
+<script defer src="/learning_fpga/search.min.e3c12ffe98daefccf377cf8dc1a19401bf4e5d209839c163b48ebdf238712f84.js" integrity="sha256-48Ev/pja78zzd8&#43;NwaGUAb9OXSCYOcFjtI698jhxL4Q="></script>
 
 <!--
 Made with Book Theme
@@ -298,11 +298,11 @@ https://github.com/alex-shpak/hugo-book
 </header>
 
       
-<article class="markdown"><p>FPGA開発におけるHello World <strong>Lチカ</strong> を通して，開発の手順に慣れよう</p>
-<h1 id="はじめに">はじめに</h1>
+<article class="markdown"><h1 id="クイックスタート">クイックスタート</h1>
+<p>FPGA開発におけるHello World <strong>Lチカ</strong> を通して，開発の手順に慣れよう</p>
+<h2 id="はじめに">はじめに</h2>
 <p>この章では，FPGA開発におけるHello World，すなわち最初に試してみるサンプルとして <strong>Lチカ</strong> を題材に，開発の手順に慣れてみましょう． <strong>Lチカ</strong> とは，「LEDをチカチカさせる」の略です．</p>
 <p>単にLEDとチカチカさせるだけ，なのですが，開発の手順を身につけるには十分です．また，実際多くの信号制御は何かしらの規則にしたがって信号をON/OFFしていることですから，すべての信号制御はLチカの応用にあるとも言えます．簡単ですが大事ですよ．</p>
-<h1 id="実習">実習</h1>
 <h2 id="プロジェクトの用意">プロジェクトの用意</h2>
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_01_24.png"
@@ -502,11 +502,11 @@ https://github.com/alex-shpak/hugo-book
 </div>
 </div>
 <p>追加箇所は多くないので，少し詳しくみてみましょう．</p>
-<h4 id="追加箇所1">追加箇所(1)</h4>
+<h3 id="追加箇所1">追加箇所(1)</h3>
 <p>数値演算に必要なライブラリ，今回の場合でいうと``+'&lsquo;演算を利用するために <code>use ieee.numeric_std.all</code> という前置きをしています．</p>
-<h4 id="追加箇所2">追加箇所(2)</h4>
+<h3 id="追加箇所2">追加箇所(2)</h3>
 <p>LEDチカチカの，``チカチカ'&lsquo;というタイミングを制御するためのカウンタ変数を定義です．+演算を利用したいので <code>unsigned</code> 型で定義しています．</p>
-<h4 id="追加箇所3">追加箇所(3)</h4>
+<h3 id="追加箇所3">追加箇所(3)</h3>
 <p>いわば処理の本体です．一行目の代入文は，定義したcounter変数の23bit目を出力ポートであるledに接続することを意味しています． <code>unsigned</code> の1bitですので <code>std_logic</code> に型変換しています．次のprocess文では，clkが立ち上がることにcounterに1を足すことを意味しています．すなわち，(3)で追加した部分では，clkの立ち上がり8M回毎にledの'1&rsquo;と'0&rsquo;が反転する回路を定義していることになります．</p>
 <h2 id="まずは合成してみる">まずは合成してみる</h2>
 <p>ファイルの編集がおわったら合成してみましょう．といっても，左サイドにあるFlow Navigatorの中にあるRun Synthesisをクリックするだけです．</p>
@@ -665,7 +665,7 @@ https://github.com/alex-shpak/hugo-book
 </figure>
 
 <p>これでFPGAボード上のLED LD0が点滅するはずです．</p>
-<h1 id="課題">課題</h1>
+<h2 id="課題">課題</h2>
 <ol>
 <li>点滅の間隔を変えてみよう</li>
 <li>FPGA上のほかのLEDも点滅させてみよう</li>
@@ -683,11 +683,14 @@ https://github.com/alex-shpak/hugo-book
   <aside class="book-toc levels-6 fixed">
     <nav id="TableOfContents">
   <ul>
+    <li><a href="#はじめに">はじめに</a></li>
     <li><a href="#プロジェクトの用意">プロジェクトの用意</a></li>
     <li><a href="#ファイルの作成">ファイルの作成</a></li>
     <li><a href="#デザインの修正">デザインの修正</a>
       <ul>
-        <li></li>
+        <li><a href="#追加箇所1">追加箇所(1)</a></li>
+        <li><a href="#追加箇所2">追加箇所(2)</a></li>
+        <li><a href="#追加箇所3">追加箇所(3)</a></li>
       </ul>
     </li>
     <li><a href="#まずは合成してみる">まずは合成してみる</a></li>
@@ -701,6 +704,7 @@ https://github.com/alex-shpak/hugo-book
     </li>
     <li><a href="#配置配線結果の確認">配置配線結果の確認</a></li>
     <li><a href="#実機での動作確認">実機での動作確認</a></li>
+    <li><a href="#課題">課題</a></li>
   </ul>
 </nav>
   </aside>
