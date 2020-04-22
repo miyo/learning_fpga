@@ -8,7 +8,7 @@ weight: -1500
 
 # 基本実験
 
-かんたんな実験を通じてFPGAでのハードウェア作りの基礎力を手に入れましょう．
+かんたんな実験を通じてFPGAでのハードウェア作りの基礎力を身につけましょう．
 
 ## はじめに
 いくつかの簡単なHDLコードを書いて，FPGAでのハードウェア作りの基礎力を手に入れましょう．実際にHDLコードを書き，シミュレーションして，実機動作を確認することは，より複雑なハードウェアを設計するための第一歩です．
@@ -17,7 +17,7 @@ weight: -1500
 FPGAは，FPGAの中で回路がどのように動作しているのかを知るためのILA(Internal Logic Analyzer)という仕組みを持っています．実験コードを書きはじめる前に，このILAの使い方を学んでみましょう．
 
 ### LチカでILAの動作を学ぶ
-三度目の登場ですが，LチカでILAの動作を学びましょう．第4章で利用した\verb|project_2|を使用します．
+三度目の登場ですが，LチカでILAの動作を学びましょう．[シミュレーション](../simulation) で利用した `project_2` を使用します．
 
 ### 準備
 ILAを使ってデバッグするために，topモジュールのソースコードを次のように書き変えてください．
@@ -59,9 +59,9 @@ ILAを使ってデバッグするために，topモジュールのソースコ�
  end RTL;
 {{< /highlight >}}
 
-(1)と(2)が追加ポイントです．(1)で\verb|mark_debug|というattributeを利用することを宣言し，(2)でcounterに\verb|mark_debug|というattributeを付与しています．attributeは，ツールに対する指示子です．Vivadoでは，\verb|mark_debug|を付与した信号はデバッグ対象の可能性があるとして特別扱いします．
+(1)と(2)が追加ポイントです．(1)で `mark_debug` というattributeを利用することを宣言し，(2)でcounterに `mark_debug` というattributeを付与しています．attributeは，ツールに対する指示子です．Vivadoでは， `mark_debug` を付与した信号はデバッグ対象の可能性があるとして特別扱いします．
 
-コードが準備できたら，一度合成してピン配置まで終わらせてしまいましょう．
+コードが準備できたら，一度合成してピン配置まで終わらせてしまいましょう．I/O Planningで，`clk`をK17，`led`をM14，`reset`をK18(プッシュボタンのBTN0)に設定します．
 
 {{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_13_59_41.png" class="center" caption="I/O Planningでclk，reset，ledのピン配置を決定する" >}}
 
@@ -133,7 +133,9 @@ ILAを使ってデバッグするために，topモジュールのソースコ�
 {{<figure src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_00_24.png" class="center" caption="counterにmark\_debugがない場合 \label{fig:without_mark_debug}" >}}
 
 ## VIO使ってFPGA内部の信号を制御する
-ILAに加えて，もう一つ便利なIPコアであるVIO(Virtual Input/Output)を紹介します．VIOを使うとFPGA内部のレジスタの値を読み書きできます．
+ILAに加えて，もう一つ便利なIPコアであるVIO(Virtual Input/Output)を紹介します．VIOを使うとFPGA内部のレジスタの値を読み書きすることができます．
+
+### 
 
 
 ## 基本実験の準備
@@ -201,7 +203,7 @@ set_property -dict {PACKAGE_PIN D18 IOSTANDARD LVCMOS33} [get_ports {LD[3]}];
 基本的な論理演算である，AND/OR/XORの動作を実機のILAを使って確認してみましょう．
 
 AND/OR/XOR/NOTの動作を確認するためのモジュールとして次のようなモジュールを用意します．
-名前は\verb|logic_test.vhd|として保存することにします．
+名前は `logic_test.vhd` として保存することにします．
 {{< highlight vhdl "linenos=table" >}}
 library ieee;
 
@@ -252,7 +254,7 @@ begin
 end RTL;
 {{< /highlight >}}
 
-先に用意したテンプレートに組み込んで，実機で動作を確認するために，\verb|top.vhd|を次のように変更します．
+先に用意したテンプレートに組み込んで，実機で動作を確認するために，`top.vhd` を次のように変更します．
 
 {{< highlight vhdl "linenos=table" >}}
 library ieee;
@@ -740,7 +742,7 @@ end RTL;
 
 ### ハードウェア・プログラミングと相性の良いステート・マシン
 ステート・マシンをハードウェア・プログラミングで実装するのは意外と簡単です．そうめんを茹でる手順をハードウェア記述言語の一つであるVHDLで記述した擬似コードを示します．
-各状態を\verb|std_logic_vector|型の変数stateで管理しています．stateの値が各状態に対応しています．変数stateをクロックごとに参照し，その時点で実行すべき処理を判断します．各状態では，次の状態に遷移するための条件判断と，遷移のための状態変数の更新を行います．
+各状態を `std_logic_vector` 型の変数 `state` で管理しています． `state` の値が各状態に対応しています．変数stateをクロックごとに参照し，その時点で実行すべき処理を判断します．各状態では，次の状態に遷移するための条件判断と，遷移のための状態変数の更新を行います．
 
 {{< highlight vhdl "linenos=table" >}}
 ---------------------------------------------------------

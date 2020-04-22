@@ -132,7 +132,7 @@ LEDチカチカの，``チカチカ''というタイミングを制御するた�
 
 画面下のI/O割当て表でピン配置を決定します．clkとledのPackage pinを，それぞれ，K17とM14に決め，どちらもI/O stdをLVCMOS33を選択します．
 
-{{<figure src="../ckstart_figures/VirtualBox_Windows10_19_03_2018_00_45_27.png" class="center" caption="図25: I/Oのピン割り当てを決める">}}
+{{<figure src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_45_27.png" class="center" caption="図25: I/Oのピン割り当てを決める">}}
 
 ## 合成・配置配線
 ピン配置がおわったので，FPGA向けの書き込みファイルを作成します．Flow Navigatorの中にあるGenerate bitstreamをクリックするだけです．
