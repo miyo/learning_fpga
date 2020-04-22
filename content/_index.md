@@ -29,3 +29,7 @@ type: docs
 - Ubuntuを使ってみる
 - PYNQによるFPGA利用方法
 - [IP Integrator入門]({{< ref "/docs/book03/ipi.md" >}})
+
+## Intel活用編
+
+- PACのAFUを作ってみる
