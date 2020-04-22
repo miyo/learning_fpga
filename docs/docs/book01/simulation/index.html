@@ -16,14 +16,15 @@ HDLで記述したアプリケーション回路をFPGA上で動作させるた�
  エンティティの中身(モジュールの入出力信号)が空である 時間を表す構文を使って信号の振る舞いを規定する ハードウェアでは実現できない仮想的な機能を利用できる  設計したHDLモジュールを動作させるのには必要な，マザーボードに相当する部分をすべて記述しなければなりません．逆にいうと，テスト・ベンチは外部との入出力があってはいけないということです．そのため，VHDLの場合はテスト・ベンチのエンティティの中身が，Verilog HDLの場合moduleの引数が空になるというわけです．
 テスト・ベンチでは 時間 を表現する必要がある 「スイッチを10秒押してから離す」や「50MHzの信号」などの振る舞いは時間を扱うので，HDLのビヘイビア・モデル（動作記述）を用いて記述します．
 たとえば，「10nsの時間を待つ」という動作はHDLで次のように記述します．この記述はビヘイビア・モデルの基本中の基本です． VHDLで記述する場合は，
-1  wait for 10ns;   Verilog HDLで記述する場合には，初めに `timescaleを使って，
+1  wait for 10ns;   Verilog HDLで記述する場合には，初めに ``timescale`を使って，
 1  `timescale 1ns / 1ps   と，シミュレーションの単位時間を指定して，時間を挿入したい個所で
 1  #10   と記述すると，指定した単位時間分の時間(この例では10ns)を作ることができます．
 テストベンチの書き方 またか!!という感も否めませんが，前章で利用した「LEDチカチカ」に再び登場してもらいましょう．
 シミュレーション用に(実験のために)修正 今回はシミュレーションの動作を知ることを目的にコードを少し修正します．実際の開発の際には，シミュレーションのために実装コードを変える，ということは基本的にはしないはずです．
 resetの追加 回路を初期化するための入力信号としてresetを追加しています．
 LEDに出力するbitを変更 実機ではカウンタの23bit目をledに接続しましたが，クロックの立ち上がりを8M回待つのは大変なので3bit目をledの出力に接続しています．
-モジュールのタイプをRTLに変更 モジュールのタイプをBehaviorではなくRTLとしています．実際のところ今のVivadoでは，ここのキーワードは特に意味をなさないのですがシミュレーションのためのテストベンチをBehavior，合成してハードウェア化もするファイルはRTLと分けておくと見分けるのが容易になります．" />
+モジュールのタイプをRTLに変更 モジュールのタイプをBehaviorではなくRTLとしています．実際のところ今のVivadoでは，ここのキーワードは特に意味をなさないのですがシミュレーションのためのテストベンチをBehavior，合成してハードウェア化もするファイルはRTLと分けておくと見分けるのが容易になります．
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32  library ieee; use ieee." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://miyo.github.io/learning_fpga/docs/book01/simulation/" />
 <meta property="article:published_time" content="2019-10-30T19:15:46+09:00" />
@@ -35,7 +36,7 @@ LEDに出力するbitを変更 実機ではカウンタの23bit目をledに接�
 <link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
 
 
-<script defer src="/learning_fpga/search.min.431de68ae73daaa1e72319914f918035c9fb6938698072b15278916071098257.js" integrity="sha256-Qx3miuc9qqHnIxmRT5GANcn7aThpgHKxUniRYHEJglc="></script>
+<script defer src="/learning_fpga/search.min.8c84631aa6c883d5e6ae1d4496813354cba457a09ad7582f7ca81e6ac75f76e0.js" integrity="sha256-jIRjGqbIg9Xmrh1EloEzVMukV6Ca11gvfKgeasdfduA="></script>
 
 <!--
 Made with Book Theme
@@ -205,6 +206,32 @@ https://github.com/alex-shpak/hugo-book
 
   <li >
     
+      <span>Intel活用編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
       <span>Xilinx活用編</span>
     
 
@@ -277,26 +304,15 @@ https://github.com/alex-shpak/hugo-book
 </header>
 
       
-<article class="markdown">
-
-<p>この章では，<strong>Lチカ</strong> を題材に設計したデザインがどのように動いているのか，Vivado付属のシミュレータを使ったシミュレーションによって確認する方法を学びます．</p>
-
+<article class="markdown"><p>この章では，<strong>Lチカ</strong> を題材に設計したデザインがどのように動いているのか，Vivado付属のシミュレータを使ったシミュレーションによって確認する方法を学びます．</p>
 <h1 id="はじめに">はじめに</h1>
-
 <p>実際の開発現場で不具合を解析するときにもシミュレーションは大変有用な手段です．</p>
-
 <p>HDLで記述したアプリケーション回路をFPGA上で動作させるためには，合成や配置配線を実行してFPGA書き込み用のコンフィギュレーション情報のファイルを生成する必要があります．回路規模が大きくなると，コンフィギュレーション情報を作成するのにも長い時間が必要になります．しかし，シミュレーションの場合は簡単なコンパイルでおしまいです．デバッグなどで，何度もソース・コードを変更するような場合には，シミュレータで動作を確認できれば圧倒的に短時間で済みます．</p>
-
 <p>また，FPGAで動作しているアプリケーション回路の各信号が，どのように変化しているか，外から観測するのはなかなか難しいものです．一方で，シミュレーションでは自由に記述したロジックの信号の変化を観察できます．</p>
-
 <p>そのため，シミュレーションを使用した内部の信号の観測がHDLレベルでの論理的なデバッグに有効です．この章では，このHDLコードの動作をVivadoシミュレータでシミュレーションする方法を学びましょう．</p>
-
-<h1 id="シミュレーションに必要なもの-テスト-ベンチ">シミュレーションに必要なもの &mdash; テスト・ベンチ</h1>
-
+<h1 id="シミュレーションに必要なもの-----テストベンチ">シミュレーションに必要なもの &mdash; テスト・ベンチ</h1>
 <p>CPUを買ってきても，マザーボードがないとパソコンとして動かないように，FPGAも周辺部品の載った <strong>マザーボード</strong> がないと動きません．FPGAもFPGA単体では動作せず，MicroBoardやDE0 nanoに搭載されているような回路を駆動するクロック信号やリセット信号が必須です．</p>
-
 <p>実際にFPGAを使ったシステムでは，クロックは外から与えられるものですが，シミュレーションでは，FPGAに実装したHDLモジュールが動作するのに必要なクロック信号やリセット信号なども自前で用意しなければなりません(図1)．</p>
-
 <figure class="center">
     <img src="../simulation_figures/test_bench_image.png"
          alt="図l: 設計したモジュールを実機で動作させる場合(a)とシミュレーションする場合(b)の違い．シミュレーションする場合にはテスト・ベンチを用意する必要がある．"/> <figcaption>
@@ -304,80 +320,57 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <p>といっても，とりたてて新しく特別なことを覚える必要があるわけではありません．外から与えられるべきクロック信号やリセット信号もHDLで記述できます．これをシミュレーション・コードやテスト・ベンチと呼びます．シミュレーション対象のモジュールで必要となる信号は，すべてテスト・ベンチで生成します．テスト・ベンチの記述方法はHDLソースとほとんど同じで，違いは下記の3つになります．</p>
-
 <ul>
 <li>エンティティの中身(モジュールの入出力信号)が空である</li>
 <li>時間を表す構文を使って信号の振る舞いを規定する</li>
 <li>ハードウェアでは実現できない仮想的な機能を利用できる</li>
 </ul>
-
 <p>設計したHDLモジュールを動作させるのには必要な，マザーボードに相当する部分をすべて記述しなければなりません．逆にいうと，テスト・ベンチは外部との入出力があってはいけないということです．そのため，VHDLの場合はテスト・ベンチのエンティティの中身が，Verilog HDLの場合moduleの引数が空になるというわけです．</p>
-
-<h2 id="テスト-ベンチでは-時間-を表現する必要がある">テスト・ベンチでは <strong>時間</strong> を表現する必要がある</h2>
-
+<h2 id="テストベンチでは-時間-を表現する必要がある">テスト・ベンチでは <strong>時間</strong> を表現する必要がある</h2>
 <p>「スイッチを10秒押してから離す」や「50MHzの信号」などの振る舞いは時間を扱うので，HDLのビヘイビア・モデル（動作記述）を用いて記述します．</p>
-
 <p>たとえば，「10nsの時間を待つ」という動作はHDLで次のように記述します．この記述はビヘイビア・モデルの基本中の基本です．
 VHDLで記述する場合は，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">wait</span> <span style="color:#66d9ef">for</span> <span style="color:#ae81ff">10</span>ns;</code></pre></td></tr></table>
 </div>
 </div>
-
-<p>Verilog HDLで記述する場合には，初めに `<code>timescale</code>を使って，</p>
-
+<p>Verilog HDLで記述する場合には，初めに ``timescale`を使って，</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#960050;background-color:#1e0010">`</span>timescale <span style="color:#ae81ff">1</span>ns <span style="color:#f92672">/</span> <span style="color:#ae81ff">1</span>ps</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>と，シミュレーションの単位時間を指定して，時間を挿入したい個所で</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#960050;background-color:#1e0010">#</span><span style="color:#ae81ff">10</span></code></pre></td></tr></table>
 </div>
 </div>
-
 <p>と記述すると，指定した単位時間分の時間(この例では10ns)を作ることができます．</p>
-
 <h1 id="テストベンチの書き方">テストベンチの書き方</h1>
-
 <p>またか!!という感も否めませんが，前章で利用した「LEDチカチカ」に再び登場してもらいましょう．</p>
-
-<h2 id="シミュレーション用に-実験のために-修正">シミュレーション用に(実験のために)修正</h2>
-
+<h2 id="シミュレーション用に実験のために修正">シミュレーション用に(実験のために)修正</h2>
 <p>今回はシミュレーションの動作を知ることを目的にコードを少し修正します．実際の開発の際には，シミュレーションのために実装コードを変える，ということは基本的にはしないはずです．</p>
-
 <h3 id="resetの追加">resetの追加</h3>
-
 <p>回路を初期化するための入力信号としてresetを追加しています．</p>
-
 <h3 id="ledに出力するbitを変更">LEDに出力するbitを変更</h3>
-
 <p>実機ではカウンタの23bit目をledに接続しましたが，クロックの立ち上がりを8M回待つのは大変なので3bit目をledの出力に接続しています．</p>
-
 <h3 id="モジュールのタイプをrtlに変更">モジュールのタイプをRTLに変更</h3>
-
 <p>モジュールのタイプをBehaviorではなくRTLとしています．実際のところ今のVivadoでは，ここのキーワードは特に意味をなさないのですがシミュレーションのためのテストベンチをBehavior，合成してハードウェア化もするファイルはRTLと分けておくと見分けるのが容易になります．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -445,24 +438,18 @@ VHDLで記述する場合は，</p>
  <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>FPGA上に実装する場合には，第3章で紹介したように，3つの入出力信号をFPGA上の適切なI/Oに接続しなければなりません．一方，ソフトウェアで動作をシミュレーションするためには，これらの信号テスト・ベンチで生成して外から与える，ことにします．</p>
-
-<h2 id="クロックを生成するテスト-ベンチ">クロックを生成するテスト・ベンチ</h2>
-
+<h2 id="クロックを生成するテストベンチ">クロックを生成するテスト・ベンチ</h2>
 <p>順序回路の要がクロック信号です．従って，クロック信号の生成はテスト・ベンチの基本中の基本です．</p>
-
 <p>カウンタ・モジュールの動作をシミュレーションするために，
- <code>clk</code> に50MHzのクロック信号，すなわち10nsごとに <code>‘1’</code> と <code>‘0’</code> を繰り返す信号をテスト・ベンチで生成してみましょう．
+<code>clk</code> に50MHzのクロック信号，すなわち10nsごとに <code>‘1’</code> と <code>‘0’</code> を繰り返す信号をテスト・ベンチで生成してみましょう．
 記述方法は，次の通りです．</p>
-
 <h3 id="vhdlで記述する場合">VHDLで記述する場合</h3>
-
 <p>信号 <code>clk_i</code> を定義し， <code>clk_i</code> に‘1’を代入して10ns待ちます．その10ns後 <code>clk_i</code> に‘0’を代入，その10n後に再び‘1’を <code>clk_i</code> に代入，…ということを繰り返すことで，10nsで周期的に0→1→0→1&hellip;と変化する信号，すなわち50MHzのクロック信号が生成できます．
 VHDLのコードで素直に実装すると，「10ns待つ」処理に相当する「wait for 10ns」を使って，
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -489,12 +476,11 @@ VHDLのコードで素直に実装すると，「10ns待つ」処理に相当す
 </div>
 </div>
 となります．</p>
-
 <p>この <code>process</code> 文には，きっかけになる信号なしで，シミュレーションの開始同時にすぐさま処理が開始されます．
 もちろん，これでもよいのですが，実はプロセス文は最後まで到達すると，また先頭から開始されるので
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -507,18 +493,15 @@ VHDLのコードで素直に実装すると，「10ns待つ」処理に相当す
 </div>
 </div>
 という記述で，ずっとクロック信号を作り続けることができます．</p>
-
 <h3 id="verilog-hdlで記述する場合">Verilog HDLで記述する場合</h3>
-
-<p>Verilog HDLでは，「単位時間XXが経過」を「 <code>#XX</code> 」で表現できますから， <code>clk_i</code> に&rsquo;1&rsquo;を代入したあと，
-「単位時間10が経過」の後 <code>clk_i</code> に&rsquo;0&rsquo;を代入して，また「単位時間10が経過」の後 <code>clk_i</code> に&rsquo;1&rsquo;を代入&hellip;
+<p>Verilog HDLでは，「単位時間XXが経過」を「 <code>#XX</code> 」で表現できますから， <code>clk_i</code> に'1&rsquo;を代入したあと，
+「単位時間10が経過」の後 <code>clk_i</code> に'0&rsquo;を代入して，また「単位時間10が経過」の後 <code>clk_i</code> に'1&rsquo;を代入&hellip;
 と繰り返すことで，1→0→1→&hellip;というシーケンスが定義できます．</p>
-
 <p>Verilog HDLでは，initial文で，シミュレーション実行開始時に一度だけ処理されるブロックを定義できます．
 すなわち，次のコード片で，シミュレーション開始後から単位時間10毎に信号を反転させる処理，つまり50MHzのクロック信号を生成できます．
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -534,11 +517,10 @@ VHDLのコードで素直に実装すると，「10ns待つ」処理に相当す
 <span style="color:#66d9ef">end</span></code></pre></td></tr></table>
 </div>
 </div></p>
-
 <p>ずっと繰り返す処理を意味する <code>forever</code> を使って，
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -551,28 +533,20 @@ VHDLのコードで素直に実装すると，「10ns待つ」処理に相当す
 </div>
 </div>
 と記述することもできます．</p>
-
 <h2 id="必要な入力信号を生成する">必要な入力信号を生成する</h2>
-
 <p>図\ref{fig:target_list}に示したリストの動作をシミュレーションするにはクロック信号clk以外に，人間が「えいやっ」とリセット・ボタンを押すことに相当するreset信号もテスト・ベンチで生成しなければいけません．</p>
-
 <p>ところで，人間がリセット・ボタンを押すのは，いつ，どのくらいの時間でしょうか？「リセット・ボタンは電源投入の5秒後に10ミリ秒間押される」などと決められるわけではありません．</p>
-
 <p>従って，テスト・ベンチでは，シミュレーション対象の回路に対して，それらしい信号を想定して生成する必要があります．リセット・ボタンが押されるタイミング，であれば，特に制約があるわけではありませんので，電源投入後の適当な時刻に検知できる時間だけの信号が与えられる，という想定で十分でしょう．</p>
-
 <p>リセット信号を生成する方法は，</p>
-
 <ol>
 <li>クロックと同じプロセス・ブロックで記述する</li>
 <li>別のプロセスのブロック内で記述する</li>
 </ol>
-
 <p>の2種類が考えられます．</p>
-
 <p>ここでは，クロックとは別のプロセス・ブロック内で，変数 <code>reset_i</code> の値を0→1→0と変化させることで，リセット・ボタンが押されたことに相当する信号を生成することにします．Verilog HDLであれば，リセットに相当するレジスタ変数 <code>reset_i</code> が適当なタイミングで変化するように記述できます．
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -592,30 +566,23 @@ VHDLのコードで素直に実装すると，「10ns待つ」処理に相当す
 <span style="color:#66d9ef">end</span></code></pre></td></tr></table>
 </div>
 </div></p>
-
-<h2 id="テスト-ベンチとシミュレーション対象のモジュールを接続する">テスト・ベンチとシミュレーション対象のモジュールを接続する</h2>
-
+<h2 id="テストベンチとシミュレーション対象のモジュールを接続する">テスト・ベンチとシミュレーション対象のモジュールを接続する</h2>
 <p>FPGA上に書き込んだ回路に信号を与えるためには，物理的にクロックやスイッチの端子を配線することになります．
 シミュレーションする場合には，シミュレーション対象のモジュールとテスト・ベンチで生成した信号をHDL的に接続する必要があります．</p>
-
 <p>一般的には，テスト・ベンチをトップ・モジュールとして，
 その中でカウンタ・モジュールをサブモジュールとして呼び出すことにします．
 これはマザー・ボードがあって，その中にFPGAがあって回路が動いている，という物理的な構造に上手くマッチします．
 VHDLもVerilog HDLも，モジュールを階層的に定義する仕組みをもっています．</p>
-
 <p>VHDLでは，</p>
-
 <ol>
 <li>LEDチカチカ回路のインターフェースを宣言</li>
 <li>LEDチカチカ回路のインスタンスを生成する</li>
 </ol>
-
 <p>の2段階で，サブモジュールとして回路を呼び出すことができます．</p>
-
 <p>具体的には，はじめに，次のように，
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -635,10 +602,10 @@ VHDLもVerilog HDLも，モジュールを階層的に定義する仕組みを�
 <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">component</span>;</code></pre></td></tr></table>
 </div>
 </div>
- <code>component</code> として，使用するモジュールの素性を宣言したあとで，次のように
+<code>component</code> として，使用するモジュールの素性を宣言したあとで，次のように
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -655,18 +622,14 @@ U<span style="color:#f92672">:</span> test <span style="color:#66d9ef">port</spa
 </div>
 </div>
 このモジュールのインスタンスを生成，配線関係を記述します．</p>
-
 <p>プログラミング言語Cでも，関数を呼び出す時には，関数の素性を明らかにするために「プロトタイプ宣言」をした上で，
 関数呼び出し文を書きますよね．VHDLでも同じようなものだな，と考えてもらえればよいでしょう．</p>
-
-<h2 id="テスト-ベンチの全容">テスト・ベンチの全容</h2>
-
+<h2 id="テストベンチの全容">テスト・ベンチの全容</h2>
 <p>説明が長くなりましたが，図\ref{fig:target_list}のリストをシミュレーションするためのテスト・ベンチの全容は，
 図\ref{fig:simulation_list}のようになります．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -752,12 +715,9 @@ U<span style="color:#f92672">:</span> test <span style="color:#66d9ef">port</spa
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">Behavioral</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <h1 id="シミュレーションの実行手順">シミュレーションの実行手順</h1>
-
 <p>シミュレーションのテスト用に新しくプロジェクトを作成しましょう．
 プロジェクト名は， <code>project_2</code> としました．</p>
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_11_59_40.png"
          alt="新しく作成したプロジェクト"/> <figcaption>
@@ -765,19 +725,15 @@ U<span style="color:#f92672">:</span> test <span style="color:#66d9ef">port</spa
         </figcaption>
 </figure>
 
-
 <p>前章と同様にtopモジュールを作成・追加してプロジェクトを作成したら，
 topモジュールの中身を図\ref{fig:target_list}のように変更しておきます．</p>
-
 <p>以降の手順は次の通りです．</p>
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_11_59_46.png"
          alt="Sourcesの中のSimulation Sourcesの上で右クリックしてAdd Sourcesを選択"/> <figcaption>
             <p>Sourcesの中のSimulation Sourcesの上で右クリックしてAdd Sourcesを選択</p>
         </figcaption>
 </figure>
-
 
 <p><figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_11_59_52.png"
@@ -793,14 +749,12 @@ topモジュールの中身を図\ref{fig:target_list}のように変更して�
         </figcaption>
 </figure>
 </p>
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_01_34.png"
          alt="VHDLファイルとして，top_simという名前のモジュールを作成する"/> <figcaption>
             <p>VHDLファイルとして，top_simという名前のモジュールを作成する</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_01_42.png"
@@ -809,14 +763,12 @@ topモジュールの中身を図\ref{fig:target_list}のように変更して�
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_01_49.png"
          alt="ポートの指定ダイアログ．今回は何もせずにOKをクリック"/> <figcaption>
             <p>ポートの指定ダイアログ．今回は何もせずにOKをクリック</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_01_54.png"
@@ -825,14 +777,12 @@ topモジュールの中身を図\ref{fig:target_list}のように変更して�
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_02_05.png"
          alt="シミュレーション用のモジュールがプロジェクトに追加された"/> <figcaption>
             <p>シミュレーション用のモジュールがプロジェクトに追加された</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_06_25.png"
@@ -841,14 +791,12 @@ topモジュールの中身を図\ref{fig:target_list}のように変更して�
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_06_33.png"
          alt="Flow NavigatorのRun Simulationでシミュレーションの開始"/> <figcaption>
             <p>Flow NavigatorのRun Simulationでシミュレーションの開始</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_06_40.png"
@@ -857,14 +805,12 @@ topモジュールの中身を図\ref{fig:target_list}のように変更して�
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_06_45.png"
          alt="シミュレーション開始には少し時間がかかる"/> <figcaption>
             <p>シミュレーション開始には少し時間がかかる</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_07_37.png"
@@ -873,7 +819,6 @@ topモジュールの中身を図\ref{fig:target_list}のように変更して�
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_07_58.png"
          alt="シミュレーション時間を指定して，シミュレーションステップをすすめる"/> <figcaption>
@@ -881,16 +826,13 @@ topモジュールの中身を図\ref{fig:target_list}のように変更して�
         </figcaption>
 </figure>
 
-
 <p>指定した時間のシミュレーションが終わるとストップします．いつまでもストップしない場合には，一時停止アイコンをクリックして，強制的に止めることができます．</p>
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_05.png"
          alt="指定した時間のシミュレーションが終了"/> <figcaption>
             <p>指定した時間のシミュレーションが終了</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_09.png"
@@ -899,14 +841,12 @@ topモジュールの中身を図\ref{fig:target_list}のように変更して�
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_29.png"
          alt="一部分を拡大した様子．3bit目をledに接続しているため8クロック毎にledがON/OFFしている様子がみてとれる"/> <figcaption>
             <p>一部分を拡大した様子．3bit目をledに接続しているため8クロック毎にledがON/OFFしている様子がみてとれる</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_38.png"
@@ -915,14 +855,12 @@ topモジュールの中身を図\ref{fig:target_list}のように変更して�
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_48.png"
          alt="topモジュールのcounterを波形表示画面に追加．ただし，内部の値の多くは非表示状態では保存されていないので，そのままでは値の変化を確認できない"/> <figcaption>
             <p>topモジュールのcounterを波形表示画面に追加．ただし，内部の値の多くは非表示状態では保存されていないので，そのままでは値の変化を確認できない</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_52.png"
@@ -931,14 +869,12 @@ topモジュールの中身を図\ref{fig:target_list}のように変更して�
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_08_58.png"
          alt="再度シミュレーション．今度は時間指定なくシミューレションしてみる"/> <figcaption>
             <p>再度シミュレーション．今度は時間指定なくシミューレションしてみる</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_09_04.png"
@@ -947,7 +883,6 @@ topモジュールの中身を図\ref{fig:target_list}のように変更して�
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_09_10.png"
          alt="ストップした箇所のソースコードが表示される"/> <figcaption>
@@ -955,17 +890,14 @@ topモジュールの中身を図\ref{fig:target_list}のように変更して�
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../simulation_figures/VirtualBox_Windows10_19_03_2018_12_09_39.png"
-         alt="波形を確認してみると，内部のcounterがclkにあわせてインクリメントしていること，counterの3bit目がledの&amp;rsquo;0&amp;rsquo;/&amp;lsquo;1&amp;rsquo;と同じであることが確認できる"/> <figcaption>
-            <p>波形を確認してみると，内部のcounterがclkにあわせてインクリメントしていること，counterの3bit目がledの&rsquo;0&rsquo;/&lsquo;1&rsquo;と同じであることが確認できる</p>
+         alt="波形を確認してみると，内部のcounterがclkにあわせてインクリメントしていること，counterの3bit目がledの&#39;0&amp;rsquo;/&amp;lsquo;1&amp;rsquo;と同じであることが確認できる"/> <figcaption>
+            <p>波形を確認してみると，内部のcounterがclkにあわせてインクリメントしていること，counterの3bit目がledの'0&rsquo;/&lsquo;1&rsquo;と同じであることが確認できる</p>
         </figcaption>
 </figure>
 
-
 <h1 id="課題">課題</h1>
-
 <ol>
 <li>点滅の間隔を変えてみたときの様子をシミュレーションしてみよう</li>
 <li>resetを適当なタイミングで変化させてみて，counterやledの振る舞いを観察してみよう</li>
@@ -982,32 +914,28 @@ topモジュールの中身を図\ref{fig:target_list}のように変更して�
 
   <aside class="book-toc levels-6 fixed">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#はじめに">はじめに</a></li>
-<li><a href="#シミュレーションに必要なもの-テスト-ベンチ">シミュレーションに必要なもの &mdash; テスト・ベンチ</a>
-<ul>
-<li><a href="#テスト-ベンチでは-時間-を表現する必要がある">テスト・ベンチでは <strong>時間</strong> を表現する必要がある</a></li>
-</ul></li>
-<li><a href="#テストベンチの書き方">テストベンチの書き方</a>
-<ul>
-<li><a href="#シミュレーション用に-実験のために-修正">シミュレーション用に(実験のために)修正</a>
-<ul>
-<li><a href="#resetの追加">resetの追加</a></li>
-<li><a href="#ledに出力するbitを変更">LEDに出力するbitを変更</a></li>
-<li><a href="#モジュールのタイプをrtlに変更">モジュールのタイプをRTLに変更</a></li>
-</ul></li>
-<li><a href="#クロックを生成するテスト-ベンチ">クロックを生成するテスト・ベンチ</a>
-<ul>
-<li><a href="#vhdlで記述する場合">VHDLで記述する場合</a></li>
-<li><a href="#verilog-hdlで記述する場合">Verilog HDLで記述する場合</a></li>
-</ul></li>
-<li><a href="#必要な入力信号を生成する">必要な入力信号を生成する</a></li>
-<li><a href="#テスト-ベンチとシミュレーション対象のモジュールを接続する">テスト・ベンチとシミュレーション対象のモジュールを接続する</a></li>
-<li><a href="#テスト-ベンチの全容">テスト・ベンチの全容</a></li>
-</ul></li>
-<li><a href="#シミュレーションの実行手順">シミュレーションの実行手順</a></li>
-<li><a href="#課題">課題</a></li>
-</ul>
+  <ul>
+    <li><a href="#テストベンチでは-時間-を表現する必要がある">テスト・ベンチでは <strong>時間</strong> を表現する必要がある</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#シミュレーション用に実験のために修正">シミュレーション用に(実験のために)修正</a>
+      <ul>
+        <li><a href="#resetの追加">resetの追加</a></li>
+        <li><a href="#ledに出力するbitを変更">LEDに出力するbitを変更</a></li>
+        <li><a href="#モジュールのタイプをrtlに変更">モジュールのタイプをRTLに変更</a></li>
+      </ul>
+    </li>
+    <li><a href="#クロックを生成するテストベンチ">クロックを生成するテスト・ベンチ</a>
+      <ul>
+        <li><a href="#vhdlで記述する場合">VHDLで記述する場合</a></li>
+        <li><a href="#verilog-hdlで記述する場合">Verilog HDLで記述する場合</a></li>
+      </ul>
+    </li>
+    <li><a href="#必要な入力信号を生成する">必要な入力信号を生成する</a></li>
+    <li><a href="#テストベンチとシミュレーション対象のモジュールを接続する">テスト・ベンチとシミュレーション対象のモジュールを接続する</a></li>
+    <li><a href="#テストベンチの全容">テスト・ベンチの全容</a></li>
+  </ul>
 </nav>
   </aside>
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
@@ -48,7 +48,22 @@
   </url>
   
   <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book04/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://miyo.github.io/learning_fpga/docs/book03/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/</loc>
     <lastmod>2019-10-30T19:15:46+09:00</lastmod>
   </url>
   
@@ -58,22 +73,10 @@
   
   <url>
     <loc>https://miyo.github.io/learning_fpga/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/docs/</loc>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://miyo.github.io/learning_fpga/tags/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://miyo.github.io/learning_fpga/</loc>
-    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
   </url>
   
 </urlset>

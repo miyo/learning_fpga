@@ -21,7 +21,7 @@ LチカでILAの動作を学ぶ 三度目の登場ですが，LチカでILAの�
 <link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
 
 
-<script defer src="/learning_fpga/search.min.431de68ae73daaa1e72319914f918035c9fb6938698072b15278916071098257.js" integrity="sha256-Qx3miuc9qqHnIxmRT5GANcn7aThpgHKxUniRYHEJglc="></script>
+<script defer src="/learning_fpga/search.min.8c84631aa6c883d5e6ae1d4496813354cba457a09ad7582f7ca81e6ac75f76e0.js" integrity="sha256-jIRjGqbIg9Xmrh1EloEzVMukV6Ca11gvfKgeasdfduA="></script>
 
 <!--
 Made with Book Theme
@@ -191,6 +191,32 @@ https://github.com/alex-shpak/hugo-book
 
   <li >
     
+      <span>Intel活用編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
       <span>Xilinx活用編</span>
     
 
@@ -263,29 +289,18 @@ https://github.com/alex-shpak/hugo-book
 </header>
 
       
-<article class="markdown">
-
-<p>かんたんな実験を通じてFPGAでのハードウェア作りの基礎力を手に入れましょう．</p>
-
+<article class="markdown"><p>かんたんな実験を通じてFPGAでのハードウェア作りの基礎力を手に入れましょう．</p>
 <h1 id="はじめに">はじめに</h1>
-
 <p>いくつかの簡単なHDLコードを書いて，FPGAでのハードウェア作りの基礎力を手に入れましょう．実際にHDLコードを書き，シミュレーションして，実機動作を確認することは，より複雑なハードウェアを設計するための第一歩です．</p>
-
 <h1 id="ilaを使ってfpga内部の信号を観測する">ILAを使ってFPGA内部の信号を観測する</h1>
-
 <p>FPGAは，FPGAの中で回路がどのように動作しているのかを知るためのILA(Internal Logic Analyzer)という仕組みを持っています．実験コードを書きはじめる前に，このILAの使い方を学んでみましょう．</p>
-
 <h2 id="lチカでilaの動作を学ぶ">LチカでILAの動作を学ぶ</h2>
-
 <p>三度目の登場ですが，LチカでILAの動作を学びましょう．第4章で利用した\verb|project_2|を使用します．</p>
-
 <h2 id="準備">準備</h2>
-
 <p>ILAを使ってデバッグするために，topモジュールのソースコードを次のように書き変えてください．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -357,11 +372,8 @@ https://github.com/alex-shpak/hugo-book
  <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>(1)と(2)が追加ポイントです．(1)で\verb|mark_debug|というattributeを利用することを宣言し，(2)でcounterに\verb|mark_debug|というattributeを付与しています．attributeは，ツールに対する指示子です．Vivadoでは，\verb|mark_debug|を付与した信号はデバッグ対象の可能性があるとして特別扱いします．</p>
-
 <p>コードが準備できたら，一度合成してピン配置まで終わらせてしまいましょう．</p>
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_13_59_41.png"
          alt="I/O Planningでclk，reset，ledのピン配置を決定する"/> <figcaption>
@@ -369,18 +381,14 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <h2 id="ilaのセットアップと利用方法">ILAのセットアップと利用方法</h2>
-
 <p>準備ができたらILAを追加して，その動作の様子を確認してみましょう．</p>
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_13_57_01.png"
          alt="一度合成する"/> <figcaption>
             <p>一度合成する</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_13_58_37.png"
@@ -389,14 +397,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_00_09.png"
          alt="LayoutメニューのDebugをクリックしてデバッグビューに変更する"/> <figcaption>
             <p>LayoutメニューのDebugをクリックしてデバッグビューに変更する</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_03_37.png"
@@ -405,14 +411,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_03_43.png"
          alt="下にある虫みたいなアイコンをクリックしてILA設定用のウィザードを開く"/> <figcaption>
             <p>下にある虫みたいなアイコンをクリックしてILA設定用のウィザードを開く</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_03_58.png"
@@ -421,14 +425,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_03.png"
          alt="mark_debugを付与したcounterがリストに追加されているので，そのままNextですすむ．ここで新たにILAによる観測対象を追加したい場合には&#43;アイコンをクリックすると信号を選ぶことができる．逆にリストにある信号を対象から取り除きたい場合には，取り除きたい信号を選択して-をクリックする"/> <figcaption>
             <p>mark_debugを付与したcounterがリストに追加されているので，そのままNextですすむ．ここで新たにILAによる観測対象を追加したい場合には+アイコンをクリックすると信号を選ぶことができる．逆にリストにある信号を対象から取り除きたい場合には，取り除きたい信号を選択して-をクリックする</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_08.png"
@@ -437,14 +439,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_13.png"
          alt="サマリの表示．Finishで完了"/> <figcaption>
             <p>サマリの表示．Finishで完了</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_28.png"
@@ -453,14 +453,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_33.png"
          alt="ILAの設定情報をxdcファイルに保存してよいかの確認．Yesで次のステップにすすむ．"/> <figcaption>
             <p>ILAの設定情報をxdcファイルに保存してよいかの確認．Yesで次のステップにすすむ．</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_44.png"
@@ -469,14 +467,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_04_49.png"
          alt="合成と配置配線の開始"/> <figcaption>
             <p>合成と配置配線の開始</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_23_17.png"
@@ -485,14 +481,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_23_59.png"
          alt="FPGAとパソコンをUSBケーブルで接続してAuto connectで認識させた後，Program Deviceをクリック"/> <figcaption>
             <p>FPGAとパソコンをUSBケーブルで接続してAuto connectで認識させた後，Program Deviceをクリック</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_24_06.png"
@@ -501,14 +495,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_24_16.png"
          alt="書き込み中"/> <figcaption>
             <p>書き込み中</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_24_38.png"
@@ -517,14 +509,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_24_53.png"
          alt="二重矢印のアイコンをクリックすると，その時点での値をキャプチャしてくれる"/> <figcaption>
             <p>二重矢印のアイコンをクリックすると，その時点での値をキャプチャしてくれる</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_07.png"
@@ -533,14 +523,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_21.png"
          alt="実機デバッガでは値をキャプチャする条件(トリガ条件)を指定する"/> <figcaption>
             <p>実機デバッガでは値をキャプチャする条件(トリガ条件)を指定する</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_27.png"
@@ -549,14 +537,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_34.png"
          alt="counterの値がトリガ条件として登録された"/> <figcaption>
             <p>counterの値がトリガ条件として登録された</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_25_50.png"
@@ -565,14 +551,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_27_49.png"
          alt="counterが00001000になった時点のデータをキャプチャすることができた"/> <figcaption>
             <p>counterが00001000になった時点のデータをキャプチャすることができた</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_28_03.png"
@@ -581,7 +565,6 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_28_15.png"
          alt="上位16bitは指定なく，下位16bitが3000の時点のデータがキャプチャできていることがわかる"/> <figcaption>
@@ -589,15 +572,10 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <h2 id="ila挿入すると回路は変わる">ILA挿入すると回路は変わる</h2>
-
 <p>重要な点ですが，ILAを挿入すると，挿入前とは異なるハードウェアになることを理解しておく必要があります．ILA向けのリソース使用量が増えるのはもちろん，観測対象の信号の接続関係も変化します．また観測のために残すべきレジスタの都合で最適化の結果もかわってきます．</p>
-
 <p>たとえば，図\ref{fig:without_mark_debug}は，counterにmark_debugアトリビュートを付与せずに合成した場合のデバッグビューです．3bit目をledに接続し，それ以上のbit数の値は利用さていないため，ばっさりと回路が小さくなっていることがわかります．</p>
-
 <p>しかし，mark_debugアトリビュートを付与して合成した場合には，もちろん最適化するわけにはいかないため，図\ref{fig:debug_mode_view}のように要/不要にかかわらず32bit分すべてのレジスタが回路として生成されています．</p>
-
 <figure class="center">
     <img src="../basics_figures/VirtualBox_Windows10_19_03_2018_14_00_24.png"
          alt="counterにmark_debugがない場合 \label{fig:without_mark_debug}"/> <figcaption>
@@ -605,13 +583,10 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <h1 id="基本実験の準備">基本実験の準備</h1>
-
 <p>FPGAを使った実験をする前に，動作の様子を確認しながら実験できるように簡単なテンプレートモジュールを用意しておくことにします．
 ここで作るのは，図\ref{fig:experiment_template}のように4bitの入力と4bitの出力ポートで構成されるモジュールです．
 ZYBOのDIPスイッチSW0〜SW3を4bitの入力に，LED LD0〜LD3を4bitの出力にマッピングすることにします．</p>
-
 <figure class="center">
     <img src="../basics_figures/experiment_template.png"
          alt="n{実験用の簡単なテンプレートモジュール \label{fig:experiment_template}"/> <figcaption>
@@ -619,12 +594,10 @@ ZYBOのDIPスイッチSW0〜SW3を4bitの入力に，LED LD0〜LD3を4bitの出�
         </figcaption>
 </figure>
 
-
 <p>次のような内容のVHDLファイルを用意します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -690,11 +663,10 @@ ZYBOのDIPスイッチSW0〜SW3を4bitの入力に，LED LD0〜LD3を4bitの出�
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
-<p>ピン定義も用意しましょう．第3章で紹介したようにGUIで設定することもできますが，スクリプトファイルでピン定義を決めることもできます．実験に使用するZYBO Z7-20の全てのI/O定義は\url{<a href="https://github.com/Digilent/digilent-xdc/blob/master/Zybo-Z7-Master.xdc}にまとまっています．URL先の情報に基づいて，使用するピンの定義をまとめると次のようになります．top.xdcなどと，拡張子を.xdcとしてファイルに保存します．">https://github.com/Digilent/digilent-xdc/blob/master/Zybo-Z7-Master.xdc}にまとまっています．URL先の情報に基づいて，使用するピンの定義をまとめると次のようになります．top.xdcなどと，拡張子を.xdcとしてファイルに保存します．</a>
+<p>ピン定義も用意しましょう．第3章で紹介したようにGUIで設定することもできますが，スクリプトファイルでピン定義を決めることもできます．実験に使用するZYBO Z7-20の全てのI/O定義は\url{https://github.com/Digilent/digilent-xdc/blob/master/Zybo-Z7-Master.xdc}にまとまっています．URL先の情報に基づいて，使用するピンの定義をまとめると次のようになります．top.xdcなどと，拡張子を.xdcとしてファイルに保存します．
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -722,18 +694,14 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 set_property <span style="color:#f92672">-</span>dict <span style="color:#960050;background-color:#1e0010">{</span>PACKAGE_PIN D18 IOSTANDARD LVCMOS33<span style="color:#960050;background-color:#1e0010">}</span> [get_ports <span style="color:#960050;background-color:#1e0010">{</span>LD[<span style="color:#ae81ff">3</span>]<span style="color:#960050;background-color:#1e0010">}</span>];</code></pre></td></tr></table>
 </div>
 </div></p>
-
 <p>作成したVHDLファイルと定義ファイルをプロジェクトに追加して合成し，できあがったbitファイルをZYBO Z7-20に書きこみましょう．DIPスイッチをオン・オフすることでLEDが点灯，消灯するはずです．</p>
-
 <h1 id="基本演算の動作を確認してみよう">基本演算の動作を確認してみよう</h1>
-
 <p>基本的な論理演算である，AND/OR/XORの動作を実機のILAを使って確認してみましょう．</p>
-
 <p>AND/OR/XOR/NOTの動作を確認するためのモジュールとして次のようなモジュールを用意します．
 名前は\verb|logic_test.vhd|として保存することにします．
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -831,12 +799,10 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div></p>
-
 <p>先に用意したテンプレートに組み込んで，実機で動作を確認するために，\verb|top.vhd|を次のように変更します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -944,16 +910,12 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <h1 id="ランダムな振る舞いを実現する擬似乱数の生成">ランダムな振る舞いを実現する擬似乱数の生成</h1>
-
 <p>ゲームなどで，ランダムな振る舞いをさせたいときに用いられるのが乱数です．本物の乱数を作るのは非常に難しいため，一般的には数式で導いた擬似乱数で代用します．ソフトウェアで乱数を作成する場合は，rand関数などを呼び出すことで乱数系列に従って生成された値を利用できます．</p>
-
 <p>乱数系列の作り方には，いろいろな方法があります．今回は，ビット操作の練習として，シフトとXOR演算のみで構成できるXORSHIFT法(参考文献1)に基づく乱数生成器を実装してみましょう．32ビットのXORSHIFT法による乱数生成をCで記述すると，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -969,13 +931,11 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
  <span style="color:#960050;background-color:#1e0010">}</span></code></pre></td></tr></table>
 </div>
 </div>
-
 <p>という関数になります．
 この関数と同等の操作をするハードウェア・モジュールを作成し，シミュレーションと実機で動作を確認してみましょう．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1073,10 +1033,9 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1170,15 +1129,12 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <h1 id="ビット加算器を作ってみよう">ビット加算器を作ってみよう</h1>
-
 <p>ビット加算器，つまり足算の基本要素を作ってみましょう．ビット加算器では，足される数，足す数，および，繰り上がりの3bitの入力から，その桁の結果と繰り上がりの2bitを出力します．全加算器は半加算器2個とORで作ることができます．
 以下のリストを参考に，加算器が正しく動作することをシミュレータおよびILAを使って実機で確認してください．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1252,10 +1208,9 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1351,15 +1306,12 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <h1 id="hdlの四則演算を試してみよう">HDLの四則演算を試してみよう</h1>
-
 <p>VHDLやVerilog HDLでは，加算器のレベルでハードウェアを設計する必要はなく，実際には定義されている算術演算を利用することができます．+/-/*の動作をシミュレータおよび実機で確認してみてください．</p>
-
 <p>たとえば，次のようなVHDLコードを書いて試すことができます．
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1443,17 +1395,13 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div></p>
-
 <h1 id="合計値の計算">合計値の計算</h1>
-
 <p>算術演算の応用問題として，与えられたデータ(たとえば32ビットのビット列)の中に，1がいくつあるかを数えて値を返すというモジュールを作成してみましょう．たとえば，0x00000001の場合はビット列の中に1は1個，0xAAAAAAAAの場合は16個という値を出力する，モジュールです．</p>
-
-<p>もちろん逐次的に，1クロックで1bitずつ&rsquo;0&rsquo;か&rsquo;1&rsquo;かを検査するという，ソフトウェア的な実装も考えられますが，ここでは，入力された値に対して即座に結果を返す組み合わせ回路として設計し，シミュレーションと実機で動作を確認してみてください．</p>
-
+<p>もちろん逐次的に，1クロックで1bitずつ'0&rsquo;か'1&rsquo;かを検査するという，ソフトウェア的な実装も考えられますが，ここでは，入力された値に対して即座に結果を返す組み合わせ回路として設計し，シミュレーションと実機で動作を確認してみてください．</p>
 <p>たとえば，次のようなVHDLコードを書いて試すことができます．
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1527,16 +1475,13 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div></p>
-
 <h1 id="pwm">PWM</h1>
-
-<p>ある値を，1bitの信号の&rsquo;1&rsquo;と&rsquo;0&rsquo;の幅で表現するPWMという変調方式があります．
+<p>ある値を，1bitの信号の'1&rsquo;と'0&rsquo;の幅で表現するPWMという変調方式があります．
 ディジタルで簡単に信号の強度を変える方法としてもよく利用されます．</p>
-
 <p>次のVHDLコードは，PWMを実装してみた例です．
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1620,12 +1565,11 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div></p>
-
 <p>次のようにスイッチをPWMの幅に，出力をLEDに割り当てて合成したときの動作を
 実機で確認してみましょう．
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1721,15 +1665,10 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div></p>
-
 <h1 id="ステートマシンの作り方と利用方法">ステートマシンの作り方と利用方法</h1>
-
 <p>基本実験の最後に，ハードウェア・プログラミングで逐次的に処理するために必要不可欠な概念であるステート・マシンと，その実装方法を学びましょう．ハードウェアでは処理を並列に実行できますが，世の中には順番にしか実行できない物事もたくさんあります．たとえば，そうめんを茹でるとき，鍋の水がまだ湯になる前に並行してそうめんを鍋に入れても，とても食べられるものはできあがりません．何事でも順序を守ることが大事なときもありますよね．</p>
-
 <h2 id="料理は逐次的な処理">料理は逐次的な処理</h2>
-
 <p>何かを実行し，その次に何かを実行し，その次に&hellip;，という決まった手順に従った処理の実装は，ソフトウェアによく見られます．たとえば，そうめんをゆでるときには，</p>
-
 <ul>
 <li>鍋に水を入れる</li>
 <li>鍋を火にかける</li>
@@ -1739,13 +1678,9 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <li>十分やわらかいか確認する</li>
 <li>やわらかくなったら取り出して，できあがり</li>
 </ul>
-
 <p>という手順が必要となります．ソフトウェアであれば，このような手順をそのままプログラミング言語で記述して実装できます．しかし，ハードウェア・プログラミングでは逐次的な処理をそのまま記述できません．逐次的に処理を進めることそのものを自分で記述する必要があります．これを簡単に扱う道具がステート・マシン(状態遷移機械)です．</p>
-
-<h2 id="ステート-マシンとは">ステート・マシンとは</h2>
-
+<h2 id="ステートマシンとは">ステート・マシンとは</h2>
 <p>図\ref{fig:statemachine_example}は，そうめんをゆでる手順をステート・マシン的に表現した例です．楕円は「状態」を矢印は「状態遷移」を示しています．矢印に条件が書かれている場合は，その条件が満たされたときだけ状態が遷移する，ということを意味します．</p>
-
 <figure class="center">
     <img src="../basics_figures/statemachine_example.png"
          alt="n{そうめんを茹でる流れをステートマシン的に表現してみた例．\label{fig:statemachine_example}"/> <figcaption>
@@ -1753,17 +1688,13 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
         </figcaption>
 </figure>
 
-
 <p>ステート・マシンとは，処理を「状態」と「状態遷移」で抽象化した概念です．列挙された状態を定義された状態遷移に従って順々にたどっていくことで所望の処理が実現できます．各状態での処理を定義することで，逐次的な処理をステート・マシンを使って記述できます．</p>
-
-<h2 id="ハードウェア-プログラミングと相性の良いステート-マシン">ハードウェア・プログラミングと相性の良いステート・マシン</h2>
-
+<h2 id="ハードウェアプログラミングと相性の良いステートマシン">ハードウェア・プログラミングと相性の良いステート・マシン</h2>
 <p>ステート・マシンをハードウェア・プログラミングで実装するのは意外と簡単です．そうめんを茹でる手順をハードウェア記述言語の一つであるVHDLで記述した擬似コードを示します．
 各状態を\verb|std_logic_vector|型の変数stateで管理しています．stateの値が各状態に対応しています．変数stateをクロックごとに参照し，その時点で実行すべき処理を判断します．各状態では，次の状態に遷移するための条件判断と，遷移のための状態変数の更新を行います．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1849,14 +1780,11 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>ところで，リスト1のコードには，0，1，2，&hellip;という状態を識別するための番号が振られています．これらの値に意味はなく，単にほかと区別するために便宜的に付けられたマジック・ナンバです．マジック・ナンバはコードの可読性を下げ，後の変更を加えづらくします．ソフトウェアでもマジック・ナンバは忌み嫌われるように，ハードウェア・プログラミングでもできれば避けたいものです．</p>
-
 <p>VHDLでは自分で型を定義することで，Verilogではdefineやlocalparamを使って値に名前を付けることで，ソース・コードからマジック・ナンバを取り除くことができます．VHDLで状態を表す型を定義して，マジック・ナンバをなくした例が次の通りです．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1948,12 +1876,10 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>次のリストを参考に，ステートマシンを利用したハードウェアを設計し，動作をシミュレーションとILAで確認してみてください．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -2099,11 +2025,9 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <h1 id="参考文献">参考文献</h1>
-
 <ol>
-<li>George Marsaglia, &ldquo;Xorshift RNGs&rdquo;, The Florida State University, \url{<a href="http://www.jstatsoft.org/v08/i14">http://www.jstatsoft.org/v08/i14</a>}</li>
+<li>George Marsaglia, &ldquo;Xorshift RNGs&rdquo;, The Florida State University, \url{http://www.jstatsoft.org/v08/i14}</li>
 </ol>
 </article>
 
@@ -2117,30 +2041,18 @@ set_property <span style="color:#f92672">-</span>dict <span style="color:#960050
 
   <aside class="book-toc levels-6 fixed">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#はじめに">はじめに</a></li>
-<li><a href="#ilaを使ってfpga内部の信号を観測する">ILAを使ってFPGA内部の信号を観測する</a>
-<ul>
-<li><a href="#lチカでilaの動作を学ぶ">LチカでILAの動作を学ぶ</a></li>
-<li><a href="#準備">準備</a></li>
-<li><a href="#ilaのセットアップと利用方法">ILAのセットアップと利用方法</a></li>
-<li><a href="#ila挿入すると回路は変わる">ILA挿入すると回路は変わる</a></li>
-</ul></li>
-<li><a href="#基本実験の準備">基本実験の準備</a></li>
-<li><a href="#基本演算の動作を確認してみよう">基本演算の動作を確認してみよう</a></li>
-<li><a href="#ランダムな振る舞いを実現する擬似乱数の生成">ランダムな振る舞いを実現する擬似乱数の生成</a></li>
-<li><a href="#ビット加算器を作ってみよう">ビット加算器を作ってみよう</a></li>
-<li><a href="#hdlの四則演算を試してみよう">HDLの四則演算を試してみよう</a></li>
-<li><a href="#合計値の計算">合計値の計算</a></li>
-<li><a href="#pwm">PWM</a></li>
-<li><a href="#ステートマシンの作り方と利用方法">ステートマシンの作り方と利用方法</a>
-<ul>
-<li><a href="#料理は逐次的な処理">料理は逐次的な処理</a></li>
-<li><a href="#ステート-マシンとは">ステート・マシンとは</a></li>
-<li><a href="#ハードウェア-プログラミングと相性の良いステート-マシン">ハードウェア・プログラミングと相性の良いステート・マシン</a></li>
-</ul></li>
-<li><a href="#参考文献">参考文献</a></li>
-</ul>
+  <ul>
+    <li><a href="#lチカでilaの動作を学ぶ">LチカでILAの動作を学ぶ</a></li>
+    <li><a href="#準備">準備</a></li>
+    <li><a href="#ilaのセットアップと利用方法">ILAのセットアップと利用方法</a></li>
+    <li><a href="#ila挿入すると回路は変わる">ILA挿入すると回路は変わる</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#料理は逐次的な処理">料理は逐次的な処理</a></li>
+    <li><a href="#ステートマシンとは">ステート・マシンとは</a></li>
+    <li><a href="#ハードウェアプログラミングと相性の良いステートマシン">ハードウェア・プログラミングと相性の良いステート・マシン</a></li>
+  </ul>
 </nav>
   </aside>
 

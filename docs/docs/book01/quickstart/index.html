@@ -30,7 +30,7 @@
 <link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
 
 
-<script defer src="/learning_fpga/search.min.431de68ae73daaa1e72319914f918035c9fb6938698072b15278916071098257.js" integrity="sha256-Qx3miuc9qqHnIxmRT5GANcn7aThpgHKxUniRYHEJglc="></script>
+<script defer src="/learning_fpga/search.min.8c84631aa6c883d5e6ae1d4496813354cba457a09ad7582f7ca81e6ac75f76e0.js" integrity="sha256-jIRjGqbIg9Xmrh1EloEzVMukV6Ca11gvfKgeasdfduA="></script>
 
 <!--
 Made with Book Theme
@@ -200,6 +200,32 @@ https://github.com/alex-shpak/hugo-book
 
   <li >
     
+      <span>Intel活用編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
       <span>Xilinx活用編</span>
     
 
@@ -272,27 +298,18 @@ https://github.com/alex-shpak/hugo-book
 </header>
 
       
-<article class="markdown">
-
-<p>FPGA開発におけるHello World <strong>Lチカ</strong> を通して，開発の手順に慣れよう</p>
-
+<article class="markdown"><p>FPGA開発におけるHello World <strong>Lチカ</strong> を通して，開発の手順に慣れよう</p>
 <h1 id="はじめに">はじめに</h1>
-
 <p>この章では，FPGA開発におけるHello World，すなわち最初に試してみるサンプルとして <strong>Lチカ</strong> を題材に，開発の手順に慣れてみましょう． <strong>Lチカ</strong> とは，「LEDをチカチカさせる」の略です．</p>
-
 <p>単にLEDとチカチカさせるだけ，なのですが，開発の手順を身につけるには十分です．また，実際多くの信号制御は何かしらの規則にしたがって信号をON/OFFしていることですから，すべての信号制御はLチカの応用にあるとも言えます．簡単ですが大事ですよ．</p>
-
 <h1 id="実習">実習</h1>
-
 <h2 id="プロジェクトの用意">プロジェクトの用意</h2>
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_01_24.png"
          alt="図1: VivadoのFileメニューから，New Project&amp;hellip;を選択する"/> <figcaption>
             <p>図1: VivadoのFileメニューから，New Project&hellip;を選択する</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_01_32.png"
@@ -301,16 +318,13 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <p>プロジェクト名と格納先を決めます．ここでは，ホームディレクトリの下のVivadoというフォルダの下にプロジェクトを格納することとし，名前をproject_1としています．</p>
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_01_37.png"
          alt="図3: プロジェクト名と格納先を決めます"/> <figcaption>
             <p>図3: プロジェクト名と格納先を決めます</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_01_43.png"
@@ -319,14 +333,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_02_24.png"
          alt="図5: すでにソースコードがある場合にはここで追加できます．今回はないのでNext&amp;gt;で，そのまま次へ"/> <figcaption>
             <p>図5: すでにソースコードがある場合にはここで追加できます．今回はないのでNext&gt;で，そのまま次へ</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_02_30.png"
@@ -335,14 +347,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_02_49.png"
          alt="図7: ターゲットとするFPGAの選択画面です．BoardタブをクリックしZybo Z7-20を選択してNext&amp;gt;で次へ"/> <figcaption>
             <p>図7: ターゲットとするFPGAの選択画面です．BoardタブをクリックしZybo Z7-20を選択してNext&gt;で次へ</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_02_55.png"
@@ -351,7 +361,6 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_03_06.png"
          alt="図9: プロジェクト作成には少し時間がかかります"/> <figcaption>
@@ -359,9 +368,7 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <p>これでプロジェクトの完成です．Product FamilyがZynq-7000に，Project Summaryの表示を見ると，Project partがZybo Z7-20と，Z7-20向けのプロジェクトができていることがわかります．</p>
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_03_17.png"
          alt="図10: プロジェクトができあがりました．"/> <figcaption>
@@ -369,18 +376,14 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <h2 id="ファイルの作成">ファイルの作成</h2>
-
 <p>作成したプロジェクトで，LEDをチカチカさせるためのデザインを追加していきます．ここではVivadoのウィザードを使ってデザインファイルを用意する方法ですすめていきます．</p>
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_03_27.png"
          alt="図11: SourcesのDesign Sourceの上で右クリックし，Add Sources&amp;hellip;を選択する"/> <figcaption>
             <p>図11: SourcesのDesign Sourceの上で右クリックし，Add Sources&hellip;を選択する</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_03_35.png"
@@ -389,14 +392,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_03_42.png"
          alt="図13: 2番目のAdd or create design sources&amp;hellip;にチェックをいれてNext&amp;gt;をクリック"/> <figcaption>
             <p>図13: 2番目のAdd or create design sources&hellip;にチェックをいれてNext&gt;をクリック</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_03_54.png"
@@ -405,14 +406,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_04_01.png"
          alt="図15: 使用言語とモジュール名を決めます．ここではVHDLを使うこととし，名前をtopと決めてOKをクリック"/> <figcaption>
             <p>図15: 使用言語とモジュール名を決めます．ここではVHDLを使うこととし，名前をtopと決めてOKをクリック</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_04_44.png"
@@ -421,14 +420,12 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_04_59.png"
          alt="図17: 新たに作成したtopモジュールのポートなどを定義することができます．あとで自分で書いてもいいのですが，入力ポートのclkと出力ポートのledを追加しましょう．OKをクリックします"/> <figcaption>
             <p>図17: 新たに作成したtopモジュールのポートなどを定義することができます．あとで自分で書いてもいいのですが，入力ポートのclkと出力ポートのledを追加しましょう．OKをクリックします</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_05_13.png"
@@ -437,7 +434,6 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_06_55.png"
          alt="図19: 組み込まれたtopをダブルクリックするとファイルを編集することができます"/> <figcaption>
@@ -445,14 +441,11 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <h2 id="デザインの修正">デザインの修正</h2>
-
 <p>ウィザードで作成したtopモジュールは雛形でしかないので，このままでは，もちろん所望の動作はしません．次の内容で書き変えてください．スペースの都合上，作成されたコメントは取り除いています．ファイルを編集するときには気をつけてください．また，リスト中のコメントは説明上のものですので，実際には入力する必要はありません．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -508,32 +501,21 @@ https://github.com/alex-shpak/hugo-book
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">Behavioral</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>追加箇所は多くないので，少し詳しくみてみましょう．</p>
-
-<h4 id="追加箇所-1">追加箇所(1)</h4>
-
-<p>数値演算に必要なライブラリ，今回の場合でいうと`<code>+''演算を利用するために</code>use ieee.numeric_std.all` という前置きをしています．</p>
-
-<h4 id="追加箇所-2">追加箇所(2)</h4>
-
-<p>LEDチカチカの，`<code>チカチカ''というタイミングを制御するためのカウンタ変数を定義です．+演算を利用したいので</code>unsigned` 型で定義しています．</p>
-
-<h4 id="追加箇所-3">追加箇所(3)</h4>
-
-<p>いわば処理の本体です．一行目の代入文は，定義したcounter変数の23bit目を出力ポートであるledに接続することを意味しています． <code>unsigned</code> の1bitですので <code>std_logic</code> に型変換しています．次のprocess文では，clkが立ち上がることにcounterに1を足すことを意味しています．すなわち，(3)で追加した部分では，clkの立ち上がり8M回毎にledの&rsquo;1&rsquo;と&rsquo;0&rsquo;が反転する回路を定義していることになります．</p>
-
+<h4 id="追加箇所1">追加箇所(1)</h4>
+<p>数値演算に必要なライブラリ，今回の場合でいうと``+'&lsquo;演算を利用するために <code>use ieee.numeric_std.all</code> という前置きをしています．</p>
+<h4 id="追加箇所2">追加箇所(2)</h4>
+<p>LEDチカチカの，``チカチカ'&lsquo;というタイミングを制御するためのカウンタ変数を定義です．+演算を利用したいので <code>unsigned</code> 型で定義しています．</p>
+<h4 id="追加箇所3">追加箇所(3)</h4>
+<p>いわば処理の本体です．一行目の代入文は，定義したcounter変数の23bit目を出力ポートであるledに接続することを意味しています． <code>unsigned</code> の1bitですので <code>std_logic</code> に型変換しています．次のprocess文では，clkが立ち上がることにcounterに1を足すことを意味しています．すなわち，(3)で追加した部分では，clkの立ち上がり8M回毎にledの'1&rsquo;と'0&rsquo;が反転する回路を定義していることになります．</p>
 <h2 id="まずは合成してみる">まずは合成してみる</h2>
-
 <p>ファイルの編集がおわったら合成してみましょう．といっても，左サイドにあるFlow Navigatorの中にあるRun Synthesisをクリックするだけです．</p>
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_07_02.png"
          alt="図20: Run Synthesisをクリックすると合成開始ダイアログが開く．OKをクリックして合成を開始"/> <figcaption>
             <p>図20: Run Synthesisをクリックすると合成開始ダイアログが開く．OKをクリックして合成を開始</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_07_16.png"
@@ -542,7 +524,6 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_08_08.png"
          alt="図22: 合成が完了した"/> <figcaption>
@@ -550,25 +531,18 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
-<h2 id="i-oの設定">I/Oの設定</h2>
-
+<h2 id="ioの設定">I/Oの設定</h2>
 <p>合成が完了したことでデザインがVivadoに受け付けられることが確認できました．しかし，これでそのままFPGAでデザインが動くわけではありません．I/Oピンの設定をしていないからです．HDLのデザイン上は，入力ポートclkと出力ポートのledを定義しましたが，Vivadoは，このポートをFPGAのどのピンに割り当てていいか分かりません．FPGAを使った開発では人手でこの割り当てを決める必要があります．</p>
-
 <p>ピンの割当ては合成結果を下敷にGUIで行なうことができます．まずは，合成結果を表示します．</p>
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_08_14.png"
-         alt="図23: 合成後のダイアログで，``Open Synthesized Design&amp;rdquo;を選択し，OKをクリックする"/> <figcaption>
-            <p>図23: 合成後のダイアログで，``Open Synthesized Design&rdquo;を選択し，OKをクリックする</p>
+         alt="図23: 合成後のダイアログで，``Open Synthesized Design&#39;&amp;lsquo;を選択し，OKをクリックする"/> <figcaption>
+            <p>図23: 合成後のダイアログで，``Open Synthesized Design'&lsquo;を選択し，OKをクリックする</p>
         </figcaption>
 </figure>
 
-
 <p>もし，うっかり合成後のダイアログを閉じてしまったり，ピン配置を指定しないまま次のステップにすすんでしまった場合には，Flow Navigatorの中にあるOpen Synthesized Designをクリックしましょう．</p>
-
 <p>合成結果が表示できたら，LayoutのI/O PlanningをクリックしてI/O設定用のモードに変更します．</p>
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_09_32.png"
          alt="図24: LayoutのI/O PlanningをクリックしてI/O設定用のモードに変更"/> <figcaption>
@@ -576,9 +550,7 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <p>画面下のI/O割当て表でピン配置を決定します．clkとledのPackage pinを，それぞれ，K17とM14に決め，どちらもI/O stdをLVCMOS33を選択します．</p>
-
 <figure class="center">
     <img src="../ckstart_figures/VirtualBox_Windows10_19_03_2018_00_45_27.png"
          alt="図25: I/Oのピン割り当てを決める"/> <figcaption>
@@ -586,11 +558,8 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
-<h2 id="合成-配置配線">合成・配置配線</h2>
-
+<h2 id="合成配置配線">合成・配置配線</h2>
 <p>ピン配置がおわったので，FPGA向けの書き込みファイルを作成します．Flow Navigatorの中にあるGenerate bitstreamをクリックするだけです．</p>
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_15_52.png"
          alt="図26: Flow Navigatorの中にあるGenerate bitstreamをクリックする．必要な合成・配置配線は一気通貫に実行される \label{fig:file_save_dialog}"/> <figcaption>
@@ -598,18 +567,14 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <h3 id="制約ファイルの保存">制約ファイルの保存</h3>
-
 <p>おそらく先のピン配置の変更が保存されていないので，図\ref{fig:file_save_dialog}のダイアログが開くことでしょう．もちろん保存してください．</p>
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_15_59.png"
          alt="図27: ピン配置の変更が保存されてないために表示されるダイアログ．Saveをクリック． \label{fig:file_save_dialog}"/> <figcaption>
             <p>図27: ピン配置の変更が保存されてないために表示されるダイアログ．Saveをクリック． \label{fig:file_save_dialog}</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_16_26.png"
@@ -618,11 +583,8 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
-<h3 id="制約ファイルの指定-最初だけ">制約ファイルの指定(最初だけ)</h3>
-
+<h3 id="制約ファイルの指定最初だけ">制約ファイルの指定(最初だけ)</h3>
 <p>はじめは，保存先のファイルが用意されていないので，図\ref{fig:xdc_config}のダイアログが開きます．ここでは，HDLモジュールと同じ名前のtopというファイル名にします．なお，拡張子はxdcで自動的に付与されます．</p>
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_16_35.png"
          alt="図29: ピン配置を保存するファイルの作成を促すダイアログ．topという名前にしてOKをクリック \label{fig:xdc_config}"/> <figcaption>
@@ -630,18 +592,14 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
-<h3 id="合成-配置配線の開始">合成・配置配線の開始</h3>
-
-<p>指定したピン配置の設定によって合成からやりなおしになります．``Yes&rdquo;をクリックしてフローをすすめます．</p>
-
+<h3 id="合成配置配線の開始">合成・配置配線の開始</h3>
+<p>指定したピン配置の設定によって合成からやりなおしになります．``Yes'&lsquo;をクリックしてフローをすすめます．</p>
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_16_41.png"
          alt="図30: 合成からやりなおし"/> <figcaption>
             <p>図30: 合成からやりなおし</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_16_46.png"
@@ -650,7 +608,6 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_20_45.png"
          alt="図32: 合成が無事に完了した．メインウインドウにCompleteという文字と緑のチェックマークがついている \label{fig:completed}"/> <figcaption>
@@ -658,20 +615,15 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <h2 id="配置配線結果の確認">配置配線結果の確認</h2>
-
 <p>配置配線後，どのようにFPGA上に回路が配置されたかを確認することができます．今回は指定していませんが，動作クロックの指定を行った場合などには，正しくクロックの指定ができているか，その指定にあった回路ができているか，を確認する必要があります．</p>
-
 <p>今回は，まず雰囲気だけみてみましょう．合成後の図\ref{fig:completed}のダイアログで，Open Implementation DesignにチェックをいれてOKをクリックするか，Navigator FlowでOpen Implemnetation Designをクリックします．</p>
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_21_16.png"
          alt="図33: 配置配線結果を開いてみたところ．右側の水色部分が使用しているハードウェアリソース"/> <figcaption>
             <p>図33: 配置配線結果を開いてみたところ．右側の水色部分が使用しているハードウェアリソース</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_22_24.png"
@@ -680,13 +632,9 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <h2 id="実機での動作確認">実機での動作確認</h2>
-
 <p>できあがったデータをFPGAボードにダウンロードして動作させてみましょう．</p>
-
 <p>まずは，FPGAとパソコンをUSBケーブルで接続します．ここで，JP5のジャンパをJTAGに，JP16のジャンパをUSB側にセットしておいてください．</p>
-
 <figure class="center">
     <img src="../quickstart_figures/IMG_0002.JPG"
          alt="図35: FPGAとパソコンをUSBケーブルで接続．JP5とJP16の位置にも注意"/> <figcaption>
@@ -694,16 +642,13 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <p>書き込みの手順は次の通りです．</p>
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_34_35.png"
          alt="図36: Navigator FlowでOpen Hardwareをクリックしたところ"/> <figcaption>
             <p>図36: Navigator FlowでOpen Hardwareをクリックしたところ</p>
         </figcaption>
 </figure>
-
 
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_34_45.png"
@@ -712,7 +657,6 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <figure class="center">
     <img src="../quickstart_figures/VirtualBox_Windows10_19_03_2018_00_51_49.png"
          alt="図38: FPGAボードと接続できたら，Program Deviceをクリック．開いたファイルダイアログでOKをクリック．"/> <figcaption>
@@ -720,11 +664,8 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <p>これでFPGAボード上のLED LD0が点滅するはずです．</p>
-
 <h1 id="課題">課題</h1>
-
 <ol>
 <li>点滅の間隔を変えてみよう</li>
 <li>FPGA上のほかのLEDも点滅させてみよう</li>
@@ -741,34 +682,26 @@ https://github.com/alex-shpak/hugo-book
 
   <aside class="book-toc levels-6 fixed">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#はじめに">はじめに</a></li>
-<li><a href="#実習">実習</a>
-<ul>
-<li><a href="#プロジェクトの用意">プロジェクトの用意</a></li>
-<li><a href="#ファイルの作成">ファイルの作成</a></li>
-<li><a href="#デザインの修正">デザインの修正</a>
-<ul>
-<li>
-<ul>
-<li><a href="#追加箇所-1">追加箇所(1)</a></li>
-<li><a href="#追加箇所-2">追加箇所(2)</a></li>
-<li><a href="#追加箇所-3">追加箇所(3)</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#まずは合成してみる">まずは合成してみる</a></li>
-<li><a href="#i-oの設定">I/Oの設定</a></li>
-<li><a href="#合成-配置配線">合成・配置配線</a>
-<ul>
-<li><a href="#制約ファイルの保存">制約ファイルの保存</a></li>
-<li><a href="#制約ファイルの指定-最初だけ">制約ファイルの指定(最初だけ)</a></li>
-<li><a href="#合成-配置配線の開始">合成・配置配線の開始</a></li>
-</ul></li>
-<li><a href="#配置配線結果の確認">配置配線結果の確認</a></li>
-<li><a href="#実機での動作確認">実機での動作確認</a></li>
-</ul></li>
-<li><a href="#課題">課題</a></li>
-</ul>
+  <ul>
+    <li><a href="#プロジェクトの用意">プロジェクトの用意</a></li>
+    <li><a href="#ファイルの作成">ファイルの作成</a></li>
+    <li><a href="#デザインの修正">デザインの修正</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#まずは合成してみる">まずは合成してみる</a></li>
+    <li><a href="#ioの設定">I/Oの設定</a></li>
+    <li><a href="#合成配置配線">合成・配置配線</a>
+      <ul>
+        <li><a href="#制約ファイルの保存">制約ファイルの保存</a></li>
+        <li><a href="#制約ファイルの指定最初だけ">制約ファイルの指定(最初だけ)</a></li>
+        <li><a href="#合成配置配線の開始">合成・配置配線の開始</a></li>
+      </ul>
+    </li>
+    <li><a href="#配置配線結果の確認">配置配線結果の確認</a></li>
+    <li><a href="#実機での動作確認">実機での動作確認</a></li>
+  </ul>
 </nav>
   </aside>
 

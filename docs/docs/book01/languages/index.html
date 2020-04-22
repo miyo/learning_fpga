@@ -21,8 +21,9 @@
 変数は，英数字からなる名前を付けることができます．変数名の先頭は英字または「_」で始める必要があり，末尾を「_」にしてはいけません．Verilog HDLでは，大文字と小文字は区別されます．
 演算の基本 &mdash; 算術/論理減算，比較，代入 VHDLおよびVerilog HDLでは加減算や論理演算，比較などの演算子を利用することができます．ソフトウェア・プログラミングの場合は演算子を使って記述された処理はプロセッサに与える命令に変換されますが，HDLの場合は，その演算に相当するハードウェア・ロジックとしてLUTやFFなどの組み合わせに合成されます．FPGAの中には，小さなディジタルシグナルプロセッサや乗算器を持つものがあり，条件にうまく合致すると，それらが使用されます．
 HDLでもソフトウェア・プログラミング同様に，演算した結果を代入演算を利用して，ほかの(あるいは同じ)変数に代入することができます．HDLの代入には，ブロッキング代入とノンブロッキング代入の2種類があります．ブロッキング代入は，その時点で値を代入して次に進む代入です．一方，ノンブロッキング代入は，複数の代入文において，それらの代入の同時実行を規定します．Cなどで記述した単一スレッドのソフトウェア・プログラムの代入は，HDLでいうところのブロッキング代入に相当します．
-値の基本 &mdash; &lsquo;0&rsquo;，&rsquo;1&rsquo;，&rsquo;Z&rsquo;，&rsquo;X&rsquo; ハードウェアの値は&rsquo;0&rsquo;と&rsquo;1&rsquo;の値をとります．加えて，ハードウェアにはハイ・インピーダンスという，「抵抗が無限大」を意味する状態が存在します．VHDLやVerilog HDLでは&rsquo;Z&rsquo;で表されます．値として「抵抗が無限大」というのは，少しわかりにくいかもしれません．物理的には，図4のようにスイッチを切った状態をイメージしてください．複数の信号が一つにまとめられるとき，&rsquo;Z&rsquo;は，「ほかの値に影響を与えない」ということを意味します．
- 図4: HDLではハイ・インピーダンスでスイッチオフを記述できる．" />
+値の基本 &mdash; &lsquo;0&rsquo;，&lsquo;1&rsquo;，&lsquo;Z&rsquo;，&lsquo;X&rsquo; ハードウェアの値は&#39;0&rsquo;と&#39;1&rsquo;の値をとります．加えて，ハードウェアにはハイ・インピーダンスという，「抵抗が無限大」を意味する状態が存在します．VHDLやVerilog HDLでは&rsquo;Z&rsquo;で表されます．値として「抵抗が無限大」というのは，少しわかりにくいかもしれません．物理的には，図4のようにスイッチを切った状態をイメージしてください．複数の信号が一つにまとめられるとき，&lsquo;Z&rsquo;は，「ほかの値に影響を与えない」ということを意味します．
+ 図4: HDLではハイ・インピーダンスでスイッチオフを記述できる．
+  また，&lsquo;0&rsquo;でも&#39;1&rsquo;のどちらでもいい値として不定値という概念があります．これは，&lsquo;X&rsquo;と表現されます．" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://miyo.github.io/learning_fpga/docs/book01/languages/" />
 <meta property="article:published_time" content="2019-10-30T19:15:46+09:00" />
@@ -34,7 +35,7 @@ HDLでもソフトウェア・プログラミング同様に，演算した結�
 <link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
 
 
-<script defer src="/learning_fpga/search.min.431de68ae73daaa1e72319914f918035c9fb6938698072b15278916071098257.js" integrity="sha256-Qx3miuc9qqHnIxmRT5GANcn7aThpgHKxUniRYHEJglc="></script>
+<script defer src="/learning_fpga/search.min.8c84631aa6c883d5e6ae1d4496813354cba457a09ad7582f7ca81e6ac75f76e0.js" integrity="sha256-jIRjGqbIg9Xmrh1EloEzVMukV6Ca11gvfKgeasdfduA="></script>
 
 <!--
 Made with Book Theme
@@ -204,6 +205,32 @@ https://github.com/alex-shpak/hugo-book
 
   <li >
     
+      <span>Intel活用編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
       <span>Xilinx活用編</span>
     
 
@@ -276,24 +303,14 @@ https://github.com/alex-shpak/hugo-book
 </header>
 
       
-<article class="markdown">
-
-<h1 id="はじめに">はじめに</h1>
-
+<article class="markdown"><h1 id="はじめに">はじめに</h1>
 <p>本章では，ハードウェア記述言語(HDL; Hardware Description Language)のうち，よく使用されるVHDLとVerilog HDLの二つのHDLの基本文法を説明します．ちょっとした違いを発見しながら読み進めると面白いでしょう．</p>
-
 <p>ソフトウェア・プログラミングで使用するCやJava，コミュニケーションで使用する英語についても，正しく使用するために文法の知識は欠かせません．同じようにHDLで設計する際も文法の知識が必要です．ここで，基本文法をしっかり押さえましょう．</p>
-
 <h1 id="ハードウェア記述言語の基本概念">ハードウェア記述言語の基本概念</h1>
-
 <p>プログラミング言語に多くの種類があるように，ハードウェア記述言語(HDL)にもさまざまな種類があります．その中でもよく利用されるのが，VHDLとVerilog HDLです．VHDLとVerilog HDLは，どちらも，ハードウェアを表現するための似たような概念を取り扱うことができる言語です．</p>
-
 <p>ただし，似たような概念でもそれぞれの言語で使用する言葉が違うので注意が必要です．両方の言語に共通する概念と，言語の特徴について説明します．</p>
-
-<h2 id="構造の基本-エンティティ-モジュール">構造の基本 &mdash; エンティティ/モジュール</h2>
-
+<h2 id="構造の基本-----エンティティモジュール">構造の基本 &mdash; エンティティ/モジュール</h2>
 <p>どの言語にも基本的な構造があります．たとえば，Cでは関数，Javaではクラスなどです．HDLでは，与えられた入力に対して出力を生成するブロックが基本的な単位です(図1)．このブロックをVHDLではエンティティ <code>entity</code> ，Verilog HDLではモジュール <code>module</code> と呼びます．ただし，この章では，特にVHDLやVerilog HDLに違いがない説明では，モジュールと呼ぶことにします．</p>
-
 <figure class="center">
     <img src="../languages_figures/design_unit.png"
          alt="図1: ハードウェア・プログラミングの基本的な単位"/> <figcaption>
@@ -301,9 +318,7 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <p>通常のプログラミング言語とHDLの大きな違いは，エンティティ/モジュールは，最初から最後まで与えられた入力に対する出力を生成し続けるということです．Cなどで関数を呼び出す場合，mainプログラムからその関数内へ処理が移ります(図2)．処理を終えると戻り値を呼び出し元に返し，mainプログラムが再び動き始めます．つまり，mainプログラムは，呼び出した関数の処理が完了するまで待たされます．これは，プログラム・カウンタが，プログラムを順々に呼び出して実行するからです．</p>
-
 <figure class="center">
     <img src="../languages_figures/software_running_model.png"
          alt="図2: Cで記述した一般的なソフトウェア・プログラムの実行の様子"/> <figcaption>
@@ -311,9 +326,7 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <p>一方，HDLで記述されたエンティティ/モジュールには，共通のプログラム・カウンタのような，複数の演算回路の動作を制御する仕組みはありません．(図3)．どのモジュールも常に存在し，独立して動作します．したがって，特定の入力を与えると出力を返すというよりも，入力されているデータに対して出力するデータを作り続けているというイメージになります．複数のモジュール間で制御が必要であれば自分で，そのように設計する必要があります．</p>
-
 <figure class="center">
     <img src="../languages_figures/hardware_instances.png"
          alt="図3: ハードウェアは常に存在し，演算回路の動作が制御されることはない(制御が必要なら自分で記述する必要がある)"/> <figcaption>
@@ -321,35 +334,20 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
-<h2 id="2種類の基本処理方法-同時処理文と順次処理文">2種類の基本処理方法 &mdash; 同時処理文と順次処理文</h2>
-
+<h2 id="2種類の基本処理方法-----同時処理文と順次処理文">2種類の基本処理方法 &mdash; 同時処理文と順次処理文</h2>
 <p>繰り返しになりますが，ハードウェア・プログラミングでは，独立して動作するモジュールを扱う必要があります．すなわちハードウェアを記述するための言語では，独立して動作する同時並行的な処理を記述できる必要があります．とはいえ，実現したい処理によっては，条件分岐のような依存関係のある処理の記述が望まれます．これらの要求を満たすため，VHDLとVerilog HDLのどちらも，同時処理文と順次処理文と呼ばれる二種類の記述方式をサポートしています．具体的な記述方法は後で説明しますが，それぞれの考え方を頭に入れておいてください．</p>
-
 <h4 id="同時処理文">同時処理文</h4>
-
 <p>同時処理文とは，周りの処理に依存せず独立して動作する処理です．複数の同時処理文は，ある特定の時点で一斉に処理されます．そのため，記述順や各処理文の間には，構文的な順序が存在せず，「ある時点」で入力された値に従って出力が生成されます．出力が確定するまでの時間は，物理的にデバイスの中を電気が流れる速さや信号遅延に依存します．</p>
-
 <h4 id="順次処理文">順次処理文</h4>
-
 <p>順次処理文は，複数の処理同士に構文などによって順序が規定された処理です．たとえば，ソフトウェアには欠かせない分岐などの制御文の表現には順序が必要になります．</p>
-
-<h2 id="使用できる変数-数値と信号">使用できる変数 &mdash; 数値と信号</h2>
-
+<h2 id="使用できる変数-----数値と信号">使用できる変数 &mdash; 数値と信号</h2>
 <p>プログラミング言語と同じようにHDLでも変数を利用できます．VHDLでもVerilog HDLでも，変数はすべて型を持ちます．ハードウェアとして，基本的な型は1本の信号線です．また，信号線を束ねた配列もサポートされます．このほかに，整数や自分で定義した型も利用できます．</p>
-
 <p>変数は，英数字からなる名前を付けることができます．変数名の先頭は英字または「_」で始める必要があり，末尾を「_」にしてはいけません．Verilog HDLでは，大文字と小文字は区別されます．</p>
-
-<h2 id="演算の基本-算術-論理減算-比較-代入">演算の基本 &mdash; 算術/論理減算，比較，代入</h2>
-
+<h2 id="演算の基本-----算術論理減算比較代入">演算の基本 &mdash; 算術/論理減算，比較，代入</h2>
 <p>VHDLおよびVerilog HDLでは加減算や論理演算，比較などの演算子を利用することができます．ソフトウェア・プログラミングの場合は演算子を使って記述された処理はプロセッサに与える命令に変換されますが，HDLの場合は，その演算に相当するハードウェア・ロジックとしてLUTやFFなどの組み合わせに合成されます．FPGAの中には，小さなディジタルシグナルプロセッサや乗算器を持つものがあり，条件にうまく合致すると，それらが使用されます．</p>
-
 <p>HDLでもソフトウェア・プログラミング同様に，演算した結果を代入演算を利用して，ほかの(あるいは同じ)変数に代入することができます．HDLの代入には，ブロッキング代入とノンブロッキング代入の2種類があります．ブロッキング代入は，その時点で値を代入して次に進む代入です．一方，ノンブロッキング代入は，複数の代入文において，それらの代入の同時実行を規定します．Cなどで記述した単一スレッドのソフトウェア・プログラムの代入は，HDLでいうところのブロッキング代入に相当します．</p>
-
-<h2 id="値の基本-0-1-z-x">値の基本 &mdash; &lsquo;0&rsquo;，&rsquo;1&rsquo;，&rsquo;Z&rsquo;，&rsquo;X&rsquo;</h2>
-
-<p>ハードウェアの値は&rsquo;0&rsquo;と&rsquo;1&rsquo;の値をとります．加えて，ハードウェアにはハイ・インピーダンスという，「抵抗が無限大」を意味する状態が存在します．VHDLやVerilog HDLでは&rsquo;Z&rsquo;で表されます．値として「抵抗が無限大」というのは，少しわかりにくいかもしれません．物理的には，図4のようにスイッチを切った状態をイメージしてください．複数の信号が一つにまとめられるとき，&rsquo;Z&rsquo;は，「ほかの値に影響を与えない」ということを意味します．</p>
-
+<h2 id="値の基本-----01zx">値の基本 &mdash; &lsquo;0&rsquo;，&lsquo;1&rsquo;，&lsquo;Z&rsquo;，&lsquo;X&rsquo;</h2>
+<p>ハードウェアの値は'0&rsquo;と'1&rsquo;の値をとります．加えて，ハードウェアにはハイ・インピーダンスという，「抵抗が無限大」を意味する状態が存在します．VHDLやVerilog HDLでは&rsquo;Z&rsquo;で表されます．値として「抵抗が無限大」というのは，少しわかりにくいかもしれません．物理的には，図4のようにスイッチを切った状態をイメージしてください．複数の信号が一つにまとめられるとき，&lsquo;Z&rsquo;は，「ほかの値に影響を与えない」ということを意味します．</p>
 <figure class="center">
     <img src="../languages_figures/high_imp_image.png"
          alt="図4: HDLではハイ・インピーダンスでスイッチオフを記述できる．"/> <figcaption>
@@ -357,27 +355,16 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
-<p>また，&rsquo;0&rsquo;でも&rsquo;1&rsquo;のどちらでもいい値として不定値という概念があります．これは，&rsquo;X&rsquo;と表現されます．</p>
-
-<p>ソフトウェア・プログラミングでは，通常，&rsquo;0&rsquo;と&rsquo;1&rsquo;の2値をとる値をビットと呼びますが，&rsquo;Z&rsquo;と&rsquo;X&rsquo;も加えた4つの値をとる信号が便宜上ビットと呼ばれることが多くあります．</p>
-
-<h2 id="文末には-を付ける">文末には「;」を付ける</h2>
-
+<p>また，&lsquo;0&rsquo;でも'1&rsquo;のどちらでもいい値として不定値という概念があります．これは，&lsquo;X&rsquo;と表現されます．</p>
+<p>ソフトウェア・プログラミングでは，通常，&lsquo;0&rsquo;と'1&rsquo;の2値をとる値をビットと呼びますが，&lsquo;Z&rsquo;と&rsquo;X&rsquo;も加えた4つの値をとる信号が便宜上ビットと呼ばれることが多くあります．</p>
+<h2 id="文末にはを付ける">文末には「;」を付ける</h2>
 <p>VHDLもVerilog HDLも，演算処理や変数定義などの文の終わりには「;」(セミコロン)を付けます．ただし，両言語ともソフトウェアのプログラミング言語では少し首をかしげてしまうような，「;」を付けないケースが存在するので注意が必要です．</p>
-
 <h1 id="vhdlの基本文法のルール">VHDLの基本文法のルール</h1>
-
 <p>VHDLの基本的な文法を説明します．</p>
-
 <h2 id="コメント">コメント</h2>
-
 <p>多くのソフトウェア・プログラミング言語と同様に，VHDLでもソースコード中にコメントを書くことができます．VHDLでは，「 <code>--</code> 」から行末までがコメントになります．</p>
-
 <h2 id="モジュールの構成">モジュールの構成</h2>
-
 <p>図5に，VHDLで記述するモジュールの概要を示します．VHDLでは，対象とするモジュールを大きく <code>entity</code> と <code>architecture</code> に分けて記述します． <code>entity</code> には外部に接続される入出力ポートの宣言などの回路の外枠を， <code>architecture</code> には使用する関数の定義や処理内容など，回路の内部を定義します．</p>
-
 <figure class="center">
     <img src="../languages_figures/vhdl_module_overview.png"
          alt="図5: VHDLのモジュール定義はentityとarchitectureから構成される"/> <figcaption>
@@ -385,13 +372,9 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <h2 id="即値の表現方法">即値の表現方法</h2>
-
 <p>VHDLでは，ソース・コードの中に定数の値を記述できます(表1)．複数の信号線を束ねた値は，信号線の本数分だけ各信号に相当する値を並べて表現します(たとえば4bitなら <code>&quot;0000&quot;</code> など)．また，「 <code>X&quot;01&quot;</code>」と記述することで16進数で数を表記できます．よく用いられる代表的な定数表現には，表1のようなものがあります．</p>
-
 <p>表1. VHDLで記述できる定数の例</p>
-
 <table>
 <thead>
 <tr>
@@ -399,34 +382,27 @@ https://github.com/alex-shpak/hugo-book
 <th>値の例</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>1本の信号線がとる信号の値</td>
 <td><code>'1'</code>，<code>'0'</code> ，<code>'Z'</code>，<code>'X'</code></td>
 </tr>
-
 <tr>
 <td>複数の信号線がとる信号の値</td>
 <td><code>&quot;111&quot;</code>，<code>&quot;0100&quot;</code> ，<code>X&quot;10&quot;</code></td>
 </tr>
-
 <tr>
 <td>整数</td>
 <td><code>32</code>，<code>8</code> ，<code>1000</code></td>
 </tr>
-
 <tr>
 <td>真偽値</td>
 <td><code>true</code>，<code>false</code></td>
 </tr>
 </tbody>
 </table>
-
 <h2 id="型">型</h2>
-
 <p>VHDLの変数はすべて型を持ちます．たくさんの型が定義されており，また，独自の型も定義できます．よく使用される5つの型を表2に示します．基本的には，<code>std_logic</code>，<code>std_logic_vector</code>はハードウェアの信号に相当する型，<code>signed</code>や<code>unsigned</code>は加減算などの算術演算ができる値を表現するために用いる型，一般的な数値を表現できる<code>integer</code>です．</p>
-
 <table>
 <thead>
 <tr>
@@ -434,53 +410,40 @@ https://github.com/alex-shpak/hugo-book
 <th>説明</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>std_logic</code></td>
 <td>1bitの信号線</td>
 </tr>
-
 <tr>
 <td><code>std_logic_vector(n-1 downto 0)</code></td>
 <td>n-bitの信号線</td>
 </tr>
-
 <tr>
 <td><code>unsigned(n-1 downto 0)</code></td>
 <td>n-bitの符号なしの算術演算可能な値</td>
 </tr>
-
 <tr>
 <td><code>signed(n-1 downto 0)</code></td>
 <td>n-bitの符号ありの算術演算可能な値</td>
 </tr>
-
 <tr>
 <td><code>integer n to m</code></td>
 <td>nからmまでの整数</td>
 </tr>
 </tbody>
 </table>
-
 <p>VHDLで用いられる型の例</p>
-
 <h3 id="1-bitの信号">1-bitの信号</h3>
-
 <p><code>std_logic</code> は，VHDLの基本となる1bitの信号に相当する型です．<code>'0'</code>，<code>'1'</code>のほかに，ハイ・インピーダンスを示す<code>'Z'</code>，不定値を示す<code>'X'</code>を値としてとれます．これらの値は，ハードウェアにそのまま対応します．</p>
-
 <h3 id="n-bitの信号">n-bitの信号</h3>
-
 <p><code>std_logic_vector(n downto 0)</code>は，<code>std_logic</code>がn個並んだn-bitの信号線に相当する型です．n-bitの<code>std_logi_vector</code>型」と呼びます．<code>std_logic_vector</code>型の変数<code>a</code>の中の要素を，<code>a(3)</code>，<code>a(4 downto 2)</code>などとして取り出せます．前者は<code>std_logic</code>型，後者は3bitの<code>std_logic_vector</code>型です．「<code>downto</code>」は<code>std_logic</code>の並びに，MSBから降順で番号を付けることを意味します．つまり，<code>std_logic_vector(n-1 downto 0)</code>のビット列の場合，MSBが<code>std_logic_vector(n-1)</code>で，LSBが<code>std_logic_vector(0)</code>です．<code>to</code>を使うことで逆順に並べることもできます．その場合は，<code>std_logic_vector(n to 0)</code>のように書きます．</p>
-
-<h2 id="モジュールの外枠の記述-entity">モジュールの外枠の記述 &mdash; entity</h2>
-
+<h2 id="モジュールの外枠の記述-----entity">モジュールの外枠の記述 &mdash; entity</h2>
 <p><code>entity</code>は，モジュールの外枠に相当し，モジュールの名前と入出力の信号で定義されます．たとえば，
 次の記述は，入力信号にpClkとpReset，出力信号にQを持つ<code>test</code>という名前のモジュールの外枠の定義に相当します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -498,40 +461,31 @@ https://github.com/alex-shpak/hugo-book
 <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">entity</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <h3 id="ポートを定義する">ポートを定義する</h3>
-
 <p>ポートは，ハードウェア・モジュールの入出力です．<code>entity</code>の中の<code>port( 〜 );</code>の中に信号を方向と型を指定して定義します．信号の方向には<code>in</code>(入力)と<code>out</code>(出力)，<code>inout</code>(入出力)の3種類があります．各ポートは「名前 : 方向 型」で定義されます．たとえば，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl">pClk <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span></code></pre></td></tr></table>
 </div>
 </div>
-
 <p>という記述は，<code>pClk</code>という名前の型が<code>std_logic</code>の入力ポート(<code>in</code>)の定義に相当します．同じ方向，型の複数のポート名は「,」で並べて定義することもできます．たとえば，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl">pR, pG, pB <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span></code></pre></td></tr></table>
 </div>
 </div>
-
 <p>として，3つの入力信号<code>pR</code>，<code>pG</code>，<code>pB</code>をまとめて定義できます．</p>
-
 <h3 id="定数を定義する">定数を定義する</h3>
-
 <p><code>entity</code>の中にモジュールの中で使用する定数を定義できます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -557,16 +511,12 @@ https://github.com/alex-shpak/hugo-book
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">test</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>ここでは，<code>width</code>という名前で値が640の<code>integer</code>型，すなわち整数の定数を定義しています．この定数は <code>entity</code> 内部，および内部処理を記述する <code>architecture</code> の中で使用できます．</p>
-
-<h2 id="内部処理の記述-architecture">内部処理の記述 &mdash; architecture</h2>
-
+<h2 id="内部処理の記述-----architecture">内部処理の記述 &mdash; architecture</h2>
 <p>VHDLでは， <code>architecture</code> にモジュールの処理内容を記述します．記述の基本的な流れは次の通りです．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -580,46 +530,36 @@ https://github.com/alex-shpak/hugo-book
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>上記は， <code>test</code> という名前のモジュールの中身を記述するためのブロックです．</p>
-
 <h2 id="変数の定義">変数の定義</h2>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">signal</span> <span style="color:#960050;background-color:#1e0010">名前</span> <span style="color:#f92672">:</span> <span style="color:#960050;background-color:#1e0010">型</span> <span style="color:#f92672">:=</span> <span style="color:#960050;background-color:#1e0010">初期値</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>たとえば，10ビットの配列は下記のように定義します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">signal</span> counter <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">9</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>また， <code>generic</code> で定義した値である <code>width</code> を使用して，幅widthの <code>std_logic_vector</code> 型の信号を次のように定義できます．ここで「 <code>width−1</code> 」の値は合成時に決定されます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">signal</span> counter <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(width<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);</code></pre></td></tr></table>
 </div>
 </div>
-
 <h2 id="演算子と演算">演算子と演算</h2>
-
 <p>代表的な演算子を表3にまとめます．論理演算子を <code>std_logic_vector</code> 型に定義した場合は，対応する各ビットの値同士に論理演算を適用した結果を返します．たとえば，「 <code>&quot;10&quot; and &quot;11&quot;</code> 」は「 <code>&quot;10&quot;</code> 」になり，「 <code>&quot;10&quot; or &quot;11&quot;</code> 」は「 <code>&quot;11&quot;</code> 」になります．比較演算の結果は， <code>true</code> か <code>false</code> の真偽値になります．よくあるプログラミング言語に備わっている演算が備わっていることがわかります．ただし，表3の説明に(*1)をつけている，算術演算や数値の大小を比較する演算では <code>unsigned</code> 型， <code>signed</code> 型あるいは <code>integer</code> の変数や定数，あるいは数値に相当する即値にしか利用できません．</p>
-
 <table>
 <thead>
 <tr>
@@ -628,125 +568,104 @@ https://github.com/alex-shpak/hugo-book
 <th>説明</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>論理演算</td>
 <td>a and b</td>
 <td>論理積．aとbが <code>'1'</code> なら <code>'1'</code> ．さもなければ <code>'0'</code> ．</td>
 </tr>
-
 <tr>
-<td></td>
 <td>a or b</td>
 <td>論理和．aとbのどちらか又は両方が <code>'1'</code> なら <code>'1'</code> ．さもなければ <code>'0'</code> ．</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a xor b</td>
 <td>排他的論理積．aとbの一方だけが <code>'1'</code> なら <code>'1'</code> ．さもなければ <code>'0'</code> ．</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>not a</td>
 <td>否定．aが <code>'0'</code> なら <code>'1'</code> ． <code>'1'</code> なら<code>'0'</code></td>
+<td></td>
 </tr>
-
 <tr>
 <td>比較演算</td>
 <td>a = b</td>
 <td>aとbが等しい場合 <code>true</code> ．さもなければ <code>false</code></td>
 </tr>
-
 <tr>
-<td></td>
 <td>a /= b</td>
 <td>aとbが等しくなければ場合 <code>true</code> ．さもなければ <code>false</code></td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a &gt; b</td>
 <td>aがbがより大きいなら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a &lt; b</td>
 <td>aとbがより小さいなら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a &gt;= b</td>
 <td>aとb以上なら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a &lt;= b</td>
 <td>aとb以下なら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
+<td></td>
 </tr>
-
 <tr>
 <td>算術演算</td>
 <td>a + b</td>
 <td>aとbの足し算 (*1)</td>
 </tr>
-
 <tr>
-<td></td>
 <td>a - b</td>
 <td>aとbの引き算 (*1)</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a * b</td>
 <td>aとbの引き算 (*1)</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a / b</td>
 <td>aとbの割り算 (*1)</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a ** b</td>
 <td>aのb乗 (*1)</td>
+<td></td>
 </tr>
-
 <tr>
 <td>配列操作</td>
 <td>a &amp; b</td>
 <td>aとbをこの順に並べた信号線の束を作る</td>
 </tr>
-
 <tr>
-<td></td>
 <td>a(b)</td>
 <td>aのb番目の信号を取り出す</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a(b downto c)</td>
 <td>aのb番目からc番目の信号線の束を取り出す</td>
+<td></td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="演算結果の代入">演算結果の代入</h3>
-
 <p>演算の結果は代入文でほかの(あるいは同じ)変数へ代入できます．代入にはブロッキング代入とノンブロッキング代入があります．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
@@ -754,27 +673,21 @@ https://github.com/alex-shpak/hugo-book
 <span style="color:#f92672">&lt;=</span> <span style="color:#960050;background-color:#1e0010">ノンブロッキング代入</span></code></pre></td></tr></table>
 </div>
 </div>
-
 <p>たとえば，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl">Q <span style="color:#f92672">&lt;=</span> counter(width<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>という記述は， <code>std_logic_vector</code> 型の変数 <code>counter</code> の <code>(width-1)</code> 番目を取り出し， <code>Q</code> に代入するハードウェアの記述に相当します．VHDLでは， <code>signal</code> 変数には，初期化時以外でブロッキング代入を使用することはできません．</p>
-
 <h3 id="型の変換">型の変換</h3>
-
 <p>VHDLは型の制約が強い言語で．代入は同じ型の変数同士でしか認められません．また演算子も適用可能な型があらかじめ決められています．そのため，幅の違う <code>std_logic_vector</code> 同士で値を定義する場合には，ビット幅を削る/足すなどして同じ幅にしなければいけません．たとえば，aとbが，それぞれ幅16-bit，8-bitの <code>std_logic_vector</code> 型であれば，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
@@ -782,90 +695,70 @@ https://github.com/alex-shpak/hugo-book
 b <span style="color:#f92672">&lt;=</span> a(<span style="color:#ae81ff">7</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>); <span style="color:#75715e">-- aの下位8bitだけをbに代入している</span></code></pre></td></tr></table>
 </div>
 </div>
-
 <p>などとする必要があります．</p>
-
 <p>型の変換には専用の関数を利用します．たとえば， <code>std_logic_vector</code> を <code>unsigned</code> 型あるいは <code>signed</code> 型に変換するためには，それぞれ <code>unsigned</code> 関数あるいは <code>signed</code> を用います．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">unsigned</span>(c);</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>と記述すると <code>std_logic_vector</code> 型の変数 <code>c</code> を <code>unsigned</code> 型に変換できます．</p>
-
 <p>逆に， <code>unsigned</code> 型や <code>singed</code> 型の変数を <code>std_logic_vector</code> 型に変換する場合には， <code>std_logic_vector</code> 関数を用います．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">std_logic_vector</span>(d);</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>と記述すると <code>unsigned</code> 型の変数 <code>d</code> を <code>std_logic_vector</code> 型に変換できます．</p>
-
 <p><code>integer</code> 型の変数を <code>unsigned</code> 型や <code>signed</code> 型に変換する場合には， <code>to_unsigned</code> あるいは <code>to_signed</code> を使います．たとえば， <code>integer</code> 型の変数 <code>k</code> をn-bitの <code>unsigned</code> 型に変換する場合は，2番目の引数にビット数 <code>n</code> を指定して，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl">to_unsigned(k, n);</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>と記述します．</p>
-
 <p>一般に，VHDLでは， <code>std_logic_vector</code> 型の変数に対して算術演算は記述できません．そのため， <code>std_logic_vector</code> と定数の加減算や比較演算する場合には，一度 <code>unsigned</code> 型に変換して演算する必要があります．たとえば，幅nの <code>std_logic_vector</code> の変数counterに定数 <code>1</code> を加算する場合には，次のように，一度 <code>unsigned</code> 型に変換して演算した後で <code>std_logic_vector</code> 型に戻す必要があります．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl">counter <span style="color:#f92672">&lt;=</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#66d9ef">unsigned</span>(counter) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);</code></pre></td></tr></table>
 </div>
 </div>
-
 <h3 id="シフト演算">シフト演算</h3>
-
 <p>VHDLには，ソフトウェア・プログラミング言語で一般的なシフト演算子に相当する演算子がありません．VHDLでは配列操作の演算を用いて似たような操作ができます．たとえば，幅n-bitの <code>std_logic_vector</code> 型の変数counterを右に1つシフトしたい場合には，次のように記述します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl">counter <span style="color:#f92672">&lt;=</span> <span style="color:#e6db74">&#39;0&#39;</span> <span style="color:#f92672">&amp;</span> counter(n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">1</span>);</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>左に2つシフトしたい場合には，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl">counter <span style="color:#f92672">&lt;=</span> counter(n<span style="color:#f92672">-</span><span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">&amp;</span> <span style="color:#e6db74">&#34;00&#34;</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>となります．</p>
-
 <h2 id="同時処理文-1">同時処理文</h2>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
@@ -873,12 +766,10 @@ b <span style="color:#f92672">&lt;=</span> a(<span style="color:#ae81ff">7</span
 e <span style="color:#f92672">&lt;=</span> c <span style="color:#66d9ef">and</span> d;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>と書いても，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
@@ -886,9 +777,7 @@ e <span style="color:#f92672">&lt;=</span> c <span style="color:#66d9ef">and</sp
 c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</span> b;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>と書いても，同じように図6の回路が合成されます．</p>
-
 <figure class="center">
     <img src="../languages_figures/parallel_vhdl.png"
          alt="図6: 同時処理文は，記述順によらず解析・合成される"/> <figcaption>
@@ -896,14 +785,11 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
         </figcaption>
 </figure>
 
-
-<h2 id="順次処理文-process文">順次処理文 &mdash; process文</h2>
-
+<h2 id="順次処理文-----process文">順次処理文 &mdash; process文</h2>
 <p>順次処理文では記述された順序に従って意味が解析され，回路が合成されます．そのため，複雑な制御構文を使用できます．VHDLでは， <code>architecture</code> 中で <code>process</code> を使って順次処理文を記述するためのブロックを作ることができます． <code>process</code> 文の基本的な構文を次に示します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -917,9 +803,7 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
 <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>ここで， <code>process()</code> の「 <code>()</code> 」内の変数のリストをセンシティビティ・リストといいます．このリストに列挙した変数の信号が変化すると <code>process</code> の中の回路が動作し出力値が変更されます．ノンブロッキング代入は，process内の記述が順に解釈された後で，同時に信号が確定します．このprocess文は，図7のような回路を生成します．あくまで文が順に解釈されるだけで，順に処理される回路が生成できるわけではない，ことに注意する必要があります．</p>
-
 <figure class="center">
     <img src="../languages_figures/process_example.png"
          alt="図7: 順次処理文中の複数のノンブロッキング文は順に解釈され，最後に値が同時に確定する"/> <figcaption>
@@ -927,14 +811,11 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
         </figcaption>
 </figure>
 
-
 <p><code>process</code> 文の中にでてくる入力変数(式の右辺にでてくる変数)がすべてセンシティビティ・リストに列挙されている場合，入力が変化する度に回路が動作し，出力変数(式の左辺)の値が変更されます．つまり，その <code>process</code> 文から生成される回路では，何も状態を保存する必要がありません．そのため，図8のような記憶素子を必要としない組み合わせ回路として構成されます．</p>
-
 <p>センシティビティ・リストにない変数が右辺に使われる．次のようなprocess文を考えてみます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -948,15 +829,12 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
 <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>ここでは，センシティビティ・リストに「b」がなく，入力変数が全部列挙されていません．この回路では，bの値が変化しても出力先であるcとdの値は変化しません．つまり，図8のように，入力であるaとbを出力のcとdに直接接続することができず，cとdの値を保存する機構，記憶素子が必要となり，組み合わせ回路として合成されません．「同じように記述したつもりでも違う回路になるかもしれない」ということを覚えておいてください．</p>
-
 <p>VHDLの <code>process</code> 文では，ブロッキング代入可能な <code>variable</code> 変数を利用できます． <code>variable</code> 変数は，順次処理文において便宜的に一時的な値を格納しておくためのものです．長く複雑な演算を行う場合に，ソース・コードの見通しをよくできます．
 たとえば，次のように使います．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -976,36 +854,26 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
 <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>ここでは，tmp0とtmp1がvariable変数です．ブロッキング代入における演算の結果がそれぞれ代入されています．ブロッキング代入のため，合成ツールがこの構文に出会ったところで，tmp0の値は(a and b)に，tmp1の値は(a or b)にすぐさま置き換わります．つまり，これは， <code>c &lt;= (a and b) xor (a or b)</code> という回路として合成されます．</p>
-
 <h2 id="制御構文">制御構文</h2>
-
 <p>VHDLでは，まるでソフトウェアを記述するように，条件分岐やCの <code>switch</code> 文のような制御構文が使えます．多くの制御構文は， <code>process</code> 文の中でのみ使用ができます．代表的なものを紹介します．</p>
-
-<h3 id="when-else">when 〜 else</h3>
-
+<h3 id="when--else">when 〜 else</h3>
 <p>同時処理文中で記述可能な制御構文です．条件に従って出力する値を選択できます．下記は， <code>a</code> と <code>b</code> の値が等しい場合は <code>X</code> を，等しくない場合には <code>Y</code> を <code>c</code> に代入する例です．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl">c <span style="color:#f92672">&lt;=</span> X <span style="color:#66d9ef">when</span> a <span style="color:#f92672">=</span> b <span style="color:#66d9ef">else</span> Y;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>制御構文というよりは，Cなどで， <code>c = (a==b) ? X : Y</code> と書く3項演算子に近いイメージですね．</p>
-
-<h3 id="if-then-elsif-else-end-if-条件分岐構文">if 〜 then 〜 elsif 〜 else 〜 end if &mdash; 条件分岐構文</h3>
-
+<h3 id="if--then--elsif--else--end-if-----条件分岐構文">if 〜 then 〜 elsif 〜 else 〜 end if &mdash; 条件分岐構文</h3>
 <p><code>process</code> 文の中でのみ使用できる条件分岐構文です．
 次は， <code>a</code> より <code>b</code> が大きい場合は処理文Xが，それ以外の場合は処理文Yが有効になります．また，処理文の中で <code>if</code> をネスト(入れ子に)することもできます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -1019,12 +887,10 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
 <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>また， <code>elsif</code> を使うと， <code>else</code> 節に重ねて次の条件を記述できます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -1042,13 +908,11 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
 <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>VHDLでは，単に信号の値に対する条件だけでなく，信号が変化するタイミングを使用した条件式が書けます．
 たとえば，変数clkが変化するタイミングはclk&rsquo;eventと書きますので，これを使って，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
@@ -1058,14 +922,11 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
 <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>のような条件文を作ることができます．この例では，「clkが変化し，かつ，clkが1」のときに処理文が実行されます．ハードウェアとしては，clk信号が立ち上がった瞬間に相当します．それ意外のタイミングでは，処理文は動作せず，値が保存し続けられます．これは，決まったタイミングで処理を実行する順序同期回路の設計に欠かせない表現です．</p>
-
 <p>ただし，2018年現在では，多くの場合，直接「クロックの立ち上がり」を表す， <code>rising_edge</code> という関数を使って，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
@@ -1075,16 +936,12 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
 <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>という記述が好まれます．</p>
-
-<h3 id="case-when-選択">case〜when &mdash; 選択</h3>
-
+<h3 id="casewhen-----選択">case〜when &mdash; 選択</h3>
 <p>CやJavaでいうところの <code>switch</code> 構文です．次に示す例では， <code>std_logic_vector</code> 型の変数aの値によって処理文X，Y，Zのどれかが実行されます．0，1，2という整数と一致させられるように， <code>to_integer</code> を使って <code>a</code> を <code>integer</code> 型に変換しています．ここで，VHDLの <code>case ~ when</code> 構文では，どれかの <code>when</code> に必ず該当するように記述する必要があることに注意しなければいけません．すべての <code>when</code> を列挙する代わりに「 <code>others</code> 」で残りすべての条件にマッチする場合を表現できます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1108,16 +965,12 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
 <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">case</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
-<h3 id="for-in-loop-繰り返し">for 〜 in 〜 loop &mdash; 繰り返し</h3>
-
+<h3 id="for--in--loop-----繰り返し">for 〜 in 〜 loop &mdash; 繰り返し</h3>
 <p>VHDLにおける繰り返し処理は，単に似たような処理を繰り返して記述する代わりに簡単に書けるようにするための構文です．実際には，合成時に繰り返し回数分のハードウェア回路が生成されます．</p>
-
 <p>たとえば，下記に示す処理は，5bitの <code>std_logic_vector</code> 型の変数 <code>a</code> と <code>std_logic</code> 型の変数 <code>b</code> が定義されているときに，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1141,12 +994,10 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
 <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>という記述は，次のような記述を簡単に記述したことに相当します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1174,16 +1025,12 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
 <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>作成した回路が動作する時ではなく，回路を作成する時点で繰り返し処理が解釈されることに注意してください．</p>
-
 <h2 id="組み合わせ回路のサブモジュール">組み合わせ回路のサブモジュール</h2>
-
 <p>VHDLでは，複雑な組み合わせ回路を生成するために， <code>function</code> というサブモジュールを記述できます． <code>function</code> は順次処理文で， <code>if</code> や <code>case</code> などの条件文を記述できますが，ノンブロッキング代入を用いることはできません． <code>function</code> は，次のように定義します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1209,27 +1056,21 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">f</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>これは，1ビットの変数である <code>a</code> と <code>b</code> を入力とする名前 <code>f</code> の <code>function</code> の定義です．入力された二つの値が等しいときに1を，異なるときに0を出力する関数です．</p>
-
 <p>呼び出し側では，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl">x <span style="color:#f92672">&lt;=</span> f(x, y)</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>などとします．xとyは，関数呼び出しに対する実引き数になります．</p>
-
 <p>また次のように，配列型の変数を入力あるいは出力する関数を定義できます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -1249,18 +1090,14 @@ c <span style="color:#f92672">&lt;=</span> a <span style="color:#66d9ef">and</sp
   <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">g</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>Cなどのソフトウェア・プログラミング言語の関数とは違い，関数の計算が終了するまで呼び出し側の処理が待たされるということはありません．
 複雑な組み合わせ回路を見通しよく記述できる書き方です．</p>
-
 <h2 id="おまじない">おまじない</h2>
-
 <p>実は，ここまで説明してきた <code>std_logic</code> などを利用するには，これらの機能が実装されたライブラリなどを読み込む必要があります．
 VHDLソース・コードの先頭に以下を記述します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
@@ -1270,19 +1107,12 @@ VHDLソース・コードの先頭に以下を記述します．</p>
 <span style="color:#66d9ef">use</span> ieee.numeric_std.<span style="color:#66d9ef">all</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <h1 id="verilog-hdlの基本文法のルール">Verilog HDLの基本文法のルール</h1>
-
 <p>Verilog HDLの基本的な文法を説明します．</p>
-
 <h2 id="コメント-1">コメント</h2>
-
 <p>多くのソフトウェア・プログラミング言語と同様に，Verilog HDLでもソースコード中にコメントを書くことができます．Verilog HDLでは，C++と同じように  <code>/* 〜 */</code>  で囲んだ部分や  <code>//</code>  から行末までがコメントになります．</p>
-
 <h2 id="モジュールの構成-1">モジュールの構成</h2>
-
 <p>図9に，Verlog HDLで記述するモジュールの概要を示します．VHDLでは，外枠の定義 <code>entity</code> と内部の定義 <code>architecture</code> が区別されていたのに対し，Verilog HDLにはそのような区別はありません． <code>module</code> の中に，外部と接続されるポートや関数内で使用する変数の宣言，処理内容などを記述します．</p>
-
 <figure class="center">
     <img src="../languages_figures/verilog_module_overview.png"
          alt="図9: Verilog HDLのモジュール定義の概要"/> <figcaption>
@@ -1290,11 +1120,8 @@ VHDLソース・コードの先頭に以下を記述します．</p>
         </figcaption>
 </figure>
 
-
 <h2 id="値の表現方法">値の表現方法</h2>
-
 <p>Verilog HDLでは，必要とするビット幅( <code>w</code> )と基数( <code>f</code> )を付けて「 <code>w'f値</code> 」という形式で即値を記述します．ビット幅は10進数で記述します．ビット幅と基数を省略すると10進数，32bitの値になります．表\ref{tbl:verilog_value}に，基数と記号と表現される数の関係を示します．</p>
-
 <table>
 <thead>
 <tr>
@@ -1304,7 +1131,6 @@ VHDLソース・コードの先頭に以下を記述します．</p>
 <th>10進数表記での値</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>2</td>
@@ -1312,21 +1138,18 @@ VHDLソース・コードの先頭に以下を記述します．</p>
 <td><code>8'b10</code></td>
 <td>2</td>
 </tr>
-
 <tr>
 <td>10</td>
 <td><code>d</code></td>
 <td><code>10'd10</code></td>
 <td>10</td>
 </tr>
-
 <tr>
-<td></td>
 <td></td>
 <td><code>10</code></td>
 <td>10</td>
+<td></td>
 </tr>
-
 <tr>
 <td>16</td>
 <td><code>h</code></td>
@@ -1335,11 +1158,8 @@ VHDLソース・コードの先頭に以下を記述します．</p>
 </tr>
 </tbody>
 </table>
-
-<h2 id="型-ネット型変数とレジスタ変数">型 &mdash; ネット型変数とレジスタ変数</h2>
-
+<h2 id="型-----ネット型変数とレジスタ変数">型 &mdash; ネット型変数とレジスタ変数</h2>
 <p>Verilog HDLの変数には，ネット変数とレジスタ変数があります．どちらも1bitの信号に相当する変数と，複数bitの信号を束にした配列変数を作れます．ネット変数とレジスタ変数の違いは，ハードウェアに則したワイヤ(配線)とレジスタ(記憶素子)を想起させるものですが，後で説明するように使える場面と使い方に違いがあります．表\ref{tbl:verilog_types}に，変数の型を示します．</p>
-
 <table>
 <thead>
 <tr>
@@ -1347,45 +1167,34 @@ VHDLソース・コードの先頭に以下を記述します．</p>
 <th>説明</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>wire</code></td>
 <td>1-bitのネット変数</td>
 </tr>
-
 <tr>
 <td><code>wire[n-1:0]</code></td>
 <td>n-bitのネット変数</td>
 </tr>
-
 <tr>
 <td><code>reg</code></td>
 <td>n-bitのレジスタ変数</td>
 </tr>
-
 <tr>
 <td><code>reg[n-1:0]</code></td>
 <td>n-bitのレジスタ変数</td>
 </tr>
 </tbody>
 </table>
-
-<h3 id="ネット変数-wire">ネット変数 &mdash; wire</h3>
-
+<h3 id="ネット変数-----wire">ネット変数 &mdash; wire</h3>
 <p>モジュールやゲート同士を接続する配線に名前を付けた変数が，ネット変数 <code>wire</code> です．ネット変数自身は値を保持することはできず，他から代入された値を次に伝達する役目を担う変数です．ハードウェアの配線そのものに相当します．</p>
-
-<h3 id="レジスタ変数-reg">レジスタ変数 &mdash; reg</h3>
-
+<h3 id="レジスタ変数-----reg">レジスタ変数 &mdash; reg</h3>
 <p>レジスタ変数 <code>reg</code> は，値を保存する記憶素子になることができ，変数自身が値を保持できます．組み合わせ回路も順序回路も構成できます．</p>
-
 <h3 id="配列変数">配列変数</h3>
-
 <p>配列変数 <code>wire[n-1:0]</code> ， <code>reg[n-1:0]</code> は，それぞれ <code>wire</code> あるいは <code>reg</code> からなるn-bitの変数に相当します．幅 <code>n</code> のネット変数</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
@@ -1394,63 +1203,51 @@ VHDLソース・コードの先頭に以下を記述します．</p>
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>と定義された変数aの各要素をa[0]，a[2:0]などとして取り出すことができます．前者はwire，後者はwire[2:0]の変数です．</p>
-
-<h2 id="モジュールの外枠の記述-module">モジュールの外枠の記述 &mdash; module</h2>
-
+<h2 id="モジュールの外枠の記述-----module">モジュールの外枠の記述 &mdash; module</h2>
 <p>Verilog HDLでは， <code>module</code> でハードウェア・モジュールの外枠を定義します．モジュールの名前と入出力の信号名を定義します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="color:#66d9ef">module</span> test(pClk, pReset, Q);
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>この文では， <code>pClk</code> ， <code>pReset</code> ， <code>Q</code> という名前の入出力信号を持つ <code>test</code> という名前のモジュールを定義しています．
 Verilog HDLでは，この <code>module</code> 文から</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="color:#66d9ef">endmodule</span>
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>というキーワードまでがモジュールの定義に相当します．
 moduleの末尾には‘;’(セミコロン)が必要ですが，endmoduleには付けないことに注意してください．
 ポート名だけを列挙する場合には，後で，各ポートの入出力方向と幅を定義する必要があります．</p>
-
 <p>少し前のVerilog-95</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="color:#66d9ef">module</span> test(pClk, pReset, Q);
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <h3 id="ポートの定義">ポートの定義</h3>
-
 <p>ポートとは，モジュールの入出力信号のことです．ポートの名前は，モジュール名に続く()の中に記述します．
 それぞれのポートの入出力は，モジュールの中で，「方向 型 変数名;」で宣言します．
 方向には， <code>input</code> (入力)と <code>output</code> (出力)， <code>inout</code> (入出力)の3種類があります．
- <code>module</code> 文の <code>()</code> 内に与えた信号線の型と入出力方向はモジュールの内部で定義します．
+<code>module</code> 文の <code>()</code> 内に与えた信号線の型と入出力方向はモジュールの内部で定義します．
 たとえば， <code>pClk</code> と <code>pReset</code> が1bitの入力， <code>Q</code> が1bitの出力信号であれば，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -1471,29 +1268,23 @@ moduleの末尾には‘;’(セミコロン)が必要ですが，endmoduleに�
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>と記述されます．</p>
-
 <p>通常Verilog HDLでは，1bitのwire変数は定義せずに使えるため，wireが省略されることがあります．
 もちろん，n-bitのポートを定義することもでます．Qが幅n-bitの出力ポートであれば，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="color:#66d9ef">output</span> <span style="color:#66d9ef">wire</span>[n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">0</span>] Q
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>と書けます．</p>
-
 <p>Verilog-2001以降をサポートする処理系の場合には，VHDLのように信号名の定義に型と変数を付けることができます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -1516,16 +1307,12 @@ moduleの末尾には‘;’(セミコロン)が必要ですが，endmoduleに�
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>と記述できます．</p>
-
 <h3 id="定数を定義する-1">定数を定義する</h3>
-
 <p>module宣言の後に，各モジュール内で有効な定数をparameter文で定義できます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
@@ -1536,20 +1323,14 @@ moduleの末尾には‘;’(セミコロン)が必要ですが，endmoduleに�
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>上記に示したモジュールtestの中では，widthを640という値として利用できます．</p>
-
 <h2 id="内部処理の記述">内部処理の記述</h2>
-
 <p>ポートの宣言に引き続いて，内部で使用する変数の宣言および処理本体を記述します．</p>
-
 <h2 id="変数の定義-1">変数の定義</h2>
-
 <p>処理に必要な変数をあらかじめ定義しておく必要があります．変数は，ネット接続型あるいはレジスタ型の型を伴って定義されます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
@@ -1558,27 +1339,21 @@ moduleの末尾には‘;’(セミコロン)が必要ですが，endmoduleに�
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>これは，ネット変数 <code>a</code> と幅16ビットのレジスタ変数 <code>b</code> を定義しています．</p>
-
 <p>また， <code>parameter</code> で定義した定数 <code>width</code> を用いて，次のように変数を定義することもできます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="color:#66d9ef">reg</span>[width<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">0</span>] c;
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <h2 id="演算子と演算-1">演算子と演算</h2>
-
 <p>代表的な演算子を表\ref{tbl:verilog_operator}にまとめました．
 論理演算における真と偽は，ネット変数やレジスタ変数の場合は <code>'1'</code> と <code>'0'</code> に対応します．
 n-bitの配列変数 <code>wire[n-1:0]</code> あるいは <code>reg[n-1:0]</code> の場合には，配列中に一つでも <code>'1'</code> である要素があれば真，さもなければ偽として判定されます．ビット論理演算子を配列変数に適用する場合は，対応する各要素同士について演算が適用されます．</p>
-
 <table>
 <thead>
 <tr>
@@ -1587,180 +1362,153 @@ n-bitの配列変数 <code>wire[n-1:0]</code> あるいは <code>reg[n-1:0]</cod
 <th>説明</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>論理演算</td>
 <td>a &amp;&amp; b</td>
 <td>論理積．aとbが共に真なら真．さもなければ偽．</td>
 </tr>
-
 <tr>
-<td></td>
 <td>a || b</td>
 <td>論理和．aとbのどちらか又は両方が真なら真．さもなければ偽．</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>!a</td>
 <td>否定．aが真なら偽．偽なら真</td>
+<td></td>
 </tr>
-
 <tr>
 <td>ビット論理演算</td>
 <td>a &amp; b</td>
-<td>論理積．aとbが共に&rsquo;1&rsquo;なら&rsquo;1&rsquo;．さもなければ&rsquo;0&rsquo;．</td>
+<td>論理積．aとbが共に'1&rsquo;なら'1&rsquo;．さもなければ'0&rsquo;．</td>
 </tr>
-
 <tr>
-<td></td>
 <td>a |  b</td>
-<td>論理和．aとbのどちらか又は両方が&rsquo;1&rsquo;なら&rsquo;1&rsquo;．さもなければ&rsquo;0&rsquo;．</td>
-</tr>
-
-<tr>
+<td>論理和．aとbのどちらか又は両方が'1&rsquo;なら'1&rsquo;．さもなければ'0&rsquo;．</td>
 <td></td>
+</tr>
+<tr>
 <td>a ^ b</td>
-<td>排他的論理和．aとbのどちらか一方が&rsquo;1&rsquo;なら&rsquo;1&rsquo;．さもなければ&rsquo;0&rsquo;．</td>
-</tr>
-
-<tr>
+<td>排他的論理和．aとbのどちらか一方が'1&rsquo;なら'1&rsquo;．さもなければ'0&rsquo;．</td>
 <td></td>
-<td>~a</td>
-<td>論理否定．aが&rsquo;1&rsquo;なら&rsquo;0&rsquo;．さもなければ&rsquo;1&rsquo;．</td>
 </tr>
-
+<tr>
+<td>~a</td>
+<td>論理否定．aが'1&rsquo;なら'0&rsquo;．さもなければ'1&rsquo;．</td>
+<td></td>
+</tr>
 <tr>
 <td>比較演算</td>
 <td>a == b</td>
 <td>aとbが等しい場合 <code>true</code> ．さもなければ <code>false</code></td>
 </tr>
-
 <tr>
-<td></td>
 <td>a != b</td>
 <td>aとbが等しくなければ場合 <code>true</code> ．さもなければ <code>false</code></td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a &gt; b</td>
 <td>aがbがより大きいなら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a &lt; b</td>
 <td>aとbがより小さいなら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a &gt;= b</td>
 <td>aとb以上なら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a &lt;= b</td>
 <td>aとb以下なら <code>true</code> ．さもなければ <code>false</code> ．(*1)</td>
+<td></td>
 </tr>
-
 <tr>
 <td>算術演算</td>
 <td>a + b</td>
 <td>aとbの足し算</td>
 </tr>
-
 <tr>
-<td></td>
 <td>a - b</td>
 <td>aとbの引き算</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a * b</td>
 <td>aとbの引き算</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a / b</td>
 <td>aとbの割り算</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a % b</td>
 <td>aとbの割り算の余り</td>
+<td></td>
 </tr>
-
 <tr>
 <td>シフト演算</td>
-<td>a &gt;&gt; b</td>
+<td>a &raquo; b</td>
 <td>aとbビット，右にシフト</td>
 </tr>
-
 <tr>
-<td></td>
-<td>a &lt;&lt; b</td>
+<td>a &laquo; b</td>
 <td>aをbビット，左にシフト</td>
+<td></td>
 </tr>
-
 <tr>
 <td>条件演算</td>
 <td>a ? b : c</td>
 <td>aが真の時b，偽のときc</td>
 </tr>
-
 <tr>
 <td>配列操作</td>
 <td>{a,b,c}</td>
 <td>aとbとcをこの順に並べた信号線の束を作る</td>
 </tr>
-
 <tr>
-<td></td>
 <td>a[b]</td>
 <td>aのb番目の信号を取り出す</td>
-</tr>
-
-<tr>
 <td></td>
+</tr>
+<tr>
 <td>a[b:c]</td>
 <td>aのb番目からc番目の信号線の束を取り出す</td>
+<td></td>
+</tr>
+<tr>
+<td>Verilog HDLで用いられる演算の例</td>
+<td></td>
+<td></td>
 </tr>
 </tbody>
 </table>
-
-<p>Verilog HDLで用いられる演算の例</p>
-
 <h3 id="演算結果の代入-1">演算結果の代入</h3>
-
 <p>演算の結果をネット変数あるいはレジスタ変数に代入できます．
 ネット型変数への代入には <code>assign</code> 命令を使用して，下記のように記述します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="color:#66d9ef">assign</span> c <span style="color:#f92672">=</span> a <span style="color:#f92672">&amp;</span> b;
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>これは，ハードウェア的には，演算の結果を信号線に接続することに相当します．
 ネット変数の代入は後述の同時処理文としてしか記述できません．</p>
-
 <p>一方，レジスタ変数への代入では，ブロッキング代入とノンブロッキング代入の両方が使えます．
 Verilog HDLでは，それぞれ下記のように記述します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
@@ -1769,67 +1517,53 @@ Verilog HDLでは，それぞれ下記のように記述します．</p>
 </span></code></pre></td></tr></table>
 </div>
 </div>
-
 <p>たとえば， <code>a + b</code> の演算結果をノンブロッキング代入する場合には，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog">c <span style="color:#f92672">&lt;=</span> a <span style="color:#f92672">+</span> b;
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>のように記述します．
 レジスタ変数への値の代入は，ブロッキング代入とノンブロッキング代入のどちらも，
 後で説明する順次処理文内でのみ使えます．</p>
-
 <h3 id="型の変換-1">型の変換</h3>
-
 <p>VHDLが型に対して厳格であるのに対して，Verilog HDLでは暗黙のうちに型が変換されます．
 意識せずに異なるビット幅の変数を演算，代入できます．</p>
-
 <h3 id="シフト演算-1">シフト演算</h3>
-
 <p>VHDLと異なり，Verilog HDLにはシフト演算子がありますが，シフト演算は大きな回路になってしまいます．
 定数分のシフトを行いたい場合は，配列の結合演算を用いて実装する方が小さな回路として実現できます．
 たとえば，配列変数reg[n-1:0]のcounterを右に1bitシフトしたい場合は，下記のようになります．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog">{<span style="color:#ae81ff">1</span><span style="color:#ae81ff">&#39;b0</span>, counter[n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">1</span>]};
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>また，左に2つシフトしたい場合には，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog">{counter<span style="color:#960050;background-color:#1e0010">［</span>n<span style="color:#f92672">-</span><span style="color:#ae81ff">3</span><span style="color:#f92672">:</span><span style="color:#ae81ff">0</span><span style="color:#960050;background-color:#1e0010">］</span>, <span style="color:#ae81ff">2</span><span style="color:#ae81ff">&#39;b00</span>};
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>のように記述します．</p>
-
 <h2 id="同時処理文-2">同時処理文</h2>
-
 <p>ネット型変数の演算結果の代入は，同時処理文を記述します．
 記述されたすべての同時処理文は，合成ツールにより同時に解析され，回路として合成されます．
 つまり，記述された内容は，その順序に依存しません．たとえば，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
@@ -1838,12 +1572,10 @@ Verilog HDLでは，それぞれ下記のように記述します．</p>
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>という同時処理文の列も，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
@@ -1852,18 +1584,14 @@ Verilog HDLでは，それぞれ下記のように記述します．</p>
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>の列も，同じように図8の回路が合成されます．</p>
-
-<h2 id="順次処理文-always文">順次処理文〜always文</h2>
-
+<h2 id="順次処理文always文">順次処理文〜always文</h2>
 <p><code>always</code> 文は，順次処理文を記述するためのブロックを作るものです．順次処理文では，記述された順序に従って意味が解析され，
 回路が合成されます．そのため，複雑な制御構文を使用できます．
 基本的な構文を下記に示します．変数 <code>c</code> ， <code>d</code> は <code>reg</code> 変数です．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -1876,24 +1604,20 @@ Verilog HDLでは，それぞれ下記のように記述します．</p>
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>ここで， <code>always @()</code> の「 <code>()</code> 」内の変数のリストをセンシティビティ・リストといいます．
 このリストに列挙した変数が変化すると，プロセス文の中の回路の値が変更されます．
 ノンブロッキング代入は，always内の処理の解釈がすべて完了したタイミングで，同時更新されることに注意してください．
 このalways文は，図10のような回路になります．</p>
-
 <p><code>always</code> 文の中にある入力変数(式の右辺にでてくる変数)がすべてセンシティビティ・リストに列挙されている場合，
 入力が変化する度に回路が動作し，出力変数(式の左辺)の値が変更されます．
 つまり，その <code>always</code> 文は，何も状態を保存する必要がありません．
 そのため，記憶素子を必要としない組み合わせ回路として構成されます．
 ここで，入力に対して常に出力が生成されない場合とは，条件分岐などによって，
 入力信号の値によって値の代入が発生しない出力信号がある場合です．</p>
-
 <p>次のような <code>always</code> 文を考えてみます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -1906,20 +1630,17 @@ Verilog HDLでは，それぞれ下記のように記述します．</p>
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>ここでは，センシティビティ・リストに「 <code>b</code> 」がなく，入力変数が全部列挙されていません．
 この回路では，bの値が変化しても出力先であるcとdの値は変化しません．
 つまり，図10のように，入力であるaとbを出力のcとdに直接接続することができず，
- <code>c</code> と <code>d</code> の値を保存する機構，記憶素子が必要となり，組み合わせ回路としては合成されません．
+<code>c</code> と <code>d</code> の値を保存する機構，記憶素子が必要となり，組み合わせ回路としては合成されません．
 「同じように記述したつもりでも違う回路になるかもしれない」ということを覚えておいてください．</p>
-
 <p><code>always</code> の中では， <code>reg</code> 変数にブロッキング代入することもできます．
 ブロッキング代入では， <code>always</code> 中のほかの代入に関係なく，その時点で代入が発生し値が置き換わります．
 たとえば，次のような <code>always</code> 文を考えます．ここで， <code>tmp0</code> ， <code>tmp1</code> ， <code>c</code> はすべて <code>reg</code> 変数とします．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -1934,19 +1655,16 @@ Verilog HDLでは，それぞれ下記のように記述します．</p>
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>この場合， <code>tmp0</code> と <code>tmp1</code> ともに，ブロッキング代入で演算の結果が代入されています．
 ブロッキング代入なので，合成ツールがこの構文に出会ったところで， <code>tmp0</code> は <code>(a &amp; b)</code> に，
- <code>tmp1</code> は <code>(a \</code>  b)|にすぐさま置き換わます．つまり，これは単に <code>c &lt;= (a &amp; b) ^ (a \</code>  b)|という回路に合成されます．</p>
-
+<code>tmp1</code> は <code>(a \</code>  b)|にすぐさま置き換わます．つまり，これは単に <code>c &lt;= (a &amp; b) ^ (a \</code>  b)|という回路に合成されます．</p>
 <p>センシティビティ・リストには， <code>@(a and b)</code> という条件式が記述できます．
 これはaとbのどちらかが変化した場合ではなく， <code>(a and b)</code> が変化した場合に <code>always</code> の中の処理を実行できるようにします．
 条件式には，信号の立ち上がり，あるいは立ち下がり条件を使用することもできます．
 立ち上がりは「posedge」，立ち下がりは「negedge」というキーワードを使います．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
@@ -1957,25 +1675,19 @@ Verilog HDLでは，それぞれ下記のように記述します．</p>
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>これは，「clkの立ち上がり」のときに処理文が実行されることを意味します．
 ハードウェア的には，clk信号が立ち上がった瞬間に相当し，それ意外のタイミングでは，処理文は動作せず，値が保存し続けられます．
 これは，決まったタイミングで処理を実行する順序同期回路の設計に欠かせない表現です．</p>
-
 <h2 id="制御構文-1">制御構文</h2>
-
 <p>ソフトウェア・プログミングのように，条件分岐のifやCでいう <code>switch</code> 構文のような制御構文が使えます．
 多くの制御構文は， <code>always</code> 文の中でのみ使用することができます．代表的なものを次に説明します．</p>
-
-<h3 id="if-begin-end-else-begin-end-条件分岐構文">if 〜 begin 〜 end else begin 〜 end &mdash; 条件分岐構文</h3>
-
+<h3 id="if--begin--end-else-begin--end-----条件分岐構文">if 〜 begin 〜 end else begin 〜 end &mdash; 条件分岐構文</h3>
 <p><code>always</code> 文の中でのみ使用できる条件分岐構文です．
 次に示す例では， <code>a</code> が <code>b</code> より大きければ処理文 <code>X</code> が，それ以外の場合は処理文 <code>Y</code> が実行されます．
 また，処理文の中で，ifをネスト(入れ子)にすることもできます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -1990,17 +1702,14 @@ Verilog HDLでは，それぞれ下記のように記述します．</p>
 </code></pre></td></tr></table>
 </div>
 </div>
-
-<h3 id="case-選択">case &mdash; 選択</h3>
-
+<h3 id="case-----選択">case &mdash; 選択</h3>
 <p>CやJavaでいうところのswitch構文です．
 次に示す例では，変数 <code>a</code> の値によって処理文X，Y，Zに分岐しています．
- <code>case</code> 構文では，どれかのケースに該当するように記述しましょう．
+<code>case</code> 構文では，どれかのケースに該当するように記述しましょう．
 もちろん，すべての条件を列挙してもよいのですが，「 <code>default</code> 」でどんな値にもマッチする場合を記述できます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -2025,16 +1734,13 @@ Verilog HDLでは，それぞれ下記のように記述します．</p>
 </code></pre></td></tr></table>
 </div>
 </div>
-
-<h3 id="繰り返し構文-for">繰り返し構文 &mdash; for</h3>
-
+<h3 id="繰り返し構文-----for">繰り返し構文 &mdash; for</h3>
 <p>Verilog HDLにおける繰り返し処理は，単に似たような処理を繰り返して記述する代わりに簡単に書けるようにするための構文です．
 実際には，繰り返し回数分のハードウェア回路が生成されます．
 たとえば，下記に示す処理ですが，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -2049,12 +1755,10 @@ b <span style="color:#f92672">&lt;=</span> tmp;
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>これは，次のような代入文を記述することに相当します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -2073,16 +1777,13 @@ b <span style="color:#f92672">&lt;=</span> tmp;
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <h2 id="組み合わせ回路のサブモジュール-1">組み合わせ回路のサブモジュール</h2>
-
 <p>Verilog HDLでは，複雑な組み合わせ回路を生成するために， <code>function</code> というサブモジュールを記述できます．
- <code>function</code> は順次処理文で， <code>if</code> や <code>case</code> などの条件文を記述できますが，
+<code>function</code> は順次処理文で， <code>if</code> や <code>case</code> などの条件文を記述できますが，
 ノンブロッキング代入を用いることはできません． <code>function</code> は，次のように定義します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -2109,42 +1810,34 @@ b <span style="color:#f92672">&lt;=</span> tmp;
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>これは，1ビットのネット型信号である <code>a</code> と <code>b</code> を入力とする名前 <code>f</code> の <code>function</code> の定義です．
- <code>function</code> の中で <code>f</code> に値を代入すると，関数の返り値としてセットされます．
-この例は，入力された二つの値が等しいときに&rsquo;1&rsquo;を，異なるときに&rsquo;0&rsquo;を出力する関数です．</p>
-
+<code>function</code> の中で <code>f</code> に値を代入すると，関数の返り値としてセットされます．
+この例は，入力された二つの値が等しいときに'1&rsquo;を，異なるときに'0&rsquo;を出力する関数です．</p>
 <p>呼び出し側では，</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="color:#66d9ef">assign</span> x <span style="color:#f92672">=</span> f(x, y)
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>または，always文で</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog">x <span style="color:#f92672">&lt;=</span> f(x, y)
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>などとして呼び出せます．ここで，xとyは，関数呼び出しに対する実引数になります．</p>
-
 <p>また，次のように，配列型の変数を入力あるいは出力する関数を定義できます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-verilog" data-lang="verilog"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
@@ -2163,23 +1856,17 @@ b <span style="color:#f92672">&lt;=</span> tmp;
 </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>ここで定義した <code>function</code> は，Cの関数とは違い，関数の計算が終了するまで呼び出し側の処理が待たされるような制御を伴うことはなく，
 複雑な組み合わせ回路を見通し良く記述するための書き方です．</p>
-
 <h1 id="まとめ">まとめ</h1>
-
 <p>ハードウェア記述言語であるVHDLとVerilog HDLの基本について説明しました．
 どちらも一般のソフトウェア・プログラミング言語ではなじみの薄い，</p>
-
 <ul>
 <li>ノンブロッキング代入とブロッキング代入</li>
 <li>同時処理文や順次処理文</li>
 </ul>
-
 <p>といった，ハードウェアを設計するための特有の特徴をもっています．
 とはいえ，分岐構文などを使うと，ハードウェアで実装したい処理をソフトウェア的に設計できます．</p>
-
 <p>今回は，基本的な文法の説明をかけあしで紹介しました．
 ソフトウェア・プログラミングを習得する際にはある程度，文法を覚えたあとは，
 他人の書いたコードをたくさん読むことで，言語をスムーズに習得できます．
@@ -2187,9 +1874,7 @@ b <span style="color:#f92672">&lt;=</span> tmp;
 たとえば，OpenCores.orgには，さまざまなHDLコードが投稿されており，
 また，米国Sun Microsystems社からは，SPARCプロセッサのHDLコードが公開されています．
 習うより慣れろで，どんどん読み書きしてみましょう．</p>
-
 <h1 id="参考文献">参考文献</h1>
-
 <ol>
 <li>Douglas L.Perry(著)，メンター・グラフィックス・ジャパン株式会社(翻訳)；VHDL(Ascii software science—Language)，1996年10月，アスキー．</li>
 <li>Bhasker(著)，デザインウェーブ企画室(翻訳)；VHDL言語入門—ハードウェア記述言語によるロジック設計マスタリング(C&amp;E TUTORIAL)，1995年7月，CQ出版社．</li>
@@ -2209,96 +1894,95 @@ b <span style="color:#f92672">&lt;=</span> tmp;
 
   <aside class="book-toc levels-6 fixed">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#はじめに">はじめに</a></li>
-<li><a href="#ハードウェア記述言語の基本概念">ハードウェア記述言語の基本概念</a>
-<ul>
-<li><a href="#構造の基本-エンティティ-モジュール">構造の基本 &mdash; エンティティ/モジュール</a></li>
-<li><a href="#2種類の基本処理方法-同時処理文と順次処理文">2種類の基本処理方法 &mdash; 同時処理文と順次処理文</a>
-<ul>
-<li>
-<ul>
-<li><a href="#同時処理文">同時処理文</a></li>
-<li><a href="#順次処理文">順次処理文</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#使用できる変数-数値と信号">使用できる変数 &mdash; 数値と信号</a></li>
-<li><a href="#演算の基本-算術-論理減算-比較-代入">演算の基本 &mdash; 算術/論理減算，比較，代入</a></li>
-<li><a href="#値の基本-0-1-z-x">値の基本 &mdash; &lsquo;0&rsquo;，&rsquo;1&rsquo;，&rsquo;Z&rsquo;，&rsquo;X&rsquo;</a></li>
-<li><a href="#文末には-を付ける">文末には「;」を付ける</a></li>
-</ul></li>
-<li><a href="#vhdlの基本文法のルール">VHDLの基本文法のルール</a>
-<ul>
-<li><a href="#コメント">コメント</a></li>
-<li><a href="#モジュールの構成">モジュールの構成</a></li>
-<li><a href="#即値の表現方法">即値の表現方法</a></li>
-<li><a href="#型">型</a>
-<ul>
-<li><a href="#1-bitの信号">1-bitの信号</a></li>
-<li><a href="#n-bitの信号">n-bitの信号</a></li>
-</ul></li>
-<li><a href="#モジュールの外枠の記述-entity">モジュールの外枠の記述 &mdash; entity</a>
-<ul>
-<li><a href="#ポートを定義する">ポートを定義する</a></li>
-<li><a href="#定数を定義する">定数を定義する</a></li>
-</ul></li>
-<li><a href="#内部処理の記述-architecture">内部処理の記述 &mdash; architecture</a></li>
-<li><a href="#変数の定義">変数の定義</a></li>
-<li><a href="#演算子と演算">演算子と演算</a>
-<ul>
-<li><a href="#演算結果の代入">演算結果の代入</a></li>
-<li><a href="#型の変換">型の変換</a></li>
-<li><a href="#シフト演算">シフト演算</a></li>
-</ul></li>
-<li><a href="#同時処理文-1">同時処理文</a></li>
-<li><a href="#順次処理文-process文">順次処理文 &mdash; process文</a></li>
-<li><a href="#制御構文">制御構文</a>
-<ul>
-<li><a href="#when-else">when 〜 else</a></li>
-<li><a href="#if-then-elsif-else-end-if-条件分岐構文">if 〜 then 〜 elsif 〜 else 〜 end if &mdash; 条件分岐構文</a></li>
-<li><a href="#case-when-選択">case〜when &mdash; 選択</a></li>
-<li><a href="#for-in-loop-繰り返し">for 〜 in 〜 loop &mdash; 繰り返し</a></li>
-</ul></li>
-<li><a href="#組み合わせ回路のサブモジュール">組み合わせ回路のサブモジュール</a></li>
-<li><a href="#おまじない">おまじない</a></li>
-</ul></li>
-<li><a href="#verilog-hdlの基本文法のルール">Verilog HDLの基本文法のルール</a>
-<ul>
-<li><a href="#コメント-1">コメント</a></li>
-<li><a href="#モジュールの構成-1">モジュールの構成</a></li>
-<li><a href="#値の表現方法">値の表現方法</a></li>
-<li><a href="#型-ネット型変数とレジスタ変数">型 &mdash; ネット型変数とレジスタ変数</a>
-<ul>
-<li><a href="#ネット変数-wire">ネット変数 &mdash; wire</a></li>
-<li><a href="#レジスタ変数-reg">レジスタ変数 &mdash; reg</a></li>
-<li><a href="#配列変数">配列変数</a></li>
-</ul></li>
-<li><a href="#モジュールの外枠の記述-module">モジュールの外枠の記述 &mdash; module</a>
-<ul>
-<li><a href="#ポートの定義">ポートの定義</a></li>
-<li><a href="#定数を定義する-1">定数を定義する</a></li>
-</ul></li>
-<li><a href="#内部処理の記述">内部処理の記述</a></li>
-<li><a href="#変数の定義-1">変数の定義</a></li>
-<li><a href="#演算子と演算-1">演算子と演算</a>
-<ul>
-<li><a href="#演算結果の代入-1">演算結果の代入</a></li>
-<li><a href="#型の変換-1">型の変換</a></li>
-<li><a href="#シフト演算-1">シフト演算</a></li>
-</ul></li>
-<li><a href="#同時処理文-2">同時処理文</a></li>
-<li><a href="#順次処理文-always文">順次処理文〜always文</a></li>
-<li><a href="#制御構文-1">制御構文</a>
-<ul>
-<li><a href="#if-begin-end-else-begin-end-条件分岐構文">if 〜 begin 〜 end else begin 〜 end &mdash; 条件分岐構文</a></li>
-<li><a href="#case-選択">case &mdash; 選択</a></li>
-<li><a href="#繰り返し構文-for">繰り返し構文 &mdash; for</a></li>
-</ul></li>
-<li><a href="#組み合わせ回路のサブモジュール-1">組み合わせ回路のサブモジュール</a></li>
-</ul></li>
-<li><a href="#まとめ">まとめ</a></li>
-<li><a href="#参考文献">参考文献</a></li>
-</ul>
+  <ul>
+    <li><a href="#構造の基本-----エンティティモジュール">構造の基本 &mdash; エンティティ/モジュール</a></li>
+    <li><a href="#2種類の基本処理方法-----同時処理文と順次処理文">2種類の基本処理方法 &mdash; 同時処理文と順次処理文</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#使用できる変数-----数値と信号">使用できる変数 &mdash; 数値と信号</a></li>
+    <li><a href="#演算の基本-----算術論理減算比較代入">演算の基本 &mdash; 算術/論理減算，比較，代入</a></li>
+    <li><a href="#値の基本-----01zx">値の基本 &mdash; &lsquo;0&rsquo;，&lsquo;1&rsquo;，&lsquo;Z&rsquo;，&lsquo;X&rsquo;</a></li>
+    <li><a href="#文末にはを付ける">文末には「;」を付ける</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#コメント">コメント</a></li>
+    <li><a href="#モジュールの構成">モジュールの構成</a></li>
+    <li><a href="#即値の表現方法">即値の表現方法</a></li>
+    <li><a href="#型">型</a>
+      <ul>
+        <li><a href="#1-bitの信号">1-bitの信号</a></li>
+        <li><a href="#n-bitの信号">n-bitの信号</a></li>
+      </ul>
+    </li>
+    <li><a href="#モジュールの外枠の記述-----entity">モジュールの外枠の記述 &mdash; entity</a>
+      <ul>
+        <li><a href="#ポートを定義する">ポートを定義する</a></li>
+        <li><a href="#定数を定義する">定数を定義する</a></li>
+      </ul>
+    </li>
+    <li><a href="#内部処理の記述-----architecture">内部処理の記述 &mdash; architecture</a></li>
+    <li><a href="#変数の定義">変数の定義</a></li>
+    <li><a href="#演算子と演算">演算子と演算</a>
+      <ul>
+        <li><a href="#演算結果の代入">演算結果の代入</a></li>
+        <li><a href="#型の変換">型の変換</a></li>
+        <li><a href="#シフト演算">シフト演算</a></li>
+      </ul>
+    </li>
+    <li><a href="#同時処理文-1">同時処理文</a></li>
+    <li><a href="#順次処理文-----process文">順次処理文 &mdash; process文</a></li>
+    <li><a href="#制御構文">制御構文</a>
+      <ul>
+        <li><a href="#when--else">when 〜 else</a></li>
+        <li><a href="#if--then--elsif--else--end-if-----条件分岐構文">if 〜 then 〜 elsif 〜 else 〜 end if &mdash; 条件分岐構文</a></li>
+        <li><a href="#casewhen-----選択">case〜when &mdash; 選択</a></li>
+        <li><a href="#for--in--loop-----繰り返し">for 〜 in 〜 loop &mdash; 繰り返し</a></li>
+      </ul>
+    </li>
+    <li><a href="#組み合わせ回路のサブモジュール">組み合わせ回路のサブモジュール</a></li>
+    <li><a href="#おまじない">おまじない</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#コメント-1">コメント</a></li>
+    <li><a href="#モジュールの構成-1">モジュールの構成</a></li>
+    <li><a href="#値の表現方法">値の表現方法</a></li>
+    <li><a href="#型-----ネット型変数とレジスタ変数">型 &mdash; ネット型変数とレジスタ変数</a>
+      <ul>
+        <li><a href="#ネット変数-----wire">ネット変数 &mdash; wire</a></li>
+        <li><a href="#レジスタ変数-----reg">レジスタ変数 &mdash; reg</a></li>
+        <li><a href="#配列変数">配列変数</a></li>
+      </ul>
+    </li>
+    <li><a href="#モジュールの外枠の記述-----module">モジュールの外枠の記述 &mdash; module</a>
+      <ul>
+        <li><a href="#ポートの定義">ポートの定義</a></li>
+        <li><a href="#定数を定義する-1">定数を定義する</a></li>
+      </ul>
+    </li>
+    <li><a href="#内部処理の記述">内部処理の記述</a></li>
+    <li><a href="#変数の定義-1">変数の定義</a></li>
+    <li><a href="#演算子と演算-1">演算子と演算</a>
+      <ul>
+        <li><a href="#演算結果の代入-1">演算結果の代入</a></li>
+        <li><a href="#型の変換-1">型の変換</a></li>
+        <li><a href="#シフト演算-1">シフト演算</a></li>
+      </ul>
+    </li>
+    <li><a href="#同時処理文-2">同時処理文</a></li>
+    <li><a href="#順次処理文always文">順次処理文〜always文</a></li>
+    <li><a href="#制御構文-1">制御構文</a>
+      <ul>
+        <li><a href="#if--begin--end-else-begin--end-----条件分岐構文">if 〜 begin 〜 end else begin 〜 end &mdash; 条件分岐構文</a></li>
+        <li><a href="#case-----選択">case &mdash; 選択</a></li>
+        <li><a href="#繰り返し構文-----for">繰り返し構文 &mdash; for</a></li>
+      </ul>
+    </li>
+    <li><a href="#組み合わせ回路のサブモジュール-1">組み合わせ回路のサブモジュール</a></li>
+  </ul>
 </nav>
   </aside>
 

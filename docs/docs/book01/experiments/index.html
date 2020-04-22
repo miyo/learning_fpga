@@ -9,7 +9,7 @@
 ストップウォッチを作ってみよう ここでは，
  アクションボタンを押すとミリ秒毎のカウントアップを開始する カウント中に，アクションボタンを押すとカウントを一時停止する 一時停止中に，アクションボタンを押すとカウントを再開する リセットボタンを押すとカウントを0にクリアする  という機能をもったストップウォッチを作ってみましょう．
 残念ながら，ZYBO Z7-20には，7セグメントLEDのような数字を表示する分かりやすい表示器はありませんので，4つのLEDと2つの3色LEDを使って数を表現するとよいでしょう．
-次のリストはストップウォッチを実装するためのトップモジュールの例です．3色LEDの明るさを適当に調節するために，PWMモジュールを使って出力を変調しています．PWMモジュールによって，たとえば\verb|&lsquo;1&rsquo;|を出力する場合でも，適当なタイミングで&rsquo;1&rsquo;と&rsquo;0&rsquo;がまぜられることで明るさを抑えることができます．
+次のリストはストップウォッチを実装するためのトップモジュールの例です．3色LEDの明るさを適当に調節するために，PWMモジュールを使って出力を変調しています．PWMモジュールによって，たとえば\verb|&#39;1&#39;|を出力する場合でも，適当なタイミングで&#39;1&rsquo;と&#39;0&rsquo;がまぜられることで明るさを抑えることができます．
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107  library ieee; use ieee." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://miyo.github.io/learning_fpga/docs/book01/experiments/" />
@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
 
 
-<script defer src="/learning_fpga/search.min.431de68ae73daaa1e72319914f918035c9fb6938698072b15278916071098257.js" integrity="sha256-Qx3miuc9qqHnIxmRT5GANcn7aThpgHKxUniRYHEJglc="></script>
+<script defer src="/learning_fpga/search.min.8c84631aa6c883d5e6ae1d4496813354cba457a09ad7582f7ca81e6ac75f76e0.js" integrity="sha256-jIRjGqbIg9Xmrh1EloEzVMukV6Ca11gvfKgeasdfduA="></script>
 
 <!--
 Made with Book Theme
@@ -192,6 +192,32 @@ https://github.com/alex-shpak/hugo-book
 
   <li >
     
+      <span>Intel活用編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
       <span>Xilinx活用編</span>
     
 
@@ -264,34 +290,23 @@ https://github.com/alex-shpak/hugo-book
 </header>
 
       
-<article class="markdown">
-
-<p>HDLのいろいろな記述方法を使って，少し複雑なモジュールの設計に取り組んでみましょう．</p>
-
+<article class="markdown"><p>HDLのいろいろな記述方法を使って，少し複雑なモジュールの設計に取り組んでみましょう．</p>
 <h1 id="はじめに">はじめに</h1>
-
 <p>これまでに学んできた内容を利用して，少し応用的な実験に取り組んでみましょう．</p>
-
 <h1 id="ストップウォッチを作ってみよう">ストップウォッチを作ってみよう</h1>
-
 <p>ここでは，</p>
-
 <ul>
 <li>アクションボタンを押すとミリ秒毎のカウントアップを開始する</li>
 <li>カウント中に，アクションボタンを押すとカウントを一時停止する</li>
 <li>一時停止中に，アクションボタンを押すとカウントを再開する</li>
 <li>リセットボタンを押すとカウントを0にクリアする</li>
 </ul>
-
 <p>という機能をもったストップウォッチを作ってみましょう．</p>
-
 <p>残念ながら，ZYBO Z7-20には，7セグメントLEDのような数字を表示する分かりやすい表示器はありませんので，4つのLEDと2つの3色LEDを使って数を表現するとよいでしょう．</p>
-
-<p>次のリストはストップウォッチを実装するためのトップモジュールの例です．3色LEDの明るさを適当に調節するために，PWMモジュールを使って出力を変調しています．PWMモジュールによって，たとえば\verb|&lsquo;1&rsquo;|を出力する場合でも，適当なタイミングで&rsquo;1&rsquo;と&rsquo;0&rsquo;がまぜられることで明るさを抑えることができます．</p>
-
+<p>次のリストはストップウォッチを実装するためのトップモジュールの例です．3色LEDの明るさを適当に調節するために，PWMモジュールを使って出力を変調しています．PWMモジュールによって，たとえば\verb|'1'|を出力する場合でも，適当なタイミングで'1&rsquo;と'0&rsquo;がまぜられることで明るさを抑えることができます．</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  4
@@ -509,19 +524,12 @@ https://github.com/alex-shpak/hugo-book
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p><code>stopwatch</code>モジュールを実装して，完成させてみましょう．</p>
-
 <h1 id="シリアル通信に挑戦してみよう">シリアル通信に挑戦してみよう</h1>
-
 <p>最近のパソコンの外部機器のI/OのほとんどはUSBです．ノート・パソコンは勿論，省スペースのデスクトップ・パソコンにさえ，RS-232-Cのシリアル通信のポートが搭載されなくなってきました．それでも，送信と受信の2本で通信可能なRS-232-Cは，パソコンとFPGAの間やFPGAとFPGAの間でデータを手軽にやりとりする手段として基本的かつ必要不可欠な存在です．</p>
-
 <p>シリアル・ポートのないノート・パソコンでも，市販のUSB-シリアル変換ケーブルやBluetooth-シリアル変換モジュールを使って簡単に接続できます．</p>
-
 <h2 id="シリアル通信のしくみ">シリアル通信のしくみ</h2>
-
 <p>シリアル通信では，受信と送信で独立したポートを持ちます．機器を直結する場合には，お互いの送受信ポートをクロスして結線します(図\ref{fig:serial_comm})．</p>
-
 <figure class="center">
     <img src="../experiments_figures/serial_comm.png"
          alt="図l: シリアル通信の結線"/> <figcaption>
@@ -529,9 +537,7 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
-<p>RS-232-Cでは，図\ref{fig:serial_comm_format}のように，8ビットのデータにスタート・ビット（&rsquo;0&rsquo;）とストップ・ビット（&rsquo;1&rsquo;）を付加してデータを通信します．接続した機器同士であらかじめ決めた速度(たとえば19200bpsなど)で信号を送受信することで，共通したクロックを持つことなくデータの送受信ができます．</p>
-
+<p>RS-232-Cでは，図\ref{fig:serial_comm_format}のように，8ビットのデータにスタート・ビット（&lsquo;0&rsquo;）とストップ・ビット（&lsquo;1&rsquo;）を付加してデータを通信します．接続した機器同士であらかじめ決めた速度(たとえば19200bpsなど)で信号を送受信することで，共通したクロックを持つことなくデータの送受信ができます．</p>
 <figure class="center">
     <img src="../experiments_figures/serial_comm_format.png"
          alt="図2: シリアル通信の信号の伝送方式"/> <figcaption>
@@ -539,14 +545,11 @@ https://github.com/alex-shpak/hugo-book
         </figcaption>
 </figure>
 
-
 <h2 id="送信モジュール">送信モジュール</h2>
-
 <p>決められた速度で信号をパタパタと変化させるだけです．ただし，一般に，シリアル通信の速度は回路の動作クロックに対して，とても遅いので，データを送信している途中に送るべき信号を更新してしまわないようにブロックする仕組みが必要です．VHDLによる実装例を示します．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  4
@@ -780,12 +783,10 @@ https://github.com/alex-shpak/hugo-book
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">rtl</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>内部で利用している<code>clk_div</code>の実装は次の通りです．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -859,20 +860,15 @@ https://github.com/alex-shpak/hugo-book
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <p><code>clk_div</code>モジュールで生成した，シリアル送信用の信号にあわせて，送信すべきデータを1bitずつ出力します．
 また，出力中はready信号を<code>'0'</code>にすることで，送信モジュールが動作中であることを上位のモジュールに伝えられるようになっています．</p>
-
 <p>このモジュールの動作をシミュレーションで確認してみましょう．</p>
-
 <h2 id="受信モジュール">受信モジュール</h2>
-
 <p>受信モジュールは送信モジュールに比べて少し複雑になります．送信側は自分のタイミングで信号を送ればいいのに対し，受信側ではスタート・ビットを頼りにデータの開始を検出し，以降の信号を正しい間隔でビットに分割しなければならないからです．また，データにはノイズが乗っている可能性もあるので，データを正しく取得する仕組みも必要です．
 VHDLとVerilog HDLによる実装の例が次のリストです．この例では，通信速度の16倍のクロックでデータをサンプリング（一定間隔で読み込む）することで，データを受信しています．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1056,15 +1052,10 @@ VHDLとVerilog HDLによる実装の例が次のリストです．この例で�
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
-<p>通信速度の16倍でデータをサンプリングしているので，スタート・ビットは16サイクル分が取得できるはずです．スタートビットのはじまりと思われる&rsquo;0&rsquo;というデータを確認してから6サイクル目のデータをもう一度取得し，そのデータがやっぱり&rsquo;0&rsquo;であれば，データ送信が開始されたと解釈します（ソース・コード中の状態1）．データが送信されていることを確認した後は，16サイクル毎にデータを取得します（ソース・コード中の状態2）．8bit分データを取得したら完了です．</p>
-
+<p>通信速度の16倍でデータをサンプリングしているので，スタート・ビットは16サイクル分が取得できるはずです．スタートビットのはじまりと思われる'0&rsquo;というデータを確認してから6サイクル目のデータをもう一度取得し，そのデータがやっぱり'0&rsquo;であれば，データ送信が開始されたと解釈します（ソース・コード中の状態1）．データが送信されていることを確認した後は，16サイクル毎にデータを取得します（ソース・コード中の状態2）．8bit分データを取得したら完了です．</p>
 <p>送信モジュールと同じように，テストベンチを書いてシミュレーションで動作を確認してみましょう．</p>
-
 <h2 id="実機で動作確認">実機で動作確認</h2>
-
 <p>シリアル通信を実機で動作確認してみましょう．入出力にPMODコネクタJEの1ピンと7ピンを割当て，物理的に両者をジャンパピンで接続すれば，通信ができるはずです．動作をILAを使って確認してみましょう．{\bf 注意: PMODコネクタの6ピンと12ピンは3.3V，5ピンと11ピンはGNDです．間違って6ピンと5ピンなどのように3.3VとGNDを直結しないようにしましょう．}</p>
-
 <figure class="center">
     <img src="../experiments_figures/IMG_0007.JPG"
          alt="図3: PMODコネクタのJEの1ピンと7ピンをジャンパケーブルで接続した様子"/> <figcaption>
@@ -1072,13 +1063,9 @@ VHDLとVerilog HDLによる実装の例が次のリストです．この例で�
         </figcaption>
 </figure>
 
-
 <h1 id="音声信号を観測してみよう">音声信号を観測してみよう</h1>
-
 <p>ZYBO Z7-20には音声入出力用のジャックが備わっています．これを利用すると外部からの音声信号を取り込みFPGAで処理することができます．信号は，SSM2603というICでA/D変換されます．SSM2603とFPGAはI2Sで音声データをやりとりすることができます．</p>
-
 <p>SSM2603とやりとりするI2S信号は図\ref{fig:ssm2603_protocol}の通りです．</p>
-
 <figure class="center">
     <img src="../experiments_figures/zybo-z7-audio.png"
          alt="図4: SSM2603との通信インターフェース"/> <figcaption>
@@ -1086,17 +1073,13 @@ VHDLとVerilog HDLによる実装の例が次のリストです．この例で�
         </figcaption>
 </figure>
 
-
 <p>これを送受信するモジュールを実装して音声信号の入出力をやってみましょう．
 でてくる信号が少し増えて複雑にみえるかもしれませんが，方針はRS-232-Cの送受信と同じです．</p>
-
 <h2 id="i2sの送信">I2Sの送信</h2>
-
 <p>次のリストは，I2Sの送信モジュールの実装例です．シミュレーションによって，信号が図\ref{fig:ssm2603_protocol}に示したように出力されることを確認してみましょう．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1266,14 +1249,11 @@ VHDLとVerilog HDLによる実装の例が次のリストです．この例で�
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <h2 id="i2sの受信">I2Sの受信</h2>
-
 <p>次は受信モジュールです．送信モジュールと組み合わせてシミュレーションすることで，入力した音声信号をI2Sフォーマットに変換し，それが復号される様を観測することができます．</p>
-
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
@@ -1471,11 +1451,8 @@ VHDLとVerilog HDLによる実装の例が次のリストです．この例で�
 <span style="color:#66d9ef">end</span> <span style="color:#a6e22e">RTL</span>;</code></pre></td></tr></table>
 </div>
 </div>
-
 <h1 id="発展">発展</h1>
-
 <p>紹介したアプリケーション実験を応用して，次のような課題に挑戦してみましょう．</p>
-
 <ol>
 <li>ストップウォッチモジュールを改造して，カウントダウンできるようにしてみましょう．</li>
 <li>いろいろな通信速度でRS-232-C通信を試してみましょう．</li>
@@ -1493,23 +1470,17 @@ VHDLとVerilog HDLによる実装の例が次のリストです．この例で�
 
   <aside class="book-toc levels-6 fixed">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#はじめに">はじめに</a></li>
-<li><a href="#ストップウォッチを作ってみよう">ストップウォッチを作ってみよう</a></li>
-<li><a href="#シリアル通信に挑戦してみよう">シリアル通信に挑戦してみよう</a>
-<ul>
-<li><a href="#シリアル通信のしくみ">シリアル通信のしくみ</a></li>
-<li><a href="#送信モジュール">送信モジュール</a></li>
-<li><a href="#受信モジュール">受信モジュール</a></li>
-<li><a href="#実機で動作確認">実機で動作確認</a></li>
-</ul></li>
-<li><a href="#音声信号を観測してみよう">音声信号を観測してみよう</a>
-<ul>
-<li><a href="#i2sの送信">I2Sの送信</a></li>
-<li><a href="#i2sの受信">I2Sの受信</a></li>
-</ul></li>
-<li><a href="#発展">発展</a></li>
-</ul>
+  <ul>
+    <li><a href="#シリアル通信のしくみ">シリアル通信のしくみ</a></li>
+    <li><a href="#送信モジュール">送信モジュール</a></li>
+    <li><a href="#受信モジュール">受信モジュール</a></li>
+    <li><a href="#実機で動作確認">実機で動作確認</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#i2sの送信">I2Sの送信</a></li>
+    <li><a href="#i2sの受信">I2Sの受信</a></li>
+  </ul>
 </nav>
   </aside>
 
