@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta property="og:title" content="VivadoHLSを使ったCベース設計に挑戦" />
+<meta property="og:description" content="C/C&#43;&#43;ベースのFPGA開発をはじめるにあたって，まずはVivado HLSの使い方をFPGAで動作するビットストリームの作り方まで一通り学んでしまいましょう．この章では，とりあえずVivado HLSを使った開発ができるようになるために，ツールを一通り使ってC/C&#43;&#43;で書いたコードからFPGAで動作するビットストリームを生成する作業までを一通り体験してみることにします．習うより慣れろ，ですね．
+例題 VivaoHLSでは，基本的な制御構文のC/C&#43;&#43;コードをHDLモジュールにすることができます．ここでは，簡単なプログラムをハードウェア化してみましょう．
+1 2 3 4 5 6 7 8 9 10 11 12 13  int bitcount(int a) { int i; int s = 0; int tmp = a; for(i = 0; i &lt; 32; i&#43;&#43;){ if((tmp &amp; 0x01) == 0x01){ s&#43;&#43;; } tmp = tmp &gt;&gt; 1; } return s; }   Vivado HLSプロジェクトの作成  Vivado HLSを起動したところ．Vivado HLSはデスクトップのショートカットアイコンやスタートメニューから起動する．
+   プロジェクト名と格納フォルダを指定．ここでは．ホームの下のVivadoの下に格納することとし，名前をhls_test_1とした
+   既存の設計ソースコードがあれば，ここで追加．ないのでNextで次へ．" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://miyo.github.io/learning_fpga/docs/book02/hls_quick_guide/" />
+<meta property="article:published_time" content="2019-10-30T19:15:46+09:00" />
+<meta property="article:modified_time" content="2019-10-30T19:15:46+09:00" />
+<title>VivadoHLSを使ったCベース設計に挑戦 | Learning FPGA</title>
+<link rel="icon" href="/learning_fpga/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
+
+
+<script defer src="/learning_fpga/search.min.146d0df6e7fe3f1847ebdd84e0f304c160e32a688d9c7edbe3bc269c54d11771.js" integrity="sha256-FG0N9uf&#43;PxhH692E4PMEwWDjKmiNnH7b47wmnFTRF3E="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav>
+<h2 class="book-brand">
+  <a href="https://miyo.github.io/learning_fpga/"><span>Learning FPGA</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" placeholder="Search" id="book-search-input" maxlength="64" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+    
+
+  
+  
+
+
+
+
+
+ 
+  
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        
+
+  <li >
+    
+      <span>RTL編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/introduction/" >
+      イントロダクション
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/languages/" >
+      VHDL/Veilog 入門
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/quickstart/" >
+      クイックスタート
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/simulation/" >
+      シミュレーション
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/basics/" >
+      基本実験
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/experiments/" >
+      実験
+  </a>
+
+</li>
+      
+    
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      <span>高位合成編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book02/about_hls/" >
+      高位合成とは？
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book02/hls_quick_guide/"  class="active">
+      VivadoHLSを使ったCベース設計に挑戦
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book02/hls_basic/" >
+      Vivado HLS基本実験
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book02/hls_challenge/" >
+      Vivado HLS応用実験
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      <span>Xilinx活用編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book03/ipi/" >
+      IP Integrator入門
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      <span>Intel活用編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+  </ul>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+    </aside>
+
+    <div class="book-page">
+      <header class="flex align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="/learning_fpga/svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>VivadoHLSを使ったCベース設計に挑戦</strong>
+</header>
+
+      
+<article class="markdown"><p>C/C++ベースのFPGA開発をはじめるにあたって，まずはVivado HLSの使い方をFPGAで動作するビットストリームの作り方まで一通り学んでしまいましょう．この章では，とりあえずVivado HLSを使った開発ができるようになるために，ツールを一通り使ってC/C++で書いたコードからFPGAで動作するビットストリームを生成する作業までを一通り体験してみることにします．習うより慣れろ，ですね．</p>
+<h2 id="例題">例題</h2>
+<p>VivaoHLSでは，基本的な制御構文のC/C++コードをHDLモジュールにすることができます．ここでは，簡単なプログラムをハードウェア化してみましょう．</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">bitcount</span>(<span style="color:#66d9ef">int</span> a)
+{
+  <span style="color:#66d9ef">int</span> i;
+  <span style="color:#66d9ef">int</span> s <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  <span style="color:#66d9ef">int</span> tmp <span style="color:#f92672">=</span> a;
+  <span style="color:#66d9ef">for</span>(i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">32</span>; i<span style="color:#f92672">++</span>){
+    <span style="color:#66d9ef">if</span>((tmp <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x01</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0x01</span>){
+      s<span style="color:#f92672">++</span>;
+    }
+    tmp <span style="color:#f92672">=</span> tmp <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">1</span>;
+  }
+  <span style="color:#66d9ef">return</span> s;
+}</code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="vivado-hlsプロジェクトの作成">Vivado HLSプロジェクトの作成</h2>
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_09_20.png"
+         alt="Vivado HLSを起動したところ．Vivado HLSはデスクトップのショートカットアイコンやスタートメニューから起動する．"/> <figcaption>
+            <p>Vivado HLSを起動したところ．Vivado HLSはデスクトップのショートカットアイコンやスタートメニューから起動する．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_10_00.png"
+         alt="プロジェクト名と格納フォルダを指定．ここでは．ホームの下のVivadoの下に格納することとし，名前をhls_test_1とした"/> <figcaption>
+            <p>プロジェクト名と格納フォルダを指定．ここでは．ホームの下のVivadoの下に格納することとし，名前をhls_test_1とした</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_10_06.png"
+         alt="既存の設計ソースコードがあれば，ここで追加．ないのでNextで次へ．"/> <figcaption>
+            <p>既存の設計ソースコードがあれば，ここで追加．ないのでNextで次へ．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_10_10.png"
+         alt="既存のテストベンチ用のソースコードがあれば，ここで追加．ないのでNextで次へ．"/> <figcaption>
+            <p>既存のテストベンチ用のソースコードがあれば，ここで追加．ないのでNextで次へ．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_10_19.png"
+         alt="ターゲットFPGAを選択する．Part Selectionの中の&amp;hellip;ボタンをクリック"/> <figcaption>
+            <p>ターゲットFPGAを選択する．Part Selectionの中の&hellip;ボタンをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_10_34.png"
+         alt="FPGAの型番を選択．xc7z020clg400-1を選択する．検索フィールドにxc7z020と入力していくと楽に探せる．"/> <figcaption>
+            <p>FPGAの型番を選択．xc7z020clg400-1を選択する．検索フィールドにxc7z020と入力していくと楽に探せる．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_10_39.png"
+         alt="FPGAを選択し終えたらFinish．"/> <figcaption>
+            <p>FPGAを選択し終えたらFinish．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_11_08.png"
+         alt="プロジェクトの作成が完了した"/> <figcaption>
+            <p>プロジェクトの作成が完了した</p>
+        </figcaption>
+</figure>
+
+<h2 id="vivado-hls上での設計">Vivado HLS上での設計</h2>
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_11_14.png"
+         alt="左ペインのSourcesアイコンの上で右クリック，New File&amp;hellip;をクリック"/> <figcaption>
+            <p>左ペインのSourcesアイコンの上で右クリック，New File&hellip;をクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_11_22.png"
+         alt="開いたファイル選択ダイアログに，作成するファイル test.c と入力して保存をクリック"/> <figcaption>
+            <p>開いたファイル選択ダイアログに，作成するファイル test.c と入力して保存をクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_13_38.png"
+         alt="作成したtest.cの中身として，先のソースコードを入力する．"/> <figcaption>
+            <p>作成したtest.cの中身として，先のソースコードを入力する．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_13_47.png"
+         alt="動作確認のために，テストベンチ用のソースコードを追加する．今度はTest Benchアイコンの上で右クリック，New File&amp;hellip;をクリック"/> <figcaption>
+            <p>動作確認のために，テストベンチ用のソースコードを追加する．今度はTest Benchアイコンの上で右クリック，New File&hellip;をクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_14_03.png"
+         alt="今度はtest_tb.cというファイルを作成することにする．ファイル名を入力して保存をクリック"/> <figcaption>
+            <p>今度はtest_tb.cというファイルを作成することにする．ファイル名を入力して保存をクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_15_37.png"
+         alt="テストベンチの中身を記述する．テストベンチは単なるCプログラムなのでstdio.hやprintf関数が使える"/> <figcaption>
+            <p>テストベンチの中身を記述する．テストベンチは単なるCプログラムなのでstdio.hやprintf関数が使える</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_15_45.png"
+         alt="メニューのProjectからProject Settings&amp;hellip;をクリックして，プロジェクトの設定をする"/> <figcaption>
+            <p>メニューのProjectからProject Settings&hellip;をクリックして，プロジェクトの設定をする</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_15_58.png"
+         alt="Synthesisをみると，Top Functionが指定されていないことが確認できる"/> <figcaption>
+            <p>Synthesisをみると，Top Functionが指定されていないことが確認できる</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_16_05.png"
+         alt="Browse&amp;hellip;ボタンをクリックすると候補がでる．今回は一つだけ．候補に表示されたtest関数を選択してOKをクリック"/> <figcaption>
+            <p>Browse&hellip;ボタンをクリックすると候補がでる．今回は一つだけ．候補に表示されたtest関数を選択してOKをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_16_10.png"
+         alt="合成するトップの関数がtestであることを指定できた"/> <figcaption>
+            <p>合成するトップの関数がtestであることを指定できた</p>
+        </figcaption>
+</figure>
+
+<h2 id="vivado-hlsでの動作確認">Vivado HLSでの動作確認</h2>
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_16_35.png"
+         alt="まずはCレベルでの動作を確認するため，メニューのProjectからRun C Simulationをクリックする"/> <figcaption>
+            <p>まずはCレベルでの動作を確認するため，メニューのProjectからRun C Simulationをクリックする</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_16_40.png"
+         alt="特にオプションは指定せずにOKをクリック"/> <figcaption>
+            <p>特にオプションは指定せずにOKをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_17_17.png"
+         alt="しばらくすると結果が表示される．たとえば0xaの立っているビットは2個で答えが正しいことが確認できた"/> <figcaption>
+            <p>しばらくすると結果が表示される．たとえば0xaの立っているビットは2個で答えが正しいことが確認できた</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_17_41.png"
+         alt="ツールバーの再生ボタンアイコンをクリックしてCからHDLの合成を開始する"/> <figcaption>
+            <p>ツールバーの再生ボタンアイコンをクリックしてCからHDLの合成を開始する</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_18_16.png"
+         alt="しばらく待つと合成が完了する．ここでは生成された回路のクリティカルパス遅延が3.92nsであると表示されている．また，ひとつの答えを得るために33サイクル必要であることも確認できる．"/> <figcaption>
+            <p>しばらく待つと合成が完了する．ここでは生成された回路のクリティカルパス遅延が3.92nsであると表示されている．また，ひとつの答えを得るために33サイクル必要であることも確認できる．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_18_47.png"
+         alt="合成したHDLの動作検証を行う．テストベンチはCシミュレーションのときと同じ"/> <figcaption>
+            <p>合成したHDLの動作検証を行う．テストベンチはCシミュレーションのときと同じ</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_18_57.png"
+         alt="特にオプションは指定せずにOKをクリック"/> <figcaption>
+            <p>特にオプションは指定せずにOKをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_19_18.png"
+         alt="シミュレーションにXSIM(RTLシミュレータ)が使用されていることがわかる"/> <figcaption>
+            <p>シミュレーションにXSIM(RTLシミュレータ)が使用されていることがわかる</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_20_14.png"
+         alt="RTLシミュレーションでも望み通りの答えがえられることが確認できた"/> <figcaption>
+            <p>RTLシミュレーションでも望み通りの答えがえられることが確認できた</p>
+        </figcaption>
+</figure>
+
+<h2 id="ipコアの生成">IPコアの生成</h2>
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_20_28.png"
+         alt="ツールバーの荷物のようなアイコンをクリックしてIPコアを生成する"/> <figcaption>
+            <p>ツールバーの荷物のようなアイコンをクリックしてIPコアを生成する</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_21_04.png"
+         alt="IPコア生成に関する設定ダイアログが開いたところ．特に変更の必要はないのでOKをクリック"/> <figcaption>
+            <p>IPコア生成に関する設定ダイアログが開いたところ．特に変更の必要はないのでOKをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_21_59.png"
+         alt="しばらく待つと，Vivadoで利用可能なIPコアが生成される．"/> <figcaption>
+            <p>しばらく待つと，Vivadoで利用可能なIPコアが生成される．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_20_03_2018_00_22_51.png"
+         alt="生成されたリソースやファイルはsolution1の下のimplの下に格納されていて自由に確認することができる"/> <figcaption>
+            <p>生成されたリソースやファイルはsolution1の下のimplの下に格納されていて自由に確認することができる</p>
+        </figcaption>
+</figure>
+
+<h2 id="生成したモジュールをfpgaプロジェクトで利用する">生成したモジュールをFPGAプロジェクトで利用する</h2>
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_23_11.png"
+         alt="まずはVivadoプロジェクトを作成する"/> <figcaption>
+            <p>まずはVivadoプロジェクトを作成する</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_23_20.png"
+         alt="プロジェクト作成ダイアログ．Nextで次へ"/> <figcaption>
+            <p>プロジェクト作成ダイアログ．Nextで次へ</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_23_26.png"
+         alt="プロジェクト名をproject_3として，ホーム下のVivadoフォルダの下に保存することにする"/> <figcaption>
+            <p>プロジェクト名をproject_3として，ホーム下のVivadoフォルダの下に保存することにする</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_23_30.png"
+         alt="作成するプロジェクトはRTLプロジェクトを選択．"/> <figcaption>
+            <p>作成するプロジェクトはRTLプロジェクトを選択．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_23_35.png"
+         alt="特にここで追加するファイルはないのでNextで次へ"/> <figcaption>
+            <p>特にここで追加するファイルはないのでNextで次へ</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_23_39.png"
+         alt="特にここで追加するファイルはないのでNextで次へ"/> <figcaption>
+            <p>特にここで追加するファイルはないのでNextで次へ</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_23_52.png"
+         alt="プロジェクトの開発ターゲットはボードリストからZybo Z7-20を選択"/> <figcaption>
+            <p>プロジェクトの開発ターゲットはボードリストからZybo Z7-20を選択</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_23_58.png"
+         alt="設定内容を確認してFinishをクリック．ウィザードを終了する．"/> <figcaption>
+            <p>設定内容を確認してFinishをクリック．ウィザードを終了する．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_24_25.png"
+         alt="PROJECT NAVIGATORのSettingsをクリックして設定画面を呼び出す"/> <figcaption>
+            <p>PROJECT NAVIGATORのSettingsをクリックして設定画面を呼び出す</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_24_37.png"
+         alt="リストのIPを展開し，Repositriesを選択する"/> <figcaption>
+            <p>リストのIPを展開し，Repositriesを選択する</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_24_43.png"
+         alt="ここにVivado HLSで作成したIPコアのフォルダを指定すれば利用できるようになる．&#43;アイコンをクリック．"/> <figcaption>
+            <p>ここにVivado HLSで作成したIPコアのフォルダを指定すれば利用できるようになる．+アイコンをクリック．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_25_42.png"
+         alt="IPコア検索用のフォルダとしてVivado HLSで作成したプロジェクトフォルダ(hls_test_1)の下の，solusion1\yen ipを選択して，Selectをクリック"/> <figcaption>
+            <p>IPコア検索用のフォルダとしてVivado HLSで作成したプロジェクトフォルダ(hls_test_1)の下の，solusion1\yen ipを選択して，Selectをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_25_53.png"
+         alt="追加したリポジトリ情報が表示される．TestというIPコアが含まれていれば設定は正しい．OKでダイアログを閉じる"/> <figcaption>
+            <p>追加したリポジトリ情報が表示される．TestというIPコアが含まれていれば設定は正しい．OKでダイアログを閉じる</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_25_58.png"
+         alt="リポジトリに追加できたので，OKで設定ダイアログを閉じる"/> <figcaption>
+            <p>リポジトリに追加できたので，OKで設定ダイアログを閉じる</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_26_09.png"
+         alt="IP Catalogを選択してIPを呼び出す"/> <figcaption>
+            <p>IP Catalogを選択してIPを呼び出す</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_26_21.png"
+         alt="IP Catalogの中にVivado HLSで作成したTestがあるので，ダブルクリックする"/> <figcaption>
+            <p>IP Catalogの中にVivado HLSで作成したTestがあるので，ダブルクリックする</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_26_31.png"
+         alt="IPコアの設定画面が開くが，することもない．OKを押してダイアログを閉じる"/> <figcaption>
+            <p>IPコアの設定画面が開くが，することもない．OKを押してダイアログを閉じる</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_26_49.png"
+         alt="Vivadoプロジェクト内にIPコア保存用のフォルダを作る確認を求められる．OKをクリック"/> <figcaption>
+            <p>Vivadoプロジェクト内にIPコア保存用のフォルダを作る確認を求められる．OKをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_26_56.png"
+         alt="IPコア関連のファイルをVivadoに生成させるためGenerateをクリック"/> <figcaption>
+            <p>IPコア関連のファイルをVivadoに生成させるためGenerateをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_26_56.png"
+         alt="IPコア関連のファイルをVivadoに生成させるためGenerateをクリック"/> <figcaption>
+            <p>IPコア関連のファイルをVivadoに生成させるためGenerateをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_27_16.png"
+         alt="合成がかかる旨のメッセージが表示されたらOKで閉じる"/> <figcaption>
+            <p>合成がかかる旨のメッセージが表示されたらOKで閉じる</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_27_29.png"
+         alt="呼びだしたIPコアのインスタンスを持つためのトップモジュールを作成する．モジュールの作成は，Design Sourcesの上で右クリックしてAdd Sources&amp;hellip;選択すればよい"/> <figcaption>
+            <p>呼びだしたIPコアのインスタンスを持つためのトップモジュールを作成する．モジュールの作成は，Design Sourcesの上で右クリックしてAdd Sources&hellip;選択すればよい</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_27_35.png"
+         alt="今回はデザインファイルを作るので，Add or create design sourcesを選択"/> <figcaption>
+            <p>今回はデザインファイルを作るので，Add or create design sourcesを選択</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_27_41.png"
+         alt="Create Fileをクリック．"/> <figcaption>
+            <p>Create Fileをクリック．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_27_50.png"
+         alt="VHDLで，topという名前のモジュールを作ることにしてOKをクリック．"/> <figcaption>
+            <p>VHDLで，topという名前のモジュールを作ることにしてOKをクリック．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_28_00.png"
+         alt="作成したモジュールがリストに追加されたのでFinishで終了．"/> <figcaption>
+            <p>作成したモジュールがリストに追加されたのでFinishで終了．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_33_30.png"
+         alt="topモジュールの入出力ポートの生成ウィザードが開くので，clkと入出力用のポートを定義してOKをクリックする(あとでテキストで記述してもよいので無視してOKをクリックしても構わない)．"/> <figcaption>
+            <p>topモジュールの入出力ポートの生成ウィザードが開くので，clkと入出力用のポートを定義してOKをクリックする(あとでテキストで記述してもよいので無視してOKをクリックしても構わない)．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_34_16.png"
+         alt="生成したトップモジュールをVivadoのエディタで開いたところ"/> <figcaption>
+            <p>生成したトップモジュールをVivadoのエディタで開いたところ</p>
+        </figcaption>
+</figure>
+
+<p>top.vhdの内容は次の内容で書きかえる．</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> IEEE;
+<span style="color:#66d9ef">use</span> IEEE.STD_LOGIC_1164.<span style="color:#66d9ef">ALL</span>;
+
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+    <span style="color:#66d9ef">Port</span> ( clk <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">STD_LOGIC</span>;
+           a <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">STD_LOGIC_VECTOR</span> (<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+           q <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">STD_LOGIC_VECTOR</span> (<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>));
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">top</span>;
+
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">Behavioral</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+
+ <span style="color:#66d9ef">component</span> <span style="color:#a6e22e">test_0</span>
+  <span style="color:#66d9ef">port</span> (
+        ap_clk <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_rst <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_start <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_done <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_idle <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_ready <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+        a <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+        ap_return <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>)
+  );
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">component</span>;
+  
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>; <span style="color:#75715e">-- 動作確認のためにmark_debugアトリビュートを使う</span>
+  
+  <span style="color:#66d9ef">signal</span> q_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  
+<span style="color:#66d9ef">begin</span>
+
+ q <span style="color:#f92672">&lt;=</span> q_i(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+
+ U <span style="color:#f92672">:</span> test_0
+  <span style="color:#66d9ef">port</span> <span style="color:#66d9ef">map</span>(
+        ap_clk <span style="color:#f92672">=&gt;</span> clk,
+        ap_rst <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;0&#39;</span>,
+        ap_start <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;1&#39;</span>,
+        ap_done <span style="color:#f92672">=&gt;</span> ap_done,
+        ap_idle <span style="color:#f92672">=&gt;</span> ap_idle,
+        ap_ready <span style="color:#f92672">=&gt;</span> ap_ready,
+        a(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">4</span>) <span style="color:#f92672">=&gt;</span> (<span style="color:#66d9ef">others</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;0&#39;</span>),
+        a(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">=&gt;</span> a,
+        ap_return <span style="color:#f92672">=&gt;</span> q_i
+  );
+
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">Behavioral</span>;</code></pre></td></tr></table>
+</div>
+</div>
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_35_01.png"
+         alt="コードを正しく記述し終えると，top→test_0というデザインツリーが作られる"/> <figcaption>
+            <p>コードを正しく記述し終えると，top→test_0というデザインツリーが作られる</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_35_12.png"
+         alt="PROJECT NAVIGATORのRun Synthesisをクリックして合成を開始．ダイアログはOKで閉じてステップを進める．"/> <figcaption>
+            <p>PROJECT NAVIGATORのRun Synthesisをクリックして合成を開始．ダイアログはOKで閉じてステップを進める．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_36_43.png"
+         alt="合成を終えたら，一度Open Synthesized Designで合成結果を開く"/> <figcaption>
+            <p>合成を終えたら，一度Open Synthesized Designで合成結果を開く</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_37_20.png"
+         alt="メニューのLayoutからI/O Planningをクリックしてピン配置設定モードを呼び出す"/> <figcaption>
+            <p>メニューのLayoutからI/O Planningをクリックしてピン配置設定モードを呼び出す</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_39_38.png"
+         alt="クロック(K17)，入力4bit(T16，W13，P15，G15)，出力4bit(D18，G14，M15，M14)を設定．電圧は，すべてLVCMOS33に設定．"/> <figcaption>
+            <p>クロック(K17)，入力4bit(T16，W13，P15，G15)，出力4bit(D18，G14，M15，M14)を設定．電圧は，すべてLVCMOS33に設定．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_39_45.png"
+         alt="設定を終えたらGenerate Bitstreamをクリック"/> <figcaption>
+            <p>設定を終えたらGenerate Bitstreamをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_39_50.png"
+         alt="設定したピン配置を保存していいか聞いてくるので，Saveで保存"/> <figcaption>
+            <p>設定したピン配置を保存していいか聞いてくるので，Saveで保存</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_39_55.png"
+         alt="設定の保存でSynthesisが無効になる可能性があるという案内がでたら．OKでステップを進める"/> <figcaption>
+            <p>設定の保存でSynthesisが無効になる可能性があるという案内がでたら．OKでステップを進める</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_40_00.png"
+         alt="制約保存用のファイルがないので作成ダイアログに従って作成．名前をtopとしてOKをクリックして完了"/> <figcaption>
+            <p>制約保存用のファイルがないので作成ダイアログに従って作成．名前をtopとしてOKをクリックして完了</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_40_06.png"
+         alt="Synthesisからやりなおすことの許可を求められるのでYesでステップをすすめる"/> <figcaption>
+            <p>Synthesisからやりなおすことの許可を求められるのでYesでステップをすすめる</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_40_11.png"
+         alt="合成の開始．パラメタはそのままでOKで次へ．"/> <figcaption>
+            <p>合成の開始．パラメタはそのままでOKで次へ．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_45_09.png"
+         alt="しばらく待つと合成，配置配線が完了してFPGA用のビットストリームが生成される．Open Hardware Managerを選択してOKをクリック．"/> <figcaption>
+            <p>しばらく待つと合成，配置配線が完了してFPGA用のビットストリームが生成される．Open Hardware Managerを選択してOKをクリック．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_45_17.png"
+         alt="Hardware Managerが開いたところ．Open targetをクリック．"/> <figcaption>
+            <p>Hardware Managerが開いたところ．Open targetをクリック．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_45_23.png"
+         alt="Auto ConnectでFPGAボードと接続する"/> <figcaption>
+            <p>Auto ConnectでFPGAボードと接続する</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_45_56.png"
+         alt="Program deviceで生成したbitファイルをFPGAに書き込む"/> <figcaption>
+            <p>Program deviceで生成したbitファイルをFPGAに書き込む</p>
+        </figcaption>
+</figure>
+
+<h2 id="実機で動作を確認">実機で動作を確認</h2>
+<p>実機での動作を確認できます．DIPスイッチをON/OFFしたときにONの個数がカウントできていることがわかります．が，残念ながらよくみてみると，DIPスイッチを2つONにした状態，つまり1bit目のLEDのみが点灯すべきケースで，0bit目のLEDが若干点灯していることがわかります．これはバグなので原因を探してみましょう．</p>
+<figure class="center">
+    <img src="../hls_quick_guide_figures/IMG_0011.JPG"
+         alt="LEDが一つだけ点灯するはずが0bit目のLEDが若干明るい"/> <figcaption>
+            <p>LEDが一つだけ点灯するはずが0bit目のLEDが若干明るい</p>
+        </figcaption>
+</figure>
+
+<p>ここでは，ILAを使って，実機で動作を確認してみます．まず，topモジュールを次のように書き変えて，いくつかの信号をILAで観測できるようにしましょう．</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> IEEE;
+<span style="color:#66d9ef">use</span> IEEE.STD_LOGIC_1164.<span style="color:#66d9ef">ALL</span>;
+
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+    <span style="color:#66d9ef">Port</span> ( clk <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">STD_LOGIC</span>;
+           a <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">STD_LOGIC_VECTOR</span> (<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+           q <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">STD_LOGIC_VECTOR</span> (<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>));
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">top</span>;
+
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">Behavioral</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+
+ <span style="color:#66d9ef">component</span> <span style="color:#a6e22e">test_0</span>
+  <span style="color:#66d9ef">port</span> (
+        ap_clk <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_rst <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_start <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_done <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_idle <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_ready <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+        a <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+        ap_return <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>)
+  );
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">component</span>;
+  
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>; <span style="color:#75715e">-- 動作確認のためにmark_debugアトリビュートを使う</span>
+  
+  <span style="color:#66d9ef">signal</span> q_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> q_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>; <span style="color:#75715e">-- mark_debugに指定</span>
+  
+  <span style="color:#75715e">-- ステータス信号を引出しILAで観測するために追加</span>
+  <span style="color:#66d9ef">signal</span> ap_done <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;  
+  <span style="color:#66d9ef">signal</span> ap_idle <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
+  <span style="color:#66d9ef">signal</span> ap_ready <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> ap_done <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> ap_idle <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> ap_ready <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#75715e">-- ステータス信号を引出しILAで観測するために追加，ここまで</span>
+  
+<span style="color:#66d9ef">begin</span>
+
+ q <span style="color:#f92672">&lt;=</span> q_i(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+
+ U <span style="color:#f92672">:</span> test_0
+  <span style="color:#66d9ef">port</span> <span style="color:#66d9ef">map</span>(
+        ap_clk <span style="color:#f92672">=&gt;</span> clk,
+        ap_rst <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;0&#39;</span>,
+        ap_start <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;1&#39;</span>,
+        ap_done <span style="color:#f92672">=&gt;</span> ap_done,
+        ap_idle <span style="color:#f92672">=&gt;</span> ap_idle,
+        ap_ready <span style="color:#f92672">=&gt;</span> ap_ready,
+        a(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">4</span>) <span style="color:#f92672">=&gt;</span> (<span style="color:#66d9ef">others</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;0&#39;</span>),
+        a(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">=&gt;</span> a,
+        ap_return <span style="color:#f92672">=&gt;</span> q_i
+  );
+
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">Behavioral</span>;</code></pre></td></tr></table>
+</div>
+</div>
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_52_03.png"
+         alt="コードを書き変えたらRun Synthesisをクリックして合成を行なう"/> <figcaption>
+            <p>コードを書き変えたらRun Synthesisをクリックして合成を行なう</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_55_12.png"
+         alt="合成がおわったらOpen Synthesized Designで合成結果を開く"/> <figcaption>
+            <p>合成がおわったらOpen Synthesized Designで合成結果を開く</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_55_41.png"
+         alt="ILAの設定をしたいので，メニューのLayoutからDebugを選択"/> <figcaption>
+            <p>ILAの設定をしたいので，メニューのLayoutからDebugを選択</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_55_50.png"
+         alt="虫のアイコンをクリックしてILA設定ウィザードを開く"/> <figcaption>
+            <p>虫のアイコンをクリックしてILA設定ウィザードを開く</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_55_56.png"
+         alt="ILA設定ウィザードの開始"/> <figcaption>
+            <p>ILA設定ウィザードの開始</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_56_09.png"
+         alt="観測したい信号のクロックをみつけることができずundefinedになっている"/> <figcaption>
+            <p>観測したい信号のクロックをみつけることができずundefinedになっている</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_56_17.png"
+         alt="クロックを設定したいアイテムの上で右クリックしてSelect Clock Domeinを選ぶ"/> <figcaption>
+            <p>クロックを設定したいアイテムの上で右クリックしてSelect Clock Domeinを選ぶ</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_56_29.png"
+         alt="Global_CLOCKがないという案内が表示されるがOKで閉じる"/> <figcaption>
+            <p>Global_CLOCKがないという案内が表示されるがOKで閉じる</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_56_30.png"
+         alt="Global_CLOCKのかわりにALL_CLOCKを選択するとclk_IBUFが見つかるので選択，OKをクリックする"/> <figcaption>
+            <p>Global_CLOCKのかわりにALL_CLOCKを選択するとclk_IBUFが見つかるので選択，OKをクリックする</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_56_44.png"
+         alt="同様の手順で全ての信号のClock Domainをclk_IBUFに設定したらNextで次へ"/> <figcaption>
+            <p>同様の手順で全ての信号のClock Domainをclk_IBUFに設定したらNextで次へ</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_56_52.png"
+         alt="サンプル数や利用機能はデフォルトのままでよいのでNextで次へ"/> <figcaption>
+            <p>サンプル数や利用機能はデフォルトのままでよいのでNextで次へ</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_58_59.png"
+         alt="サマリを確認したらFinishでウィザードを閉じる"/> <figcaption>
+            <p>サマリを確認したらFinishでウィザードを閉じる</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_59_22.png"
+         alt="ILAの挿入ができたので，あらためてGenerate Bitstreamで合成と配置配線を行なう"/> <figcaption>
+            <p>ILAの挿入ができたので，あらためてGenerate Bitstreamで合成と配置配線を行なう</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_19_03_2018_23_59_29.png"
+         alt="ILAに関する設定を保存するか確認を求められたらSaveをクリック"/> <figcaption>
+            <p>ILAに関する設定を保存するか確認を求められたらSaveをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_20_03_2018_00_20_08.png"
+         alt="しばらく待つとILAを仕込んだビットストリームが生成される．Open Hardware Managerを選択してOKをクリック"/> <figcaption>
+            <p>しばらく待つとILAを仕込んだビットストリームが生成される．Open Hardware Managerを選択してOKをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_20_03_2018_00_20_15.png"
+         alt="新しく作ったビットストリームを書き込むためにProgram Deviceをクリック"/> <figcaption>
+            <p>新しく作ったビットストリームを書き込むためにProgram Deviceをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_20_03_2018_00_20_20.png"
+         alt="ビットストリームとILA用の定義ファイルがセットされていることを確認してProgramをクリック"/> <figcaption>
+            <p>ビットストリームとILA用の定義ファイルがセットされていることを確認してProgramをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_20_03_2018_00_20_58.png"
+         alt="二重三角マークをクリックすると内部信号が確認できる"/> <figcaption>
+            <p>二重三角マークをクリックすると内部信号が確認できる</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_20_03_2018_00_22_19.png"
+         alt="ap_doneが&#39;1&amp;rsquo;でない間に値がふらふらしていることが確認できた．"/> <figcaption>
+            <p>ap_doneが'1&rsquo;でない間に値がふらふらしていることが確認できた．</p>
+        </figcaption>
+</figure>
+
+<h2 id="vivado-hlsのシミュレーション結果を詳細に確認する">Vivado HLSのシミュレーション結果を詳細に確認する</h2>
+<p>実はILAを挿入するまでもなく，Vivado HLSのC/RTL協調シミュレーションの結果を注意深く確認することで，今回のバグは防ぐことができます．試してみましょう．</p>
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_20_03_2018_00_23_02.png"
+         alt="Vivado HLSでC/RTLシミュレーションを再度実行する"/> <figcaption>
+            <p>Vivado HLSでC/RTLシミュレーションを再度実行する</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_20_03_2018_00_23_15.png"
+         alt="シミュレーション実行パラメタのDump Traceでallを選択してOKをクリック"/> <figcaption>
+            <p>シミュレーション実行パラメタのDump Traceでallを選択してOKをクリック</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_20_03_2018_00_27_29.png"
+         alt="シミュレーションが完了すると，ツールバーのOpen Wave Viewerをクリックする"/> <figcaption>
+            <p>シミュレーションが完了すると，ツールバーのOpen Wave Viewerをクリックする</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_20_03_2018_00_30_04.png"
+         alt="しばらく待つとVivadoシミュレータの波形ビューワが開く．ここでC/RTLシミュレータの結果を確認できる．"/> <figcaption>
+            <p>しばらく待つとVivadoシミュレータの波形ビューワが開く．ここでC/RTLシミュレータの結果を確認できる．</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_20_03_2018_00_31_28.png"
+         alt="結果の信号やap_doneなどを波形ビューワに追加してみたところ．ap_doneが&#39;1&amp;rsquo;でない場合に値が確定していないため注意しなければならない，ということがみてとれる．"/> <figcaption>
+            <p>結果の信号やap_doneなどを波形ビューワに追加してみたところ．ap_doneが'1&rsquo;でない場合に値が確定していないため注意しなければならない，ということがみてとれる．</p>
+        </figcaption>
+</figure>
+
+<h2 id="再度実機での動作確認">再度実機での動作確認</h2>
+<p>バグ修正を反映して，もう一度，実機で動作を確認してみましょう．</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vhdl" data-lang="vhdl"><span style="color:#66d9ef">library</span> IEEE;
+<span style="color:#66d9ef">use</span> IEEE.STD_LOGIC_1164.<span style="color:#66d9ef">ALL</span>;
+
+<span style="color:#66d9ef">entity</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+    <span style="color:#66d9ef">Port</span> ( clk <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">STD_LOGIC</span>;
+           a <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">STD_LOGIC_VECTOR</span> (<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+           q <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">STD_LOGIC_VECTOR</span> (<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>));
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">top</span>;
+
+<span style="color:#66d9ef">architecture</span> <span style="color:#a6e22e">Behavioral</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">top</span> <span style="color:#66d9ef">is</span>
+
+ <span style="color:#66d9ef">component</span> <span style="color:#a6e22e">test_0</span>
+  <span style="color:#66d9ef">port</span> (
+        ap_clk <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_rst <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_start <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_done <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_idle <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+        ap_ready <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic</span>;
+        a <span style="color:#f92672">:</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+        ap_return <span style="color:#f92672">:</span> <span style="color:#66d9ef">out</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>)
+  );
+  <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">component</span>;
+  
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span>;
+  
+  <span style="color:#66d9ef">signal</span> q_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic_vector</span>(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> q_i <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  
+  <span style="color:#66d9ef">signal</span> ap_done <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
+  <span style="color:#66d9ef">signal</span> ap_idle <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
+  <span style="color:#66d9ef">signal</span> ap_ready <span style="color:#f92672">:</span> <span style="color:#66d9ef">std_logic</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> ap_done <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> ap_idle <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  <span style="color:#66d9ef">attribute</span> mark_debug <span style="color:#66d9ef">of</span> ap_ready <span style="color:#f92672">:</span> <span style="color:#66d9ef">signal</span> <span style="color:#66d9ef">is</span> <span style="color:#e6db74">&#34;true&#34;</span>;
+  
+<span style="color:#66d9ef">begin</span>
+ <span style="color:#75715e">-- バグ修正のために追加</span>
+ <span style="color:#66d9ef">process</span>(clk)
+ <span style="color:#66d9ef">begin</span>
+   <span style="color:#66d9ef">if</span> rising_edge(clk) <span style="color:#66d9ef">then</span>
+     <span style="color:#66d9ef">if</span> ap_done <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">then</span>
+       q <span style="color:#f92672">&lt;=</span> q_i(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>);
+     <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+   <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">if</span>;
+ <span style="color:#66d9ef">end</span> <span style="color:#66d9ef">process</span>;
+ <span style="color:#75715e">-- バグ修正のために追加，ここまで</span>
+
+ U <span style="color:#f92672">:</span> test_0
+  <span style="color:#66d9ef">port</span> <span style="color:#66d9ef">map</span>(
+        ap_clk <span style="color:#f92672">=&gt;</span> clk,
+        ap_rst <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;0&#39;</span>,
+        ap_start <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;1&#39;</span>,
+        ap_done <span style="color:#f92672">=&gt;</span> ap_done,
+        ap_idle <span style="color:#f92672">=&gt;</span> ap_idle,
+        ap_ready <span style="color:#f92672">=&gt;</span> ap_ready,
+        a(<span style="color:#ae81ff">31</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">4</span>) <span style="color:#f92672">=&gt;</span> (<span style="color:#66d9ef">others</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;0&#39;</span>),
+        a(<span style="color:#ae81ff">3</span> <span style="color:#66d9ef">downto</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">=&gt;</span> a,
+        ap_return <span style="color:#f92672">=&gt;</span> q_i
+  );
+
+<span style="color:#66d9ef">end</span> <span style="color:#a6e22e">Behavioral</span>;</code></pre></td></tr></table>
+</div>
+</div>
+<figure class="center">
+    <img src="../hls_quick_guide_figures/VirtualBox_Windows10_20_03_2018_00_32_36.png"
+         alt="コードを書き変えたらGenerate Bitstreamをクリックして，再度ビットストリームを生成する"/> <figcaption>
+            <p>コードを書き変えたらGenerate Bitstreamをクリックして，再度ビットストリームを生成する</p>
+        </figcaption>
+</figure>
+
+<figure class="center">
+    <img src="../hls_quick_guide_figures/IMG_0015.JPG"
+         alt="再び実機で動作を確認したところ．LEDが正しく一つだけ点灯していることがわかる．"/> <figcaption>
+            <p>再び実機で動作を確認したところ．LEDが正しく一つだけ点灯していることがわかる．</p>
+        </figcaption>
+</figure>
+
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+
+  <aside class="book-toc levels-6 fixed">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#例題">例題</a></li>
+    <li><a href="#vivado-hlsプロジェクトの作成">Vivado HLSプロジェクトの作成</a></li>
+    <li><a href="#vivado-hls上での設計">Vivado HLS上での設計</a></li>
+    <li><a href="#vivado-hlsでの動作確認">Vivado HLSでの動作確認</a></li>
+    <li><a href="#ipコアの生成">IPコアの生成</a></li>
+    <li><a href="#生成したモジュールをfpgaプロジェクトで利用する">生成したモジュールをFPGAプロジェクトで利用する</a></li>
+    <li><a href="#実機で動作を確認">実機で動作を確認</a></li>
+    <li><a href="#vivado-hlsのシミュレーション結果を詳細に確認する">Vivado HLSのシミュレーション結果を詳細に確認する</a></li>
+    <li><a href="#再度実機での動作確認">再度実機での動作確認</a></li>
+  </ul>
+</nav>
+  </aside>
+
+
+
+  </main>
+
+  
+</body>
+
+</html>

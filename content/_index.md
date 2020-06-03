@@ -16,10 +16,10 @@ type: docs
 
 ## 高位合成編
 
-- 高位合成とは？
-- VivadoHLSを使ったCベース設計に挑戦
-- Vivado HLS基本実験
-- Vivado HLS応用実験
+- [高位合成とは？]({{< ref "docs/book02/about_hls.md" >}})
+- [VivadoHLSを使ったCベース設計に挑戦]({{< ref "docs/book02/hls_quick_guide.md" >}})
+- [Vivado HLS基本実験]({{< ref "docs/book02/hls_basic.md" >}})
+- [Vivado HLS応用実験]({{< ref "docs/book02/hls_challenge.md" >}})
 
 ## Xilinx活用編
 

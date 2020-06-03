@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta property="og:title" content="Vivado HLS基本実験" />
+<meta property="og:description" content="VivadoHLSでは，C/C&#43;&#43;からよりよいハードウェアを作成するために，いくつかのpragmaで指示をあたえることができるようになっています．どんなpragmaがあり，どのような効果があるのか，試してみましょう．
+データに関するpragmaの調査と実験 Vivado HLSではトップモジュールに選択した関数の引数が，RTLモジュールとの入出力になります．RTLモジュールとのインターフェースをどのようにしたいかは，引数に対するpragmaで指定することができます．
+pragmaによって，
+ std_logic_vector のような単純な信号 ブロックメモリ相当のインターフェース FIFO相当のインターフェース AXI4-Stream相当のインターフェース  を選択できます．ユーザガイドを参考にpragmaを指定し，合成されるHDLモジュールを調査してみましょう． C/RTLシミュレーションでインターフェースの振る舞いを観察してみるとよいでしょう．
+回路生成方式に関するpragmraの調査と実験 高速あるいは効率良く動作するハードウェアの設計では，データ並列性やパイプライン並列性の活用が必要不可欠です．Vivado HLSではデータ並列性やパイプライン並列性の抽出は，ほぼ人手によるpragmaに委ねられています．言いかえれば，正しくpragamを指定できなければ，Vivado HLSをうまく使いこなすことはできません．
+次のキーワードを参考にpragmaを調べて，合成されるHDLモジュールを調査してみましょう．
+ DATAFLOW UNROLL PIPELINE  C/RTLシミュレーションで，pragmaの指定の有無による実行サイクル数の変化を観察してみるとよいでしょう．" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://miyo.github.io/learning_fpga/docs/book02/hls_basic/" />
+<meta property="article:published_time" content="2019-10-30T19:15:46+09:00" />
+<meta property="article:modified_time" content="2019-10-30T19:15:46+09:00" />
+<title>Vivado HLS基本実験 | Learning FPGA</title>
+<link rel="icon" href="/learning_fpga/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
+
+
+<script defer src="/learning_fpga/search.min.146d0df6e7fe3f1847ebdd84e0f304c160e32a688d9c7edbe3bc269c54d11771.js" integrity="sha256-FG0N9uf&#43;PxhH692E4PMEwWDjKmiNnH7b47wmnFTRF3E="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav>
+<h2 class="book-brand">
+  <a href="https://miyo.github.io/learning_fpga/"><span>Learning FPGA</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" placeholder="Search" id="book-search-input" maxlength="64" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+    
+
+  
+  
+
+
+
+
+
+ 
+  
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        
+
+  <li >
+    
+      <span>RTL編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/introduction/" >
+      イントロダクション
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/languages/" >
+      VHDL/Veilog 入門
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/quickstart/" >
+      クイックスタート
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/simulation/" >
+      シミュレーション
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/basics/" >
+      基本実験
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/experiments/" >
+      実験
+  </a>
+
+</li>
+      
+    
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      <span>高位合成編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book02/about_hls/" >
+      高位合成とは？
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book02/hls_quick_guide/" >
+      VivadoHLSを使ったCベース設計に挑戦
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book02/hls_basic/"  class="active">
+      Vivado HLS基本実験
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book02/hls_challenge/" >
+      Vivado HLS応用実験
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      <span>Xilinx活用編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book03/ipi/" >
+      IP Integrator入門
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      <span>Intel活用編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+  </ul>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+    </aside>
+
+    <div class="book-page">
+      <header class="flex align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="/learning_fpga/svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>Vivado HLS基本実験</strong>
+</header>
+
+      
+<article class="markdown"><p>VivadoHLSでは，C/C++からよりよいハードウェアを作成するために，いくつかのpragmaで指示をあたえることができるようになっています．どんなpragmaがあり，どのような効果があるのか，試してみましょう．</p>
+<h2 id="データに関するpragmaの調査と実験">データに関するpragmaの調査と実験</h2>
+<p>Vivado HLSではトップモジュールに選択した関数の引数が，RTLモジュールとの入出力になります．RTLモジュールとのインターフェースをどのようにしたいかは，引数に対するpragmaで指定することができます．</p>
+<p>pragmaによって，</p>
+<ul>
+<li><code>std_logic_vector</code> のような単純な信号</li>
+<li>ブロックメモリ相当のインターフェース</li>
+<li>FIFO相当のインターフェース</li>
+<li>AXI4-Stream相当のインターフェース</li>
+</ul>
+<p>を選択できます．ユーザガイドを参考にpragmaを指定し，合成されるHDLモジュールを調査してみましょう．
+C/RTLシミュレーションでインターフェースの振る舞いを観察してみるとよいでしょう．</p>
+<h2 id="回路生成方式に関するpragmraの調査と実験">回路生成方式に関するpragmraの調査と実験</h2>
+<p>高速あるいは効率良く動作するハードウェアの設計では，データ並列性やパイプライン並列性の活用が必要不可欠です．Vivado HLSではデータ並列性やパイプライン並列性の抽出は，ほぼ人手によるpragmaに委ねられています．言いかえれば，正しくpragamを指定できなければ，Vivado HLSをうまく使いこなすことはできません．</p>
+<p>次のキーワードを参考にpragmaを調べて，合成されるHDLモジュールを調査してみましょう．</p>
+<ul>
+<li>DATAFLOW</li>
+<li>UNROLL</li>
+<li>PIPELINE</li>
+</ul>
+<p>C/RTLシミュレーションで，pragmaの指定の有無による実行サイクル数の変化を観察してみるとよいでしょう．</p>
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+
+  <aside class="book-toc levels-6 fixed">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#データに関するpragmaの調査と実験">データに関するpragmaの調査と実験</a></li>
+    <li><a href="#回路生成方式に関するpragmraの調査と実験">回路生成方式に関するpragmraの調査と実験</a></li>
+  </ul>
+</nav>
+  </aside>
+
+
+
+  </main>
+
+  
+</body>
+
+</html>

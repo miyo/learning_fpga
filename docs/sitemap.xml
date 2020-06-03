@@ -23,7 +23,22 @@
   </url>
   
   <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book02/about_hls/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book02/hls_quick_guide/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://miyo.github.io/learning_fpga/docs/book01/quickstart/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book02/hls_basic/</loc>
     <lastmod>2019-10-30T19:15:46+09:00</lastmod>
   </url>
   
@@ -39,6 +54,11 @@
   
   <url>
     <loc>https://miyo.github.io/learning_fpga/docs/book01/experiments/</loc>
+    <lastmod>2019-10-30T19:15:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://miyo.github.io/learning_fpga/docs/book02/hls_challenge/</loc>
     <lastmod>2019-10-30T19:15:46+09:00</lastmod>
   </url>
   

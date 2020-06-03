@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta property="og:title" content="高位合成とは？" />
+<meta property="og:description" content="FPGAを使うためには，長い間，VHDLあるいはVerilog HDLによるRTL設計が主流でした．しかし，HDLによるRTL設計は煩雑であり時間のかかる作業で簡単ではありません．そこで，最近では，高位合成という，HDLよりも高い水準での開発を可能する技術に注目が集まっています．特に，C/C&#43;&#43;を利用したFPGA開発手法は，FPGAメーカーであるXilinxとIntelの両方から無償でツールが提供され，簡単にはじめられるようになりました．
+この章では，実際に高位合成を使ってみる前に，高位合成とは何か，ということについて学んでおきましょう．
+FPGAとは - おさらい Field Programmable Gate Array(FPGA)は，プログラム可能なハードウェアデバイスであり，ユーザが自由にハードウェアロジックをその上に構築できます．そのため，ASIC開発のプロトタイプ環境としての利用に加え，アプリケーションに応じたユーザ独自の専用ハードウェア開発の環境としても利用されます．
+FPGAを用いたアプリケーション開発では，プロセッサ上でソフトウェアとして実装する場合に比べ，並列性の活用による低消費電力で高い処理能力の実現が期待される．アーキテクチャを工夫し，データ並列性とパイプライン並列性を活用することで，プロセッサと比較して数十倍から数百倍以上の性能向上が得られます．
+また，単に高速に演算処理を実現できるというだけではなく，FPGAはアプリケーションを構成する処理回路が入出力信号を直接操作することができるため，低レイテンシ，高スループットで物理デバイスにアクセスできる点に強みを持ちます．加えて，クロックレベルで決定的な処理を実装できることも，アプリケーションを専用ハードウェアとして実装するときの強みです． 現代的なプロセッサで動作するソフトウェアでは，キャッシュなどの実行支援ユニットの動作や，複数のプログラムのコンテクスト切り替えなどによって，実行タイミングや処理にかかる時間を正確に管理することが難しくなっています． 一方で，専用ハードウェアとしてアプリケーションを実装する場合には，クロック単位での信号の変化を自分で制御することができます．
+FPGAを使う&hellip;のは辛い?? FPGAの性能を効率良く活用するためには，一般に，VHDLやVerilogを用いたRTL設計が必要で，プロセッサ上で動作するソフトウェア開発に比べて，人的，時間的な開発コストが大きいのが問題でした．特に，アルゴリズムとして複雑な処理のRTL記述は繁雑で手間がかかり，時にはバグの温床となっています． また，アプリケーションに合ったアーキテクチャで処理を実装することができれば高い演算性能を達成することができる一方で，そうでない場合には処理性能でプロセッサやASICを凌駕することは困難です． そのため，FPGAで高性能処理を実現するためにアーキテクチャ上の試行錯誤をする必要があり，このこともまた，開発コストを大きくする要因です．
+高位合成の登場 ソフトウェア開発のように，手軽にFPGA開発を行えるようにする取り組みとして，プログラムをハードウェアロジックに変換する技術が高位合成です．特に，C/C&#43;&#43;で記述されたプログラムをハードウェアロジックに変換する高位合成処理系は，多数開発，販売されています．従来，実用に足るツールは高価だったのですが，2018年現在では，FPGAメーカーであるXilinxとIntelの両方からVivado HLSおよびIntel HLSコンパイラというツールが，無償で提供されるようになり導入のコストがぐっと小さくなりました．
+自由にC/C&#43;&#43;の記述能力を利用することはできないものの，C/C&#43;&#43;のループや条件分岐などの制御構文や，処理を関数にまとめてそれを呼び出す処理分割といったメリットを享受することができます．信号処理をソフトウェアで実装した場合にありがちな多重のループ文に対してもパイプライン化やアンロールでハードウェアの特徴を活用できるようになったこと，ターゲット周波数によって実装方式の探索をさせられることなどから，場合によっては手でがんばってハードウェアを設計するよりも，よい回路を生成できることもあるようです．
+C/C&#43;&#43;ベースのFPGA開発のながれ C/C&#43;&#43;ベースのFPGAの開発，特にXilinxのVivado HLSを利用する流れを下の図に示します．要は，C/C&#43;&#43;で記述したソースコードをVivado HLSによってVHDLまたはVerilog HDLに変換し，その変換後のコードをVivadoでFPGA用のビットストリームにする，というのが開発のおおまかな流れです．
+ Vivado HLSを使った開発フロー
+  C/C&#43;&#43;ベースで作ったモジュールを設計に組み込むためには，ツールへの慣れは必要になりますが，特段難しいものではありません．次章以降，簡単なサンプルでステップを踏んでみていきましょう．" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://miyo.github.io/learning_fpga/docs/book02/about_hls/" />
+<meta property="article:published_time" content="2019-10-30T19:15:46+09:00" />
+<meta property="article:modified_time" content="2019-10-30T19:15:46+09:00" />
+<title>高位合成とは？ | Learning FPGA</title>
+<link rel="icon" href="/learning_fpga/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/learning_fpga/book.min.92b28337361d2bcca5e0ffaff5092dda7140e89d9a7a7a4dcc6055fd7d702ace.css" integrity="sha256-krKDNzYdK8yl4P&#43;v9Qkt2nFA6J2aenpNzGBV/X1wKs4=">
+
+
+<script defer src="/learning_fpga/search.min.146d0df6e7fe3f1847ebdd84e0f304c160e32a688d9c7edbe3bc269c54d11771.js" integrity="sha256-FG0N9uf&#43;PxhH692E4PMEwWDjKmiNnH7b47wmnFTRF3E="></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav>
+<h2 class="book-brand">
+  <a href="https://miyo.github.io/learning_fpga/"><span>Learning FPGA</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" placeholder="Search" id="book-search-input" maxlength="64" />
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+    
+
+  
+  
+
+
+
+
+
+ 
+  
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        
+
+  <li >
+    
+      <span>RTL編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/introduction/" >
+      イントロダクション
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/languages/" >
+      VHDL/Veilog 入門
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/quickstart/" >
+      クイックスタート
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/simulation/" >
+      シミュレーション
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/basics/" >
+      基本実験
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book01/experiments/" >
+      実験
+  </a>
+
+</li>
+      
+    
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      <span>高位合成編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book02/about_hls/"  class="active">
+      高位合成とは？
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book02/hls_quick_guide/" >
+      VivadoHLSを使ったCベース設計に挑戦
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book02/hls_basic/" >
+      Vivado HLS基本実験
+  </a>
+
+</li>
+      
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book02/hls_challenge/" >
+      Vivado HLS応用実験
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      <span>Xilinx活用編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+
+  <a href="/learning_fpga/docs/book03/ipi/" >
+      IP Integrator入門
+  </a>
+
+</li>
+      
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+      
+        
+
+  <li >
+    
+      <span>Intel活用編</span>
+    
+
+    
+
+
+
+
+  
+  <ul>
+    
+  </ul>
+  
+
+
+
+  </li>
+
+
+      
+    
+  </ul>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+<script>
+(function() {
+  var menu = document.querySelector("aside.book-menu nav");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>
+
+    </aside>
+
+    <div class="book-page">
+      <header class="flex align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="/learning_fpga/svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>高位合成とは？</strong>
+</header>
+
+      
+<article class="markdown"><p>FPGAを使うためには，長い間，VHDLあるいはVerilog HDLによるRTL設計が主流でした．しかし，HDLによるRTL設計は煩雑であり時間のかかる作業で簡単ではありません．そこで，最近では，高位合成という，HDLよりも高い水準での開発を可能する技術に注目が集まっています．特に，C/C++を利用したFPGA開発手法は，FPGAメーカーであるXilinxとIntelの両方から無償でツールが提供され，簡単にはじめられるようになりました．</p>
+<p>この章では，実際に高位合成を使ってみる前に，高位合成とは何か，ということについて学んでおきましょう．</p>
+<h2 id="fpgaとは---おさらい">FPGAとは - おさらい</h2>
+<p>Field Programmable Gate Array(FPGA)は，プログラム可能なハードウェアデバイスであり，ユーザが自由にハードウェアロジックをその上に構築できます．そのため，ASIC開発のプロトタイプ環境としての利用に加え，アプリケーションに応じたユーザ独自の専用ハードウェア開発の環境としても利用されます．</p>
+<p>FPGAを用いたアプリケーション開発では，プロセッサ上でソフトウェアとして実装する場合に比べ，並列性の活用による低消費電力で高い処理能力の実現が期待される．アーキテクチャを工夫し，データ並列性とパイプライン並列性を活用することで，プロセッサと比較して数十倍から数百倍以上の性能向上が得られます．</p>
+<p>また，単に高速に演算処理を実現できるというだけではなく，FPGAはアプリケーションを構成する処理回路が入出力信号を直接操作することができるため，低レイテンシ，高スループットで物理デバイスにアクセスできる点に強みを持ちます．加えて，クロックレベルで決定的な処理を実装できることも，アプリケーションを専用ハードウェアとして実装するときの強みです．
+現代的なプロセッサで動作するソフトウェアでは，キャッシュなどの実行支援ユニットの動作や，複数のプログラムのコンテクスト切り替えなどによって，実行タイミングや処理にかかる時間を正確に管理することが難しくなっています．
+一方で，専用ハードウェアとしてアプリケーションを実装する場合には，クロック単位での信号の変化を自分で制御することができます．</p>
+<h2 id="fpgaを使うのは辛い">FPGAを使う&hellip;のは辛い??</h2>
+<p>FPGAの性能を効率良く活用するためには，一般に，VHDLやVerilogを用いたRTL設計が必要で，プロセッサ上で動作するソフトウェア開発に比べて，人的，時間的な開発コストが大きいのが問題でした．特に，アルゴリズムとして複雑な処理のRTL記述は繁雑で手間がかかり，時にはバグの温床となっています．
+また，アプリケーションに合ったアーキテクチャで処理を実装することができれば高い演算性能を達成することができる一方で，そうでない場合には処理性能でプロセッサやASICを凌駕することは困難です．
+そのため，FPGAで高性能処理を実現するためにアーキテクチャ上の試行錯誤をする必要があり，このこともまた，開発コストを大きくする要因です．</p>
+<h2 id="高位合成の登場">高位合成の登場</h2>
+<p>ソフトウェア開発のように，手軽にFPGA開発を行えるようにする取り組みとして，プログラムをハードウェアロジックに変換する技術が高位合成です．特に，C/C++で記述されたプログラムをハードウェアロジックに変換する高位合成処理系は，多数開発，販売されています．従来，実用に足るツールは高価だったのですが，2018年現在では，FPGAメーカーであるXilinxとIntelの両方からVivado HLSおよびIntel HLSコンパイラというツールが，無償で提供されるようになり導入のコストがぐっと小さくなりました．</p>
+<p>自由にC/C++の記述能力を利用することはできないものの，C/C++のループや条件分岐などの制御構文や，処理を関数にまとめてそれを呼び出す処理分割といったメリットを享受することができます．信号処理をソフトウェアで実装した場合にありがちな多重のループ文に対してもパイプライン化やアンロールでハードウェアの特徴を活用できるようになったこと，ターゲット周波数によって実装方式の探索をさせられることなどから，場合によっては手でがんばってハードウェアを設計するよりも，よい回路を生成できることもあるようです．</p>
+<h2 id="ccベースのfpga開発のながれ">C/C++ベースのFPGA開発のながれ</h2>
+<p>C/C++ベースのFPGAの開発，特にXilinxのVivado HLSを利用する流れを下の図に示します．要は，C/C++で記述したソースコードをVivado HLSによってVHDLまたはVerilog HDLに変換し，その変換後のコードをVivadoでFPGA用のビットストリームにする，というのが開発のおおまかな流れです．</p>
+<figure class="center">
+    <img src="../about_hls_figures/hls_dev_flow.png"
+         alt="Vivado HLSを使った開発フロー"/> <figcaption>
+            <p>Vivado HLSを使った開発フロー</p>
+        </figcaption>
+</figure>
+
+<p>C/C++ベースで作ったモジュールを設計に組み込むためには，ツールへの慣れは必要になりますが，特段難しいものではありません．次章以降，簡単なサンプルでステップを踏んでみていきましょう．</p>
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+
+  <aside class="book-toc levels-6 fixed">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#fpgaとは---おさらい">FPGAとは - おさらい</a></li>
+    <li><a href="#fpgaを使うのは辛い">FPGAを使う&hellip;のは辛い??</a></li>
+    <li><a href="#高位合成の登場">高位合成の登場</a></li>
+    <li><a href="#ccベースのfpga開発のながれ">C/C++ベースのFPGA開発のながれ</a></li>
+  </ul>
+</nav>
+  </aside>
+
+
+
+  </main>
+
+  
+</body>
+
+</html>
